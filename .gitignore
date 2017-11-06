@@ -61,3 +61,8 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+/components/build/
+build/
+.gradle
+core/build/tmp/jar/MANIFEST.MF
