@@ -66,3 +66,5 @@ $RECYCLE.BIN/
 build/
 .gradle
 core/build/tmp/jar/MANIFEST.MF
+.idea/workspace.xml
+local.properties
