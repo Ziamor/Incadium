@@ -5,8 +5,10 @@ import com.artemis.ComponentMapper;
 import com.artemis.World;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.ziamor.incadium.DecorFactory;
 import com.ziamor.incadium.components.BlockingComponent;
 import com.ziamor.incadium.components.GroundTileComponent;
 import com.ziamor.incadium.components.TerrainTileComponent;
@@ -17,6 +19,7 @@ import com.ziamor.incadium.utils.BSPLeafIterator;
 import com.ziamor.incadium.utils.BSPPostorderIterator;
 
 import java.util.Random;
+
 //TODO helpfull https://stackoverflow.com/questions/23222053/data-structure-for-tile-map-for-use-with-artemis
 public class MapSystem extends BaseSystem {
     private boolean loaded = false;
@@ -81,6 +84,10 @@ public class MapSystem extends BaseSystem {
             Texture tilesetTex = new Texture(Gdx.files.absolute("WallsBM.png"));
             terrainTileComponentComponentMapper.create(ent).setRegion(tilesetTex, index % tileset_width, index / tileset_width);
             blockingComponentComponentMapper.create(ent);
+
+            //Randomly generate torches
+            if (bitmask == 31 && MathUtils.random() <= 0.2f)
+                DecorFactory.Torch(x, y);
         }
         groundTileComponentComponentMapper.create(ent).groundTexture = new Texture("ground.png"); //TODO load one texture for all ground tiles rather
         transformComponentComponentMapper.create(ent).set(x, y, 0);

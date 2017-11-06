@@ -13,7 +13,7 @@
       </configuration>
     </facet>
   </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6">
     <output url="file://$MODULE_DIR$/build/classes/main" />
     <output-test url="file://$MODULE_DIR$/build/classes/test" />
     <exclude-output />
@@ -36,6 +36,5 @@
     <orderEntry type="library" exported="" name="gdx-1.9.6-sources" level="project" />
     <orderEntry type="library" exported="" name="gdx-ai-1.8.0" level="project" />
     <orderEntry type="library" exported="" name="artemis-odb-2.1.0" level="project" />
-    <orderEntry type="library" exported="" name="core.core-1.0" level="project" />
   </component>
 </module>
