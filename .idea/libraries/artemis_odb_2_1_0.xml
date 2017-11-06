@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="artemis-odb-2.1.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.onedaybeard.artemis/artemis-odb/2.1.0/ff67dd86024997f6d81ca4e373ab735598a2518b/artemis-odb-2.1.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.onedaybeard.artemis/artemis-odb/2.1.0/84428d16a29cf488aa43e51f2f466240111bfbe1/artemis-odb-2.1.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
