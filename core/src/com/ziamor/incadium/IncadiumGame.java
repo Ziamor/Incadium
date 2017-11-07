@@ -22,6 +22,7 @@ import com.ziamor.incadium.components.TextureComponent;
 import com.ziamor.incadium.components.TransformComponent;
 import com.ziamor.incadium.components.TurnComponent;
 import com.ziamor.incadium.systems.AttackSystem;
+import com.ziamor.incadium.systems.DeathSystem;
 import com.ziamor.incadium.systems.MapSystem;
 import com.ziamor.incadium.systems.MovementSystem;
 import com.ziamor.incadium.systems.PlayerControllerSystem;
@@ -63,7 +64,16 @@ public class IncadiumGame extends ApplicationAdapter {
         viewport = new FitViewport(map_width, map_height, camera);
         camera.translate(map_width / 2, map_height / 2);
 
-        WorldConfiguration config = new WorldConfigurationBuilder().with(new SuperMapper(), new MapSystem(), new TerrainRenderSystem(batch), new RenderSystem(batch), new PlayerControllerSystem(), new MovementSystem(), new AttackSystem()).build();
+        WorldConfiguration config = new WorldConfigurationBuilder().with(
+                new SuperMapper(),
+                new MapSystem(),
+                new TerrainRenderSystem(batch),
+                new RenderSystem(batch),
+                new PlayerControllerSystem(),
+                new MovementSystem(),
+                new AttackSystem(),
+                new DeathSystem()
+        ).build();
         world = new World(config);
 
         textureComponentComponentMapper = world.getMapper(TextureComponent.class);
