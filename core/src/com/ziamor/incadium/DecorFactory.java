@@ -19,4 +19,8 @@ public class DecorFactory {
     public static int Torch(int x, int y) {
         return E.E().transformComponent(x, y, 1).textureRegionComponent(getDecorTexture(), 0, 0, tileSize, tileSize).entity().getId();
     }
+
+    public static int Test(int x, int y) {
+        return E.E().transformComponent(x, y, 0).textureRegionComponent(getDecorTexture(), 32, 0, tileSize, tileSize).entity().getId();
+    }
 }

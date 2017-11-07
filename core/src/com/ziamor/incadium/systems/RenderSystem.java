@@ -2,6 +2,7 @@ package com.ziamor.incadium.systems;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
+import com.artemis.World;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -10,7 +11,9 @@ import com.ziamor.incadium.components.MovementLerpComponent;
 import com.ziamor.incadium.components.TextureComponent;
 import com.ziamor.incadium.components.TransformComponent;
 
-public class RenderSystem extends IteratingSystem {
+import java.util.Comparator;
+
+public class RenderSystem extends SortedIteratingSystem {
     ComponentMapper<TextureComponent> textureComponentComponentMapper;
     ComponentMapper<TextureRegionComponent> textureRegionComponentComponentMapper;
     ComponentMapper<TransformComponent> transformComponentComponentMapper;
@@ -36,12 +39,21 @@ public class RenderSystem extends IteratingSystem {
             if (movementLerpComponent.isFinished())
                 movementLerpComponentComponentMapper.remove(e);
         } else {
-            if (textureComponent != null)
-                batch.draw(textureComponent.texture, transformComponent.x, transformComponent.y, 1, 1);
             if (textureRegionComponent != null)
                 batch.draw(textureRegionComponent.region, transformComponent.x, transformComponent.y, 1, 1);
+            if (textureComponent != null)
+                batch.draw(textureComponent.texture, transformComponent.x, transformComponent.y, 1, 1);
         }
 
+    }
+
+    public Comparator<Integer> getComparator() {
+        return new Comparator<Integer>() {
+            @Override
+            public int compare(Integer e1, Integer e2) {
+                return (int) Math.signum(transformComponentComponentMapper.get(e1).z - transformComponentComponentMapper.get(e2).z);
+            }
+        };
     }
 }
 

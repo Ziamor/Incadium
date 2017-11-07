@@ -86,11 +86,13 @@ public class MapSystem extends BaseSystem {
             blockingComponentComponentMapper.create(ent);
 
             //Randomly generate torches
-            if (bitmask == 31 && MathUtils.random() <= 0.2f)
+            if (bitmask == 31 && MathUtils.random() <= 0.8f) {
                 DecorFactory.Torch(x, y);
+                DecorFactory.Test(x, y);
+            }
         }
         groundTileComponentComponentMapper.create(ent).groundTexture = new Texture("ground.png"); //TODO load one texture for all ground tiles rather
-        transformComponentComponentMapper.create(ent).set(x, y, 0);
+        transformComponentComponentMapper.create(ent).set(x, y, 1);
         return ent;
     }
 
