@@ -24,6 +24,7 @@ import com.ziamor.incadium.components.TurnComponent;
 import com.ziamor.incadium.systems.AttackSystem;
 import com.ziamor.incadium.systems.BlockPlayerInputSystem;
 import com.ziamor.incadium.systems.DeathSystem;
+import com.ziamor.incadium.systems.FollowSystem;
 import com.ziamor.incadium.systems.MapSystem;
 import com.ziamor.incadium.systems.MovementSystem;
 import com.ziamor.incadium.systems.PlayerControllerSystem;
@@ -77,6 +78,7 @@ public class IncadiumGame extends ApplicationAdapter {
                 new BlockPlayerInputSystem(),
                 // Movement Systems
                 new MovementSystem(),
+                new FollowSystem(),
                 // Attack Systems
                 new AttackSystem(),
                 new DeathSystem()
@@ -98,7 +100,13 @@ public class IncadiumGame extends ApplicationAdapter {
                 .playerControllerComponent()
                 .turnComponent();
 
-        E.E().transformComponent(2, 2, 1).textureComponent("bat.png").healthComponentHealthStat(100f, 100f).movementComponent().turnComponent().monsterComponent();
+        E.E().transformComponent(2, 2, 1)
+                .textureComponent("bat.png")
+                .healthComponentHealthStat(100f, 100f)
+                .movementComponent()
+                .turnComponent()
+                .monsterComponent()
+                .followTargetComponent(ePlayer);
     }
 
     @Override

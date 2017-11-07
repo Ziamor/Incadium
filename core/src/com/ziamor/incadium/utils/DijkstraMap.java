@@ -5,11 +5,12 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.ziamor.incadium.systems.MapSystem;
 
 public class DijkstraMap {
     public static int defaultValue = 99999;
-/*
-    public static int[][] getDijkstraMap(Map map, int x_target, int y_target) {
+
+    public static int[][] getDijkstraMap(MapSystem map, int x_target, int y_target) {
         if (map == null)
             return null;
 
@@ -117,5 +118,5 @@ public class DijkstraMap {
             nextPos.set(x, y + 1);
 
         return nextPos;
-    }*/
+    }
 }

@@ -35,6 +35,7 @@ public class AttackSystem extends IteratingSystem {
             E.E(entityId).removeAttackTargetComponent();
 
             if (playerControllerComponentMapper.get(entityId) != null) {
+                //TODO maybe use AttackCoolDownComponent
                 E.E(entityId).blockPlayerInputComponent(1f);
             }
         }
