@@ -1,18 +1,14 @@
 package com.ziamor.incadium.systems;
 
 import com.artemis.Aspect;
-import com.artemis.BaseEntitySystem;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.artemis.utils.IntBag;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
-import com.ziamor.incadium.components.TransformComponent;
 
 import java.util.Comparator;
 
 public abstract class SortedIteratingSystem extends EntitySystem {
-    boolean temp = true;
     protected Array<Integer> sorted;
     protected boolean unsorted = true;
 

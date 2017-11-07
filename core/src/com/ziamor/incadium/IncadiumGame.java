@@ -31,6 +31,7 @@ import com.ziamor.incadium.systems.PlayerControllerSystem;
 import com.ziamor.incadium.systems.RenderSystem;
 import com.artemis.E;
 import com.ziamor.incadium.systems.TerrainRenderSystem;
+import com.ziamor.incadium.systems.TurnSchedulerSystem;
 
 public class IncadiumGame extends ApplicationAdapter {
     public static final int SO_TURN = 0;
@@ -76,6 +77,7 @@ public class IncadiumGame extends ApplicationAdapter {
                 // Input Systems
                 new PlayerControllerSystem(),
                 new BlockPlayerInputSystem(),
+                new TurnSchedulerSystem(),
                 // Movement Systems
                 new MovementSystem(),
                 new FollowSystem(),
@@ -95,16 +97,25 @@ public class IncadiumGame extends ApplicationAdapter {
         E.E(ePlayer).textureComponent("player.png")
                 .transformComponent(3, 3, 1)
                 .movementComponent()
-                .attackDamageComponent(20f)
+                .attackDamageComponent(50f)
                 .healthComponentHealthStat(100f, 100f)
                 .playerControllerComponent()
+                .turnTakerComponent()
                 .turnComponent();
 
         E.E().transformComponent(2, 2, 1)
                 .textureComponent("bat.png")
                 .healthComponentHealthStat(100f, 100f)
                 .movementComponent()
-                .turnComponent()
+                .turnTakerComponent()
+                .monsterComponent()
+                .followTargetComponent(ePlayer);
+
+        E.E().transformComponent(3, 2, 1)
+                .textureComponent("bat.png")
+                .healthComponentHealthStat(100f, 100f)
+                .movementComponent()
+                .turnTakerComponent()
                 .monsterComponent()
                 .followTargetComponent(ePlayer);
     }
@@ -124,7 +135,6 @@ public class IncadiumGame extends ApplicationAdapter {
             camera.position.x = transformComponent.x;
             camera.position.y = transformComponent.y;
         }
-
         camera.update();
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
