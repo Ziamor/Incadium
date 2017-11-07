@@ -12,13 +12,16 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.ziamor.incadium.components.MovementComponent;
+import com.ziamor.incadium.components.MovementLerpComponent;
 import com.ziamor.incadium.components.PlayerControllerComponent;
 import com.ziamor.incadium.components.TextureComponent;
 import com.ziamor.incadium.components.TransformComponent;
 import com.ziamor.incadium.components.TurnComponent;
+import com.ziamor.incadium.systems.AttackSystem;
 import com.ziamor.incadium.systems.MapSystem;
 import com.ziamor.incadium.systems.MovementSystem;
 import com.ziamor.incadium.systems.PlayerControllerSystem;
@@ -60,8 +63,7 @@ public class IncadiumGame extends ApplicationAdapter {
         viewport = new FitViewport(map_width, map_height, camera);
         camera.translate(map_width / 2, map_height / 2);
 
-        MovementSystem movementSystem = new MovementSystem();
-        WorldConfiguration config = new WorldConfigurationBuilder().with(new SuperMapper(), new MapSystem(), new TerrainRenderSystem(batch), new RenderSystem(batch), new PlayerControllerSystem(), movementSystem).build();
+        WorldConfiguration config = new WorldConfigurationBuilder().with(new SuperMapper(), new MapSystem(), new TerrainRenderSystem(batch), new RenderSystem(batch), new PlayerControllerSystem(), new MovementSystem(), new AttackSystem()).build();
         world = new World(config);
 
         textureComponentComponentMapper = world.getMapper(TextureComponent.class);
@@ -72,10 +74,14 @@ public class IncadiumGame extends ApplicationAdapter {
 
         ePlayer = world.create();
         E.E(ePlayer).textureComponent("player.png")
-                .transformComponent(2, 2, 1)
+                .transformComponent(3, 3, 1)
                 .movementComponent()
+                .attackDamageComponent(20f)
+                .healthComponentHealthStat(100f, 100f)
                 .playerControllerComponent()
                 .turnComponent();
+
+        E.E().transformComponent(2, 2, 1).textureComponent("bat.png").healthComponentHealthStat(100f, 100f).movementComponent().turnComponent().monsterComponent();
     }
 
     @Override
@@ -83,8 +89,16 @@ public class IncadiumGame extends ApplicationAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         TransformComponent transformComponent = transformComponentComponentMapper.get(ePlayer);
-        camera.position.x = transformComponent.x;
-        camera.position.y = transformComponent.y;
+        MovementLerpComponent movementLerpComponent = E.E(ePlayer).getMovementLerpComponent();
+
+        if (movementLerpComponent != null) {
+            Vector2 pos = movementLerpComponent.getCurrentPos();
+            camera.position.x = pos.x;
+            camera.position.y = pos.y;
+        } else {
+            camera.position.x = transformComponent.x;
+            camera.position.y = transformComponent.y;
+        }
 
         camera.update();
         batch.setProjectionMatrix(camera.combined);

@@ -2,8 +2,6 @@ package com.ziamor.incadium.systems;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
-import com.artemis.World;
-import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.ziamor.incadium.components.TextureRegionComponent;

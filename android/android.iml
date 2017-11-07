@@ -79,8 +79,8 @@
     <orderEntry type="jdk" jdkName="Android API 26 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="net.onedaybeard.artemis:artemis-odb:2.1.0@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.badlogicgames.gdx:gdx-backend-android:1.9.6@jar" level="project" />
     <orderEntry type="library" exported="" name="com.badlogicgames.gdx:gdx:1.9.6:sources@jar" level="project" />
+    <orderEntry type="library" exported="" name="com.badlogicgames.gdx:gdx-backend-android:1.9.6@jar" level="project" />
     <orderEntry type="library" exported="" name="com.badlogicgames.gdx:gdx-ai:1.8.0@jar" level="project" />
     <orderEntry type="library" exported="" name="com.badlogicgames.gdx:gdx:1.9.6@jar" level="project" />
     <orderEntry type="module" module-name="components" exported="" />

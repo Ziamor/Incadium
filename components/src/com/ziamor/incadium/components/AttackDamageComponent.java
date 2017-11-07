@@ -5,7 +5,7 @@ import com.artemis.Component;
 public class AttackDamageComponent extends Component {
     public float damage;
 
-    public void setDmg(float dmg) {
+    public void set(float dmg) {
         this.damage = dmg;
     }
 }

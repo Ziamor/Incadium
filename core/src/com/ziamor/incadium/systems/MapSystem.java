@@ -81,14 +81,23 @@ public class MapSystem extends BaseSystem {
                 bitmask += 4;
             int index = bitmaskLookup[bitmask];
             //TODO remove texture as external and make it back to internal
-            Texture tilesetTex = new Texture(Gdx.files.absolute("WallsBM.png"));
+            //Texture tilesetTex = new Texture(Gdx.files.absolute("WallsBM.png"));
+            Texture tilesetTex = new Texture("WallsBM.png");
             terrainTileComponentComponentMapper.create(ent).setRegion(tilesetTex, index % tileset_width, index / tileset_width);
             blockingComponentComponentMapper.create(ent);
 
             //Randomly generate torches
-            if (bitmask == 31 && MathUtils.random() <= 0.8f) {
-                DecorFactory.Torch(x, y);
-                DecorFactory.Test(x, y);
+            if (bitmask == 31) {
+                if (MathUtils.random() <= 0.2f)
+                    DecorFactory.Torch(x, y);
+                else if (MathUtils.random() <= 0.1f)
+                    DecorFactory.Chains(x, y);
+                else if (MathUtils.random() <= 0.05f)
+                    DecorFactory.Pipe(x, y);
+                else if (MathUtils.random() <= 0.1f)
+                    DecorFactory.Crack(x, y);
+                else if (MathUtils.random() <= 0.1f)
+                    DecorFactory.Blood(x, y);
             }
         }
         groundTileComponentComponentMapper.create(ent).groundTexture = new Texture("ground.png"); //TODO load one texture for all ground tiles rather
