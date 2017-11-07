@@ -10,19 +10,13 @@ import com.ziamor.incadium.components.HealthComponent;
 
 
 public class DeathSystem extends IteratingSystem {
-private ComponentMapper<HealthComponent> healthComponentMapper;
     public DeathSystem() {
-        super(Aspect.all(HealthComponent.class));
+        super(Aspect.all(DeadComponent.class));
     }
 
     @Override
     protected void process(int entityId) {
-        HealthComponent healthComponent = healthComponentMapper.get(entityId);
-
-        if (healthComponent.currentHealth <= 0) {
-            Gdx.app.log("", "Dead");
-            E.E(entityId).deadComponent();
-            E.E(entityId).deleteFromWorld();
-        }
+        Gdx.app.log("", "Dead");
+        E.E(entityId).deleteFromWorld();
     }
 }

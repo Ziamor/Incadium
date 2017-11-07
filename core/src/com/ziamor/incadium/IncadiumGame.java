@@ -25,6 +25,8 @@ import com.ziamor.incadium.systems.AttackSystem;
 import com.ziamor.incadium.systems.BlockPlayerInputSystem;
 import com.ziamor.incadium.systems.DeathSystem;
 import com.ziamor.incadium.systems.FollowSystem;
+import com.ziamor.incadium.systems.HealthSystem;
+import com.ziamor.incadium.systems.LootSystem;
 import com.ziamor.incadium.systems.MapSystem;
 import com.ziamor.incadium.systems.MovementSystem;
 import com.ziamor.incadium.systems.PlayerControllerSystem;
@@ -83,6 +85,9 @@ public class IncadiumGame extends ApplicationAdapter {
                 new FollowSystem(),
                 // Attack Systems
                 new AttackSystem(),
+                //Health System
+                new HealthSystem(),
+                new LootSystem(),
                 new DeathSystem()
         ).build();
         world = new World(config);
@@ -94,7 +99,8 @@ public class IncadiumGame extends ApplicationAdapter {
         turnComponentComponentMapper = world.getMapper(TurnComponent.class);
 
         ePlayer = world.create();
-        E.E(ePlayer).textureComponent("player.png")
+        E.E(ePlayer).tag("player")
+                .textureComponent("player.png")
                 .transformComponent(3, 3, 1)
                 .movementComponent()
                 .attackDamageComponent(50f)
@@ -103,21 +109,23 @@ public class IncadiumGame extends ApplicationAdapter {
                 .turnTakerComponent()
                 .turnComponent();
 
-        E.E().transformComponent(2, 2, 1)
+        E.E().transformComponent(2, 2, 4)
                 .textureComponent("bat.png")
                 .healthComponentHealthStat(100f, 100f)
                 .movementComponent()
                 .turnTakerComponent()
                 .monsterComponent()
-                .followTargetComponent(ePlayer);
+                .followTargetComponent(ePlayer)
+                .lootableComponent();
 
-        E.E().transformComponent(3, 2, 1)
+        E.E().transformComponent(3, 2, 4)
                 .textureComponent("bat.png")
                 .healthComponentHealthStat(100f, 100f)
                 .movementComponent()
                 .turnTakerComponent()
                 .monsterComponent()
-                .followTargetComponent(ePlayer);
+                .followTargetComponent(ePlayer)
+                .lootableComponent();
     }
 
     @Override

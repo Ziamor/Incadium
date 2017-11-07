@@ -17,18 +17,18 @@ public class ItemFactory {
     }
 
     public static int Rune(int x, int y) {
-        return E.E().transformComponent(x, y, 1).textureRegionComponent(getItemTexture(), 0, 0, tileSize, tileSize).entity().getId();
+        return E.E().transformComponent(x, y, 2).textureRegionComponent(getItemTexture(), 0, 0, tileSize, tileSize).entity().getId();
     }
 
     public static int Coin(int x, int y) {
-        return E.E().transformComponent(x, y, 1).textureRegionComponent(getItemTexture(), tileSize, 0, tileSize, tileSize).entity().getId();
+        return E.E().transformComponent(x, y, 2).textureRegionComponent(getItemTexture(), tileSize, 0, tileSize, tileSize).entity().getId();
     }
 
     public static int Sword(int x, int y) {
-        return E.E().transformComponent(x, y, 1).textureRegionComponent(getItemTexture(), tileSize * 2, 0, tileSize, tileSize).entity().getId();
+        return E.E().transformComponent(x, y, 2).textureRegionComponent(getItemTexture(), tileSize * 2, 0, tileSize, tileSize).entity().getId();
     }
 
     public static int Potion(int x, int y) {
-        return E.E().transformComponent(x, y, 1).textureRegionComponent(getItemTexture(), tileSize * 3, 0, tileSize, tileSize).entity().getId();
+        return E.E().transformComponent(x, y, 2).textureRegionComponent(getItemTexture(), tileSize * 3, 0, tileSize, tileSize).entity().getId();
     }
 }

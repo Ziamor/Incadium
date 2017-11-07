@@ -29,7 +29,8 @@ public class MapSystem extends BaseSystem {
     private int[][] entitie_map;
     public BSP bsp;
     private int map_width = 50, map_height = 50, tileset_width = 8;
-
+    Texture tilesetTex = null;
+    Texture groundTex= null;
     ComponentMapper<TransformComponent> transformComponentComponentMapper;
     ComponentMapper<TerrainTileComponent> terrainTileComponentComponentMapper;
     ComponentMapper<BlockingComponent> blockingComponentComponentMapper;
@@ -45,6 +46,9 @@ public class MapSystem extends BaseSystem {
 
     protected void loadMap() {
         //genBitmaskTest();
+        //Texture tilesetTex = new Texture(Gdx.files.absolute("WallsBM.png"));
+        tilesetTex = new Texture("WallsBM.png");
+        groundTex = new Texture("ground.png");
         genRandomDungeon();
 
         entitie_map = new int[map_width][map_height];
@@ -80,9 +84,7 @@ public class MapSystem extends BaseSystem {
             if (x < map_width - 1 && y < map_height - 1 && map_datasource[x + 1][y + 1] != 1)
                 bitmask += 4;
             int index = bitmaskLookup[bitmask];
-            //TODO remove texture as external and make it back to internal
-            //Texture tilesetTex = new Texture(Gdx.files.absolute("WallsBM.png"));
-            Texture tilesetTex = new Texture("WallsBM.png");
+
             terrainTileComponentComponentMapper.create(ent).setRegion(tilesetTex, index % tileset_width, index / tileset_width);
             blockingComponentComponentMapper.create(ent);
 
@@ -100,7 +102,7 @@ public class MapSystem extends BaseSystem {
                     DecorFactory.Blood(x, y);
             }
         }
-        groundTileComponentComponentMapper.create(ent).groundTexture = new Texture("ground.png"); //TODO load one texture for all ground tiles rather
+        groundTileComponentComponentMapper.create(ent).groundTexture = groundTex; //TODO load one texture for all ground tiles rather
         transformComponentComponentMapper.create(ent).set(x, y, 1);
         return ent;
     }
