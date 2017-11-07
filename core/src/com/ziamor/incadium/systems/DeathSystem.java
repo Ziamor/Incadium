@@ -19,11 +19,10 @@ private ComponentMapper<HealthComponent> healthComponentMapper;
     protected void process(int entityId) {
         HealthComponent healthComponent = healthComponentMapper.get(entityId);
 
-        if (healthComponent.currentHealth < 0) {
+        if (healthComponent.currentHealth <= 0) {
             Gdx.app.log("", "Dead");
             E.E(entityId).deadComponent();
             E.E(entityId).deleteFromWorld();
-            //engine.removeEntity(entity);
         }
     }
 }

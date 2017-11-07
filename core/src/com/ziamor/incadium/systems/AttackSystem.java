@@ -35,7 +35,7 @@ public class AttackSystem extends IteratingSystem {
             E.E(entityId).removeAttackTargetComponent();
 
             if (playerControllerComponentMapper.get(entityId) != null) {
-                //E.E(entityId).blockPlayerInputComponent(1f);
+                E.E(entityId).blockPlayerInputComponent(1f);
             }
         }
     }
