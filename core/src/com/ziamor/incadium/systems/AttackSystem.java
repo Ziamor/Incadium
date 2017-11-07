@@ -27,6 +27,8 @@ public class AttackSystem extends IteratingSystem {
         AttackTargetComponent attackTargetComponent = attackTargetComponentMapper.get(entityId);
         AttackDamageComponent attackDamageComponent = attackDamageComponentMapper.get(entityId);
 
+        if (E.E(attackTargetComponent.target) == null)
+            E.E(entityId).removeAttackTargetComponent();
         //TODO link relationship
         HealthComponent targetHealth = healthComponentMapper.get(attackTargetComponent.target);
         if (targetHealth != null) {
@@ -38,6 +40,7 @@ public class AttackSystem extends IteratingSystem {
                 //TODO maybe use AttackCoolDownComponent
                 E.E(entityId).blockPlayerInputComponent(1f);
             }
-        }
+        } else
+            E.E(entityId).removeAttackTargetComponent();
     }
 }

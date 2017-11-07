@@ -5,6 +5,7 @@ import com.artemis.SuperMapper;
 import com.artemis.World;
 import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
+import com.artemis.managers.TagManager;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -30,6 +31,7 @@ import com.ziamor.incadium.systems.LootSystem;
 import com.ziamor.incadium.systems.MapSystem;
 import com.ziamor.incadium.systems.MovementSystem;
 import com.ziamor.incadium.systems.PlayerControllerSystem;
+import com.ziamor.incadium.systems.PlayerStateSystem;
 import com.ziamor.incadium.systems.RenderSystem;
 import com.artemis.E;
 import com.ziamor.incadium.systems.TerrainRenderSystem;
@@ -71,6 +73,7 @@ public class IncadiumGame extends ApplicationAdapter {
 
         WorldConfiguration config = new WorldConfigurationBuilder().with(
                 new SuperMapper(),
+                new TagManager(),
                 // Setup Systems
                 new MapSystem(),
                 // Render Systems
@@ -88,7 +91,9 @@ public class IncadiumGame extends ApplicationAdapter {
                 //Health System
                 new HealthSystem(),
                 new LootSystem(),
-                new DeathSystem()
+                new DeathSystem(),
+                //Debug Systems
+                new PlayerStateSystem()
         ).build();
         world = new World(config);
 
@@ -98,16 +103,16 @@ public class IncadiumGame extends ApplicationAdapter {
         movementComponentComponentMapper = world.getMapper(MovementComponent.class);
         turnComponentComponentMapper = world.getMapper(TurnComponent.class);
 
-        ePlayer = world.create();
-        E.E(ePlayer).tag("player")
-                .textureComponent("player.png")
-                .transformComponent(3, 3, 1)
-                .movementComponent()
-                .attackDamageComponent(50f)
-                .healthComponentHealthStat(100f, 100f)
-                .playerControllerComponent()
-                .turnTakerComponent()
-                .turnComponent();
+        ePlayer =
+                E.E().tag("player")
+                        .textureComponent("player.png")
+                        .transformComponent(3, 3, 4)
+                        .movementComponent()
+                        .attackDamageComponent(50f)
+                        .healthComponentHealthStat(100f, 100f)
+                        .playerControllerComponent()
+                        .turnTakerComponent()
+                        .turnComponent().entity().getId();
 
         E.E().transformComponent(2, 2, 4)
                 .textureComponent("bat.png")
