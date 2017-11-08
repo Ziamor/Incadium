@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.ziamor.incadium.systems.MapSystem;
+import com.ziamor.incadium.systems.Util.MapSystem;
 
 public class DijkstraMap {
     public static int defaultValue = 99999;
