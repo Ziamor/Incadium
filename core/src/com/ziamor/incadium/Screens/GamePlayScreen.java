@@ -1,4 +1,4 @@
-package com.ziamor.incadium;
+package com.ziamor.incadium.Screens;
 
 import com.artemis.ComponentMapper;
 import com.artemis.SuperMapper;
@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.ziamor.incadium.Incadium;
 import com.ziamor.incadium.components.MovementComponent;
 import com.ziamor.incadium.components.MovementLerpComponent;
 import com.ziamor.incadium.components.PlayerControllerComponent;

@@ -5,18 +5,24 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.ziamor.incadium.Screens.GamePlayScreen;
+import com.ziamor.incadium.Screens.MainMenuScreen;
 
 
 public class Incadium extends Game {
     public SpriteBatch batch;
     public ShapeRenderer shapeRenderer;
+    public Skin skin;
 
     @Override
     public void create() {
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
-        this.setScreen(new GamePlayScreen(this));
+        skin = new Skin(Gdx.files.internal("skin.json"));
+
+        this.setScreen(new MainMenuScreen(this));
     }
 
     public void render() {
@@ -26,6 +32,7 @@ public class Incadium extends Game {
     public void dispose() {
         batch.dispose();
         shapeRenderer.dispose();
+        skin.dispose();
     }
 }
 
