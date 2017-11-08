@@ -37,7 +37,7 @@ import com.artemis.E;
 import com.ziamor.incadium.systems.TerrainRenderSystem;
 import com.ziamor.incadium.systems.TurnSchedulerSystem;
 
-public class IncadiumGame extends ApplicationAdapter {
+public class GamePlayScreen extends ApplicationAdapter {
     public static final int SO_TURN = 0;
     public static final int SO_INPUT = 1;
     public static final int SO_MOVEMENT = 2;

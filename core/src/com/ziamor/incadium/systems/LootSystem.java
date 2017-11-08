@@ -8,7 +8,7 @@ import com.ziamor.incadium.components.DeadComponent;
 import com.ziamor.incadium.components.LootableComponent;
 import com.ziamor.incadium.components.TransformComponent;
 
-
+// https://www.codeproject.com/Articles/420046/Loot-Tables-Random-Maps-and-Monsters-Part-I
 public class LootSystem extends IteratingSystem {
     private ComponentMapper<TransformComponent> transformComponentMapper;
 

@@ -5,7 +5,6 @@ import com.artemis.ComponentMapper;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.ziamor.incadium.IncadiumGame;
 import com.ziamor.incadium.components.AttackTargetComponent;
 import com.ziamor.incadium.components.BlockPlayerInputComponent;
 import com.ziamor.incadium.components.MovementComponent;

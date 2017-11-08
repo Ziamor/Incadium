@@ -2,7 +2,7 @@ package com.ziamor.incadium.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.ziamor.incadium.IncadiumGame;
+import com.ziamor.incadium.GamePlayScreen;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
@@ -10,6 +10,6 @@ public class DesktopLauncher {
 		config.title = "Incadium";
 		config.width = 768;
 		config.height = 512;
-		new LwjglApplication(new IncadiumGame(), config);
+		new LwjglApplication(new GamePlayScreen(), config);
 	}
 }
