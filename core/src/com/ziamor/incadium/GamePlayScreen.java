@@ -9,6 +9,7 @@ import com.artemis.managers.TagManager;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -37,7 +38,7 @@ import com.artemis.E;
 import com.ziamor.incadium.systems.TerrainRenderSystem;
 import com.ziamor.incadium.systems.TurnSchedulerSystem;
 
-public class GamePlayScreen extends ApplicationAdapter {
+public class GamePlayScreen implements Screen {
     public static final int SO_TURN = 0;
     public static final int SO_INPUT = 1;
     public static final int SO_MOVEMENT = 2;
@@ -61,11 +62,10 @@ public class GamePlayScreen extends ApplicationAdapter {
 
     int ePlayer;
 
-    @Override
-    public void create() {
-        Gdx.app.setLogLevel(Application.LOG_DEBUG);
-        batch = new SpriteBatch();
-        shapeRenderer = new ShapeRenderer();
+
+    public GamePlayScreen(final Incadium incadium) {
+        batch = incadium.batch;
+        shapeRenderer = incadium.shapeRenderer;
 
         camera = new OrthographicCamera();
         viewport = new FitViewport(map_width, map_height, camera);
@@ -134,7 +134,7 @@ public class GamePlayScreen extends ApplicationAdapter {
     }
 
     @Override
-    public void render() {
+    public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         TransformComponent transformComponent = transformComponentComponentMapper.get(ePlayer);
@@ -151,39 +151,14 @@ public class GamePlayScreen extends ApplicationAdapter {
         camera.update();
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        world.setDelta(Gdx.graphics.getDeltaTime());
+        world.setDelta(delta);
         world.process();
         batch.end();
+    }
 
-      /*  if (dijkstrasMap != null) {
-            shapeRenderer.setProjectionMatrix(camera.combined);
-            //DijkstraMap.renderDijkstraMap(dijkstrasMap, shapeRenderer);
+    @Override
+    public void show() {
 
-            /*Gradient g = new Gradient(new Color(0.3f, 0, 0.8f, 0.75f), new Color(1f, 0.6f, 0, 0.75f));
-            g.addPoint(new Color(1f, 0.2f, 0.2f, 0.75f), 0.75f);
-            Gdx.gl.glEnable(GL20.GL_BLEND);
-            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            float stop = 8;
-            for (int i = 0; i < stop; i++) {
-                shapeRenderer.setColor(g.getColor((float) i / stop));
-                shapeRenderer.rect(i, 0, 1, 1);
-            }
-            shapeRenderer.end();
-
-            Random rand = new Random(0x2398f3);
-            Gdx.gl.glEnable(GL20.GL_BLEND);
-            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            BSPLeafIterator iterator = map.bsp.getLeafIterator();
-            while (iterator.hasNext()) {
-                Rectangle area = iterator.next().area;
-                Color c = new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), 0.25f);
-                shapeRenderer.setColor(c);
-                shapeRenderer.rect(area.x, area.y, area.width, area.height);
-            }
-            shapeRenderer.end();
-        }*/
     }
 
     @Override
@@ -192,7 +167,21 @@ public class GamePlayScreen extends ApplicationAdapter {
     }
 
     @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
+    }
+
+    @Override
     public void dispose() {
-        batch.dispose();
     }
 }
