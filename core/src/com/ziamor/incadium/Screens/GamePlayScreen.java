@@ -11,7 +11,10 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -26,6 +29,7 @@ import com.ziamor.incadium.Incadium;
 import com.ziamor.incadium.components.Movement.MovementLerpComponent;
 import com.ziamor.incadium.components.TransformComponent;
 import com.ziamor.incadium.systems.Combat.AttackSystem;
+import com.ziamor.incadium.systems.Render.AnimationSystem;
 import com.ziamor.incadium.systems.UI.HealthBarUISystem;
 import com.ziamor.incadium.systems.Util.BlockPlayerInputSystem;
 import com.ziamor.incadium.systems.Combat.DeathSystem;
@@ -83,6 +87,7 @@ public class GamePlayScreen implements Screen {
                 // Setup Systems
                 new MapSystem(),
                 // Render Systems
+                new AnimationSystem(),
                 new TerrainRenderSystem(batch),
                 new RenderSystem(batch),
                 // Input Systems
@@ -128,11 +133,15 @@ public class GamePlayScreen implements Screen {
                 .monsterComponent()
                 .followTargetComponent(ePlayer)
                 .lootableComponent()
-                .attackDamageComponent(300f)
+                .attackDamageComponent(30f)
                 .factionComponent(1);
 
+        Texture slimeTexture = new Texture("Slime.png");
+        TextureRegion[][] tmp = TextureRegion.split(slimeTexture, slimeTexture.getWidth() / 4, slimeTexture.getHeight());
+        Animation<TextureRegion> walkAnimation = new Animation<TextureRegion>(0.065f, tmp[0]);
+
         E.E().transformComponent(3, 2, 4)
-                .textureComponent("bat.png")
+                .animationComponent(walkAnimation, 0)
                 .healthComponentHealthStat(100f, 100f)
                 .movementComponent()
                 .turnTakerComponent()

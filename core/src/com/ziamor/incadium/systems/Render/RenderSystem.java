@@ -2,6 +2,7 @@ package com.ziamor.incadium.systems.Render;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.ziamor.incadium.components.Render.TextureRegionComponent;
@@ -34,10 +35,24 @@ public class RenderSystem extends SortedIteratingSystem {
 
         if (movementLerpComponent != null) {
             Vector2 pos = movementLerpComponent.getCurrentPos();
-            batch.draw(textureComponent.texture, pos.x, pos.y, 1, 1);
+            if (textureComponent != null) {
+                if (textureComponent.texture == null) {
+                    Gdx.app.debug("Render System", "Missing texture");
+                    return;
+                }
+                batch.draw(textureComponent.texture, pos.x, pos.y, 1, 1);
+            } else if (textureRegionComponent != null) {
+                if (textureRegionComponent.region == null) {
+                    Gdx.app.debug("Render System", "Missing texture region");
+                    return;
+                }
+                batch.draw(textureRegionComponent.region, pos.x, pos.y, 1, 1);
+            }
             if (movementLerpComponent.isFinished())
                 movementLerpComponentComponentMapper.remove(e);
-        } else {
+        } else
+
+        {
             if (textureRegionComponent != null)
                 batch.draw(textureRegionComponent.region, transformComponent.x, transformComponent.y, 1, 1);
             if (textureComponent != null)
