@@ -43,6 +43,7 @@ import com.ziamor.incadium.systems.Debug.PlayerStateSystem;
 import com.ziamor.incadium.systems.Render.RenderSystem;
 import com.artemis.E;
 import com.ziamor.incadium.systems.Render.TerrainRenderSystem;
+import com.ziamor.incadium.systems.Util.MovementLerpSystem;
 import com.ziamor.incadium.systems.Util.TurnSchedulerSystem;
 import com.ziamor.incadium.components.NonComponents.Gradient;
 
@@ -96,6 +97,7 @@ public class GamePlayScreen implements Screen {
                 new TurnSchedulerSystem(),
                 // Movement Systems
                 new MovementSystem(),
+                new MovementLerpSystem(),
                 new FollowSystem(),
                 // Attack Systems
                 new AttackSystem(),

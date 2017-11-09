@@ -33,8 +33,11 @@ public class RenderSystem extends SortedIteratingSystem {
         TransformComponent transformComponent = transformComponentComponentMapper.get(e);
         MovementLerpComponent movementLerpComponent = movementLerpComponentComponentMapper.get(e);
 
+
         if (movementLerpComponent != null) {
             Vector2 pos = movementLerpComponent.getCurrentPos();
+            if (e == 0)
+                Gdx.app.log("", "" + pos.toString());
             if (textureComponent != null) {
                 if (textureComponent.texture == null) {
                     Gdx.app.debug("Render System", "Missing texture");
@@ -48,17 +51,12 @@ public class RenderSystem extends SortedIteratingSystem {
                 }
                 batch.draw(textureRegionComponent.region, pos.x, pos.y, 1, 1);
             }
-            if (movementLerpComponent.isFinished())
-                movementLerpComponentComponentMapper.remove(e);
-        } else
-
-        {
+        } else {
             if (textureRegionComponent != null)
                 batch.draw(textureRegionComponent.region, transformComponent.x, transformComponent.y, 1, 1);
-            if (textureComponent != null)
+            else if (textureComponent != null)
                 batch.draw(textureComponent.texture, transformComponent.x, transformComponent.y, 1, 1);
         }
-
     }
 
     public Comparator<Integer> getComparator() {

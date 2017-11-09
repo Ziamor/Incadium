@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Interpolation;
 
 public class MovementLerpComponent extends Component {
     private float startX, startY, targetX, targetY;
-    private long startTime;
+    public float elapsed = 0;
     private float life;
 
     public Interpolation interpolator = Interpolation.linear;
@@ -18,12 +18,10 @@ public class MovementLerpComponent extends Component {
         this.targetX = targetX;
         this.targetY = targetY;
         this.life = life;
-        startTime = TimeUtils.millis();
     }
 
     public Vector2 getCurrentPos() {
         Vector2 vec = new Vector2();
-        float elapsed = (TimeUtils.millis() - startTime) / 1000f;
         float progress = Math.min(1f, elapsed / life);
         float alpha = interpolator.apply(progress);
         vec.x = startX + (targetX - startX) * alpha;
@@ -32,7 +30,6 @@ public class MovementLerpComponent extends Component {
     }
 
     public boolean isFinished() {
-        float elapsed = (TimeUtils.millis() - startTime) / 1000f;
         float progress = Math.min(1f, elapsed / life);
         return progress >= 1;
     }
