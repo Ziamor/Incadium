@@ -43,7 +43,7 @@ public class MapSystem extends BaseSystem {
 
     protected void loadMap() {
         //genBitmaskTest();
-        //Texture tilesetTex = new Texture(Gdx.files.absolute("WallsBM.png"));
+        //Texture tilesetTex = new Texture(Gdx.files.absolute("WallsBM.png"));w
         tilesetTex = new Texture("WallsBM.png");
         groundTex = new Texture("ground.png");
         genRandomDungeon();

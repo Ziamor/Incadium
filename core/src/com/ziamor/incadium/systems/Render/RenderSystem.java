@@ -50,7 +50,13 @@ public class RenderSystem extends SortedIteratingSystem {
         return new Comparator<Integer>() {
             @Override
             public int compare(Integer e1, Integer e2) {
-                return (int) Math.signum(transformComponentComponentMapper.get(e1).z - transformComponentComponentMapper.get(e2).z);
+                TransformComponent e1T = transformComponentComponentMapper.get(e1);
+                TransformComponent e2T = transformComponentComponentMapper.get(e2);
+                if (e1T == null)
+                    return -1;
+                if (e2T == null)
+                    return 1;
+                return (int) Math.signum(e1T.z - e2T.z);
             }
         };
     }

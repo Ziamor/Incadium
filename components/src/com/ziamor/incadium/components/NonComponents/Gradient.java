@@ -1,4 +1,4 @@
-package com.ziamor.incadium.utils;
+package com.ziamor.incadium.components.NonComponents;
 
 import com.badlogic.gdx.graphics.Color;
 
@@ -16,12 +16,14 @@ public class Gradient {
         points.put(1f, end);
     }
 
-    public void addPoint(Color color, float point) {
+    public Gradient addPoint(Color color, float point) {
         if (color == null)
-            return;
+            return this;
         if (point <= 0 && point >= 1)
-            return;
+            return this;
         points.put(point, color);
+
+        return this;
     }
 
     public Color getColor(float point) {

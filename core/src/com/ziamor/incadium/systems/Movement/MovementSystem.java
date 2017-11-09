@@ -6,6 +6,7 @@ import com.artemis.E;
 import com.artemis.systems.IteratingSystem;
 import com.artemis.utils.IntBag;
 import com.badlogic.gdx.math.Rectangle;
+import com.ziamor.incadium.components.FactionComponent;
 import com.ziamor.incadium.components.MonsterComponent;
 import com.ziamor.incadium.components.Movement.MovementComponent;
 import com.ziamor.incadium.components.Movement.MovementLerpComponent;
@@ -20,6 +21,7 @@ public class MovementSystem extends IteratingSystem {
     ComponentMapper<MovementLerpComponent> movementLerpComponentComponentMapper;
     ComponentMapper<TransformComponent> transformComponentComponentMapper;
     ComponentMapper<TurnComponent> turnComponentComponentMapper;
+    private ComponentMapper<FactionComponent> factionComponentMapper;
 
     private float lerp_life = 0.2f;
 
@@ -32,6 +34,7 @@ public class MovementSystem extends IteratingSystem {
         TransformComponent transformComponent = transformComponentComponentMapper.get(entity);
         MovementComponent movementComponent = movementComponentComponentMapper.get(entity);
         TurnComponent turn = turnComponentComponentMapper.get(entity);
+        final FactionComponent factionComponent = factionComponentMapper.get(entity);
 
         if (!turn.finishedTurn) {
             float x_offset = 0;
@@ -62,9 +65,10 @@ public class MovementSystem extends IteratingSystem {
                         int monster = monsterIDs.get(i);
                         TransformComponent entityTransform = transformComponentComponentMapper.get(entity);
                         TransformComponent monsterTransform = transformComponentComponentMapper.get(monster);
+
                         if (entity == monster || entityTransform == null || monsterTransform == null)
                             continue;
-                        //TODO add counding box component?
+                        //TODO add bounding box component?
                         Rectangle entityRect = new Rectangle(targetX, targetY, 1, 1);
                         Rectangle monsterRect = new Rectangle(monsterTransform.x, monsterTransform.y, 1, 1);
                         if (entityRect.overlaps(monsterRect)) {
@@ -74,7 +78,10 @@ public class MovementSystem extends IteratingSystem {
 
                     }
                     if (target != -1) {
-                        E.E(entity).attackTargetComponentTarget(target);
+                        //TODO write this check better
+                        FactionComponent monsterFactionComponent = factionComponentMapper.get(target);
+                        if (factionComponent != null && monsterFactionComponent != null && factionComponent.factionID != monsterFactionComponent.factionID)
+                            E.E(entity).attackTargetComponentTarget(target);
                     } else {
                         movementLerpComponentComponentMapper.create(entity).set(transformComponent.x, transformComponent.y, transformComponent.x + x_offset, transformComponent.y + y_offset, lerp_life);
                         transformComponent.x += x_offset;

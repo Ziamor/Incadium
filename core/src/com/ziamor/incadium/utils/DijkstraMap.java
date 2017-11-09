@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.ziamor.incadium.components.NonComponents.Gradient;
 import com.ziamor.incadium.systems.Util.MapSystem;
 
 public class DijkstraMap {
@@ -76,7 +77,7 @@ public class DijkstraMap {
                     max_weight = weights[x][y];
             }
 
-        Gradient g = new Gradient(new Color(0.3f, 0, 0.8f, 1f), new Color(1f, 0.6f, 0, 0.75f));
+        com.ziamor.incadium.components.NonComponents.Gradient g = new Gradient(new Color(0.3f, 0, 0.8f, 1f), new Color(1f, 0.6f, 0, 0.75f));
         g.addPoint(new Color(1f, 0.2f, 0.2f, 0.75f), 0.75f);
 
         Gdx.gl.glEnable(GL20.GL_BLEND);

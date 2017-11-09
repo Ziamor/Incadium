@@ -40,6 +40,8 @@ public class MainMenuScreen implements Screen {
         table.setFillParent(true);
         stage.addActor(table);
 
+        //table.setDebug(true);
+
         final TextButton button = new TextButton("Start", skin, "default");
         button.setWidth(200f);
         button.setHeight(20f);
@@ -63,11 +65,11 @@ public class MainMenuScreen implements Screen {
     @Override
     public void render(float delta) {
         //TODO remove later
-        //incadium.setScreen(new GamePlayScreen(incadium));
-        //dispose();
+        incadium.setScreen(new GamePlayScreen(incadium));
+        dispose();
 
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stage.act(Gdx.graphics.getDeltaTime());
+        stage.act(delta);
         stage.draw();
     }
 

@@ -1,43 +1,46 @@
 package com.ziamor.incadium.Screens;
 
-import com.artemis.ComponentMapper;
 import com.artemis.SuperMapper;
 import com.artemis.World;
 import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
+import com.artemis.link.EntityLinkManager;
 import com.artemis.managers.TagManager;
-import com.badlogic.gdx.Application;
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.ziamor.incadium.components.NonComponents.HealthBarUI;
 import com.ziamor.incadium.Incadium;
-import com.ziamor.incadium.components.MovementComponent;
-import com.ziamor.incadium.components.MovementLerpComponent;
-import com.ziamor.incadium.components.PlayerControllerComponent;
-import com.ziamor.incadium.components.TextureComponent;
+import com.ziamor.incadium.components.Movement.MovementLerpComponent;
 import com.ziamor.incadium.components.TransformComponent;
-import com.ziamor.incadium.components.TurnComponent;
-import com.ziamor.incadium.systems.AttackSystem;
-import com.ziamor.incadium.systems.BlockPlayerInputSystem;
-import com.ziamor.incadium.systems.DeathSystem;
-import com.ziamor.incadium.systems.FollowSystem;
-import com.ziamor.incadium.systems.HealthSystem;
-import com.ziamor.incadium.systems.LootSystem;
-import com.ziamor.incadium.systems.MapSystem;
-import com.ziamor.incadium.systems.MovementSystem;
-import com.ziamor.incadium.systems.PlayerControllerSystem;
-import com.ziamor.incadium.systems.PlayerStateSystem;
-import com.ziamor.incadium.systems.RenderSystem;
+import com.ziamor.incadium.systems.Combat.AttackSystem;
+import com.ziamor.incadium.systems.UI.HealthBarUISystem;
+import com.ziamor.incadium.systems.Util.BlockPlayerInputSystem;
+import com.ziamor.incadium.systems.Combat.DeathSystem;
+import com.ziamor.incadium.systems.Movement.FollowSystem;
+import com.ziamor.incadium.systems.Stats.HealthSystem;
+import com.ziamor.incadium.systems.Combat.LootSystem;
+import com.ziamor.incadium.systems.Util.MapSystem;
+import com.ziamor.incadium.systems.Movement.MovementSystem;
+import com.ziamor.incadium.systems.Movement.PlayerControllerSystem;
+import com.ziamor.incadium.systems.Debug.PlayerStateSystem;
+import com.ziamor.incadium.systems.Render.RenderSystem;
 import com.artemis.E;
-import com.ziamor.incadium.systems.TerrainRenderSystem;
-import com.ziamor.incadium.systems.TurnSchedulerSystem;
+import com.ziamor.incadium.systems.Render.TerrainRenderSystem;
+import com.ziamor.incadium.systems.Util.TurnSchedulerSystem;
+import com.ziamor.incadium.components.NonComponents.Gradient;
 
 public class GamePlayScreen implements Screen {
     public static final int SO_TURN = 0;
@@ -53,20 +56,21 @@ public class GamePlayScreen implements Screen {
     OrthographicCamera camera;
     Viewport viewport;
 
-    ComponentMapper<TextureComponent> textureComponentComponentMapper;
-    ComponentMapper<TransformComponent> transformComponentComponentMapper;
-    ComponentMapper<PlayerControllerComponent> playerControllerComponentComponentMapper;
-    ComponentMapper<MovementComponent> movementComponentComponentMapper;
-    ComponentMapper<TurnComponent> turnComponentComponentMapper;
-
     World world;
 
-    int ePlayer;
+    Stage stage;
+    Table table;
+    Skin skin;
 
+    int ePlayer;
+    //TODO remove
+    ProgressBar healthBar;
+    HealthBarUI healthBarUI;
 
     public GamePlayScreen(final Incadium incadium) {
         batch = incadium.batch;
         shapeRenderer = incadium.shapeRenderer;
+        skin = incadium.skin;
 
         camera = new OrthographicCamera();
         viewport = new FitViewport(map_width, map_height, camera);
@@ -75,6 +79,7 @@ public class GamePlayScreen implements Screen {
         WorldConfiguration config = new WorldConfigurationBuilder().with(
                 new SuperMapper(),
                 new TagManager(),
+                new EntityLinkManager(),
                 // Setup Systems
                 new MapSystem(),
                 // Render Systems
@@ -93,27 +98,27 @@ public class GamePlayScreen implements Screen {
                 new HealthSystem(),
                 new LootSystem(),
                 new DeathSystem(),
+                //UI
+                new HealthBarUISystem(),
                 //Debug Systems
                 new PlayerStateSystem()
         ).build();
         world = new World(config);
 
-        textureComponentComponentMapper = world.getMapper(TextureComponent.class);
-        transformComponentComponentMapper = world.getMapper(TransformComponent.class);
-        playerControllerComponentComponentMapper = world.getMapper(PlayerControllerComponent.class);
-        movementComponentComponentMapper = world.getMapper(MovementComponent.class);
-        turnComponentComponentMapper = world.getMapper(TurnComponent.class);
+        constructUI();
 
-        ePlayer =
-                E.E().tag("player")
-                        .textureComponent("player.png")
-                        .transformComponent(3, 3, 4)
-                        .movementComponent()
-                        .attackDamageComponent(50f)
-                        .healthComponentHealthStat(100f, 100f)
-                        .playerControllerComponent()
-                        .turnTakerComponent()
-                        .turnComponent().entity().getId();
+        ePlayer = world.createEntity().getId();
+        E.E(ePlayer).tag("player")
+                .textureComponent("player.png")
+                .transformComponent(3, 3, 4)
+                .movementComponent()
+                .attackDamageComponent(50f)
+                .healthComponentHealthStat(100f, 100f)
+                .playerControllerComponent()
+                .turnTakerComponent()
+                .healthBarUIComponent(ePlayer, healthBarUI)
+                .turnComponent()
+                .factionComponent(0);
 
         E.E().transformComponent(2, 2, 4)
                 .textureComponent("bat.png")
@@ -122,7 +127,9 @@ public class GamePlayScreen implements Screen {
                 .turnTakerComponent()
                 .monsterComponent()
                 .followTargetComponent(ePlayer)
-                .lootableComponent();
+                .lootableComponent()
+                .attackDamageComponent(300f)
+                .factionComponent(1);
 
         E.E().transformComponent(3, 2, 4)
                 .textureComponent("bat.png")
@@ -131,30 +138,52 @@ public class GamePlayScreen implements Screen {
                 .turnTakerComponent()
                 .monsterComponent()
                 .followTargetComponent(ePlayer)
-                .lootableComponent();
+                .lootableComponent()
+                .attackDamageComponent(30f)
+                .factionComponent(1);
+    }
+
+    public void constructUI() {
+        stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
+        table = new Table();
+        table.setFillParent(true);
+        table.top();
+        table.left();
+        stage.addActor(table);
+        table.add(new Label("Health:", skin));
+        /*healthBar = new ProgressBar(0, 100, 1, false, skin);
+        healthBar.setAnimateDuration(1f);
+        table.add(healthBar);*/
+        healthBarUI = new HealthBarUI(skin, new Gradient(Color.RED, Color.GREEN).addPoint(Color.YELLOW, 0.5f), 100);
+        table.add(healthBarUI);
     }
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        TransformComponent transformComponent = transformComponentComponentMapper.get(ePlayer);
+        TransformComponent transformComponent = E.E(ePlayer).getTransformComponent();
         MovementLerpComponent movementLerpComponent = E.E(ePlayer).getMovementLerpComponent();
 
         if (movementLerpComponent != null) {
             Vector2 pos = movementLerpComponent.getCurrentPos();
             camera.position.x = pos.x;
             camera.position.y = pos.y;
-        } else {
+        } else if (transformComponent != null) {
             camera.position.x = transformComponent.x;
             camera.position.y = transformComponent.y;
         }
+
         camera.update();
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         world.setDelta(delta);
         world.process();
         batch.end();
+
+        stage.act(delta);
+        stage.draw();
     }
 
     @Override

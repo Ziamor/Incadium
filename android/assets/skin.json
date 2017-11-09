@@ -125,6 +125,9 @@
     default-vertical: { background: progressVertical, knobBefore: progressVerticalKnob, 
       disabledBackground: progressVerticalDisabled, disabledKnobBefore: progressVerticalKnobDisabled }
   },
+  com.ziamor.incadium.components.NonComponents.HealthBarUI$HealthBarUIStyle: {
+    default: { background: progressHorizontal }
+  },
   com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
     default: { hScrollKnob: scrollHorizontal, vScrollKnob: scrollVertical },
     background: { background: scrollPane, hScrollKnob: scrollHorizontal, vScrollKnob: scrollVertical }
