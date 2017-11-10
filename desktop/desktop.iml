@@ -33,7 +33,6 @@
     <orderEntry type="library" exported="" name="gdx-platform-1.9.6-natives-desktop" level="project" />
     <orderEntry type="library" exported="" name="gdx-tools-1.9.6" level="project" />
     <orderEntry type="library" exported="" name="gdx-1.9.6" level="project" />
-    <orderEntry type="library" exported="" name="gdx-1.9.6-sources" level="project" />
     <orderEntry type="library" exported="" name="gdx-ai-1.8.0" level="project" />
     <orderEntry type="library" exported="" name="artemis-odb-2.1.0" level="project" />
     <orderEntry type="library" exported="" name="lwjgl-2.9.2" level="project" />

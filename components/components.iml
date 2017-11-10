@@ -28,7 +28,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="gdx-1.9.6" level="project" />
-    <orderEntry type="library" exported="" name="gdx-1.9.6-sources" level="project" />
     <orderEntry type="library" exported="" name="artemis-odb-2.1.0" level="project" />
   </component>
 </module>
