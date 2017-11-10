@@ -43,8 +43,6 @@ public class MapSystem extends BaseSystem {
     ComponentMapper<BlockingComponent> blockingComponentComponentMapper;
     ComponentMapper<GroundTileComponent> groundTileComponentComponentMapper;
 
-    TargetCameraSystem targetCameraSystem;
-
     @Override
     protected void processSystem() {
         if (!loaded) {
@@ -54,11 +52,8 @@ public class MapSystem extends BaseSystem {
     }
 
     protected void loadMap() {
-        //genBitmaskTest();
-        //Texture tilesetTex = new Texture(Gdx.files.absolute("WallsBM.png"));w
-        //TODO load assets with manager
-        tilesetTex = new Texture("WallsBM.png");
-        groundTex = new Texture("ground.png");
+        tilesetTex = assetManager.get("WallsBM.png", Texture.class);
+        groundTex = assetManager.get("ground.png", Texture.class);
         genRandomDungeon();
 
         entitie_map = new int[map_width][map_height];
