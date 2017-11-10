@@ -140,7 +140,7 @@ public class GamePlayScreen implements Screen {
 
         Texture slimeTexture = new Texture("Slime.png");
         TextureRegion[][] tmp = TextureRegion.split(slimeTexture, slimeTexture.getWidth() / 4, slimeTexture.getHeight());
-        Animation<TextureRegion> walkAnimation = new Animation<TextureRegion>(0.065f, tmp[0]);
+        Animation<TextureRegion> walkAnimation = new Animation<TextureRegion>(0.1f, tmp[0]);
 
         E.E().transformComponent(3, 2, 4)
                 .animationComponent(walkAnimation, 0)

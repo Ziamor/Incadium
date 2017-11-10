@@ -80,14 +80,17 @@ public class MovementSystem extends IteratingSystem {
                     if (target != -1) {
                         //TODO write this check better
                         FactionComponent monsterFactionComponent = factionComponentMapper.get(target);
-                        if (factionComponent != null && monsterFactionComponent != null && factionComponent.factionID != monsterFactionComponent.factionID)
+                        if (factionComponent != null && monsterFactionComponent != null && factionComponent.factionID != monsterFactionComponent.factionID) {
                             E.E(entity).attackTargetComponentTarget(target);
+                        } else
+                            turn.finishedTurn = true; //TODO this will prob cause future problems
+
                     } else {
                         movementLerpComponentComponentMapper.create(entity).set(transformComponent.x, transformComponent.y, transformComponent.x + x_offset, transformComponent.y + y_offset, lerp_life);
                         transformComponent.x += x_offset;
                         transformComponent.y += y_offset;
+                        turn.finishedTurn = true;
                     }
-                    turn.finishedTurn = true;
                 }
                 movementComponent.direction = MovementComponent.Direction.NONE;
             }

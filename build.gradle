@@ -67,10 +67,10 @@ project(":core") {
 
 
     dependencies {
+        compile project(":components")
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
         compile "net.onedaybeard.artemis:artemis-odb:$artemisVersion"
-        compile project(":components")
     }
 }
 

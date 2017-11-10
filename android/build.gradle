@@ -16,6 +16,11 @@ android {
     }
     packagingOptions {
         exclude 'META-INF/robovm/ios/robovm.xml'
+
+        exclude 'com/badlogic/gdx/utils/arial-15.fnt'
+        exclude 'com/badlogic/gdx/utils/arial-15.png'
+        exclude 'com/badlogic/gdx.gwt.xml'
+        exclude 'com/badlogic/gdx/graphics/g3d/shaders/default.vertex.glsl'
     }
     defaultConfig {
         applicationId "com.ziamor.incadium"
