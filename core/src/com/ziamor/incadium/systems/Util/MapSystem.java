@@ -73,7 +73,7 @@ public class MapSystem extends BaseSystem {
                 .healthComponentHealthStat(100f, 100f)
                 .playerControllerComponent()
                 .turnTakerComponent()
-                //.healthBarUIComponent(ePlayer, healthBarUI)
+                .healthBarUIComponent(ePlayer)
                 .turnComponent()
                 .factionComponent(0)
                 .targetCameraFocusComponent();

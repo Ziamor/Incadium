@@ -12,19 +12,18 @@ public class HealthBarUISystem extends IteratingSystem {
     private ComponentMapper<HealthBarUIComponent> healthBarUIComponentMapper;
     private ComponentMapper<HealthComponent> healthComponentMapper;
 
-    public HealthBarUISystem() {
+    private HealthBarUI bar;
+
+    public HealthBarUISystem(HealthBarUI healthBarUI) {
         super(Aspect.one(HealthBarUIComponent.class));
+        this.bar = healthBarUI;
     }
 
     @Override
     protected void process(int entityId) {
         final HealthBarUIComponent healthBarComponentUI = healthBarUIComponentMapper.get(entityId);
-        HealthBarUI bar;
 
-        // Check if this is a health bar
-        if (healthBarComponentUI != null && healthBarComponentUI.bar != null && healthBarComponentUI.target != -1) {
-            bar = healthBarComponentUI.bar;
-
+        if (bar != null && healthBarComponentUI.target != -1) {
             final HealthComponent healthComponent = healthComponentMapper.get(healthBarComponentUI.target);
             if (healthComponent != null) {
                 bar.setMax(healthComponent.maxHealth);

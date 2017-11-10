@@ -7,10 +7,8 @@ import com.ziamor.incadium.components.NonComponents.HealthBarUI;
 public class HealthBarUIComponent extends Component {
     @EntityId
     public int target = -1;
-    public HealthBarUI bar = null;
 
-    public void set(int target, HealthBarUI bar) {
+    public void set(int target) {
         this.target = target;
-        this.bar = bar;
     }
 }
