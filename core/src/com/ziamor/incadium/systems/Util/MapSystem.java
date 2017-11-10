@@ -2,7 +2,12 @@ package com.ziamor.incadium.systems.Util;
 
 import com.artemis.BaseSystem;
 import com.artemis.ComponentMapper;
+import com.artemis.E;
+import com.artemis.annotations.Wire;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -11,6 +16,7 @@ import com.ziamor.incadium.components.BlockingComponent;
 import com.ziamor.incadium.components.Render.GroundTileComponent;
 import com.ziamor.incadium.components.Render.TerrainTileComponent;
 import com.ziamor.incadium.components.TransformComponent;
+import com.ziamor.incadium.systems.TargetCameraSystem;
 import com.ziamor.incadium.utils.BSP;
 import com.ziamor.incadium.utils.BSPLeafIterator;
 import com.ziamor.incadium.utils.BSPPostorderIterator;
@@ -19,6 +25,8 @@ import java.util.Random;
 
 //TODO helpfull https://stackoverflow.com/questions/23222053/data-structure-for-tile-map-for-use-with-artemis
 public class MapSystem extends BaseSystem {
+    @Wire
+    AssetManager assetManager;
     private boolean loaded = false;
     private int[] bitmaskLookup = {24, 24, 16, 16, 24, 24, 16, 16, 27, 27, 29, 19, 27, 27, 29, 19, 25, 25, 28, 28, 25, 25, 17, 17, 26, 26, 6, 36, 26, 26, 35, 18, 24, 24, 16, 16, 24, 24, 16, 16, 27, 27, 29, 19, 27, 27, 29, 19, 25, 25, 28, 28, 25, 25, 17, 17, 26, 26, 6, 36, 26, 26, 35, 18, 0, 0, 8, 8, 0, 0, 8, 8, 21, 21, 14, 41, 21, 21, 14, 41, 20, 20, 7, 7, 20, 20, 42, 42, 15, 15, 32, 31, 15, 15, 47, 37, 0, 0, 8, 8, 0, 0, 8, 8, 3, 3, 43, 11, 3, 3, 43, 11, 20, 20, 7, 7, 20, 20, 42, 42, 33, 33, 30, 46, 33, 33, 23, 13, 24, 24, 16, 16, 24, 24, 16, 16, 27, 27, 29, 19, 27, 27, 29, 19, 25, 25, 28, 28, 25, 25, 17, 17, 26, 26, 6, 36, 26, 26, 35, 18, 24, 24, 16, 16, 24, 24, 16, 16, 27, 27, 29, 19, 27, 27, 29, 19, 25, 25, 28, 28, 25, 25, 17, 17, 26, 26, 6, 36, 26, 26, 35, 18, 0, 0, 8, 8, 0, 0, 8, 8, 21, 21, 14, 41, 21, 21, 14, 41, 1, 1, 44, 44, 1, 1, 9, 9, 34, 34, 39, 22, 34, 34, 45, 12, 0, 0, 8, 8, 0, 0, 8, 8, 3, 3, 43, 11, 3, 3, 43, 11, 1, 1, 44, 44, 1, 1, 9, 9, 2, 2, 38, 5, 2, 2, 4, 10};
     private int[][] map_datasource;
@@ -26,12 +34,16 @@ public class MapSystem extends BaseSystem {
     private int[][] entitie_map;
     public BSP bsp;
     private int map_width = 50, map_height = 50, tileset_width = 8;
+
     Texture tilesetTex = null;
-    Texture groundTex= null;
+    Texture groundTex = null;
+
     ComponentMapper<TransformComponent> transformComponentComponentMapper;
     ComponentMapper<TerrainTileComponent> terrainTileComponentComponentMapper;
     ComponentMapper<BlockingComponent> blockingComponentComponentMapper;
     ComponentMapper<GroundTileComponent> groundTileComponentComponentMapper;
+
+    TargetCameraSystem targetCameraSystem;
 
     @Override
     protected void processSystem() {
@@ -44,6 +56,7 @@ public class MapSystem extends BaseSystem {
     protected void loadMap() {
         //genBitmaskTest();
         //Texture tilesetTex = new Texture(Gdx.files.absolute("WallsBM.png"));w
+        //TODO load assets with manager
         tilesetTex = new Texture("WallsBM.png");
         groundTex = new Texture("ground.png");
         genRandomDungeon();
@@ -55,6 +68,46 @@ public class MapSystem extends BaseSystem {
                 int ent = createTile(map_datasource[i][j], i, j);
                 entitie_map[i][j] = ent;
             }
+
+        int ePlayer = world.createEntity().getId();
+        E.E(ePlayer).tag("player")
+                .textureComponent(assetManager.get("player.png", Texture.class))
+                .transformComponent(3, 3, 4)
+                .movementComponent()
+                .attackDamageComponent(50f)
+                .healthComponentHealthStat(100f, 100f)
+                .playerControllerComponent()
+                .turnTakerComponent()
+                //.healthBarUIComponent(ePlayer, healthBarUI)
+                .turnComponent()
+                .factionComponent(0)
+                .targetCameraFocusComponent();
+
+        E.E().transformComponent(2, 2, 4)
+                .textureComponent(assetManager.get("bat.png", Texture.class))
+                .healthComponentHealthStat(100f, 100f)
+                .movementComponent()
+                .turnTakerComponent()
+                .monsterComponent()
+                .followTargetComponent(ePlayer)
+                .lootableComponent()
+                .attackDamageComponent(20f)
+                .factionComponent(1);
+
+        Texture slimeTexture = assetManager.get("Slime.png", Texture.class);
+        TextureRegion[][] tmp = TextureRegion.split(slimeTexture, slimeTexture.getWidth() / 4, slimeTexture.getHeight());
+        Animation<TextureRegion> walkAnimation = new Animation<TextureRegion>(0.1f, tmp[0]);
+
+        E.E().transformComponent(3, 2, 4)
+                .animationComponent(walkAnimation, 0)
+                .healthComponentHealthStat(100f, 100f)
+                .movementComponent()
+                .turnTakerComponent()
+                .monsterComponent()
+                .followTargetComponent(ePlayer)
+                .lootableComponent()
+                .attackDamageComponent(15f)
+                .factionComponent(1);
     }
 
     protected int createTile(int id, int x, int y) {

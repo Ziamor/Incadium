@@ -1,9 +1,11 @@
 package com.ziamor.incadium.components.Combat;
 
 import com.artemis.Component;
+import com.artemis.annotations.EntityId;
+
 
 public class AttackTargetComponent extends Component {
-    //TODO use link relationships for target
+    @EntityId
     public int target;
 
     public void set(int ent) {

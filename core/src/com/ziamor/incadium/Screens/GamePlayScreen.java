@@ -33,6 +33,7 @@ import com.ziamor.incadium.components.Movement.MovementLerpComponent;
 import com.ziamor.incadium.components.TransformComponent;
 import com.ziamor.incadium.systems.Combat.AttackSystem;
 import com.ziamor.incadium.systems.Render.AnimationSystem;
+import com.ziamor.incadium.systems.TargetCameraSystem;
 import com.ziamor.incadium.systems.UI.HealthBarUISystem;
 import com.ziamor.incadium.systems.Util.BlockPlayerInputSystem;
 import com.ziamor.incadium.systems.Combat.DeathSystem;
@@ -103,6 +104,7 @@ public class GamePlayScreen implements Screen {
                 new AnimationSystem(),
                 new TerrainRenderSystem(batch),
                 new RenderSystem(batch),
+                new TargetCameraSystem(camera),
                 // Input Systems
                 new PlayerControllerSystem(),
                 new BlockPlayerInputSystem(),
@@ -121,12 +123,11 @@ public class GamePlayScreen implements Screen {
                 new HealthBarUISystem(),
                 //Debug Systems
                 new PlayerStateSystem()
-        ).build();
+        ).build().register(assetManager);
         world = new World(config);
-
         constructUI();
 
-        ePlayer = world.createEntity().getId();
+        /*ePlayer = world.createEntity().getId();
         E.E(ePlayer).tag("player")
                 .textureComponent(assetManager.get("player.png", Texture.class))
                 .transformComponent(3, 3, 4)
@@ -163,7 +164,7 @@ public class GamePlayScreen implements Screen {
                 .followTargetComponent(ePlayer)
                 .lootableComponent()
                 .attackDamageComponent(15f)
-                .factionComponent(1);
+                .factionComponent(1);*/
     }
 
     public void constructUI() {
@@ -186,17 +187,6 @@ public class GamePlayScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        TransformComponent transformComponent = E.E(ePlayer).getTransformComponent();
-        MovementLerpComponent movementLerpComponent = E.E(ePlayer).getMovementLerpComponent();
-
-        if (movementLerpComponent != null) {
-            Vector2 pos = movementLerpComponent.getCurrentPos();
-            camera.position.x = pos.x;
-            camera.position.y = pos.y;
-        } else if (transformComponent != null) {
-            camera.position.x = transformComponent.x;
-            camera.position.y = transformComponent.y;
-        }
 
         camera.update();
         batch.setProjectionMatrix(camera.combined);
