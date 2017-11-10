@@ -20,10 +20,12 @@ public class RenderSystem extends SortedIteratingSystem {
     ComponentMapper<MovementLerpComponent> movementLerpComponentComponentMapper;
 
     private SpriteBatch batch;
+    private Vector2 pos;
 
     public RenderSystem(SpriteBatch batch) {
         super(Aspect.all(TransformComponent.class).one(TextureComponent.class, TextureRegionComponent.class));
         this.batch = batch;
+        this.pos = new Vector2();
     }
 
     @Override
@@ -33,29 +35,26 @@ public class RenderSystem extends SortedIteratingSystem {
         TransformComponent transformComponent = transformComponentComponentMapper.get(e);
         MovementLerpComponent movementLerpComponent = movementLerpComponentComponentMapper.get(e);
 
+        // Get the render position
+        if (movementLerpComponent != null)
+            pos = movementLerpComponent.getCurrentPos(); // The sprite is moving between tiles
+        else {
+            pos.set(transformComponent.x, transformComponent.y);
+        }
 
-        if (movementLerpComponent != null) {
-            Vector2 pos = movementLerpComponent.getCurrentPos();
-            if (e == 0)
-                Gdx.app.log("", "" + pos.toString());
-            if (textureComponent != null) {
-                if (textureComponent.texture == null) {
-                    Gdx.app.debug("Render System", "Missing texture");
-                    return;
-                }
-                batch.draw(textureComponent.texture, pos.x, pos.y, 1, 1);
-            } else if (textureRegionComponent != null) {
-                if (textureRegionComponent.region == null) {
-                    Gdx.app.debug("Render System", "Missing texture region");
-                    return;
-                }
-                batch.draw(textureRegionComponent.region, pos.x, pos.y, 1, 1);
+        if (textureComponent != null) {
+            if (textureComponent.texture == null) {
+                Gdx.app.debug("Render System", "Missing texture");
+                return;
             }
-        } else {
-            if (textureRegionComponent != null)
-                batch.draw(textureRegionComponent.region, transformComponent.x, transformComponent.y, 1, 1);
-            else if (textureComponent != null)
-                batch.draw(textureComponent.texture, transformComponent.x, transformComponent.y, 1, 1);
+            batch.draw(textureComponent.texture, pos.x, pos.y, 1, 1);
+        }
+        if (textureRegionComponent != null) {
+            if (textureRegionComponent.region == null) {
+                Gdx.app.debug("Render System", "Missing texture region");
+                return;
+            }
+            batch.draw(textureRegionComponent.region, pos.x, pos.y, 1, 1);
         }
     }
 
