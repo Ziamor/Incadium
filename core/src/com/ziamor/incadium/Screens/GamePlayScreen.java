@@ -27,6 +27,7 @@ import com.ziamor.incadium.components.NonComponents.HealthBarUI;
 import com.ziamor.incadium.Incadium;
 import com.ziamor.incadium.systems.Combat.AttackSystem;
 import com.ziamor.incadium.systems.Render.AnimationSystem;
+import com.ziamor.incadium.systems.Render.VisibilitySystem;
 import com.ziamor.incadium.systems.TargetCameraSystem;
 import com.ziamor.incadium.systems.UI.HealthBarUISystem;
 import com.ziamor.incadium.systems.Util.BlockPlayerInputSystem;
@@ -92,6 +93,7 @@ public class GamePlayScreen implements Screen {
                 // Setup Systems
                 new MapSystem(),
                 // Render Systems
+                new VisibilitySystem(5),
                 new AnimationSystem(),
                 new TerrainRenderSystem(batch),
                 new RenderSystem(batch),
@@ -103,7 +105,7 @@ public class GamePlayScreen implements Screen {
                 // Movement Systems
                 new MovementSystem(),
                 new MovementLerpSystem(),
-                new FollowSystem(),
+                //new FollowSystem(),
                 // Attack Systems
                 new AttackSystem(),
                 //Health System

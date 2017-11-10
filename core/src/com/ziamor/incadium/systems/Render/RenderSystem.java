@@ -5,6 +5,7 @@ import com.artemis.ComponentMapper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.ziamor.incadium.components.Render.NotVisableComponent;
 import com.ziamor.incadium.components.Render.TextureRegionComponent;
 import com.ziamor.incadium.components.Movement.MovementLerpComponent;
 import com.ziamor.incadium.components.Render.TextureComponent;
@@ -18,12 +19,11 @@ public class RenderSystem extends SortedIteratingSystem {
     ComponentMapper<TextureRegionComponent> textureRegionComponentComponentMapper;
     ComponentMapper<TransformComponent> transformComponentComponentMapper;
     ComponentMapper<MovementLerpComponent> movementLerpComponentComponentMapper;
-
     private SpriteBatch batch;
     private Vector2 pos;
 
     public RenderSystem(SpriteBatch batch) {
-        super(Aspect.all(TransformComponent.class).one(TextureComponent.class, TextureRegionComponent.class));
+        super(Aspect.all(TransformComponent.class).one(TextureComponent.class, TextureRegionComponent.class).exclude(NotVisableComponent.class));
         this.batch = batch;
         this.pos = new Vector2();
     }
@@ -34,6 +34,8 @@ public class RenderSystem extends SortedIteratingSystem {
         TextureRegionComponent textureRegionComponent = textureRegionComponentComponentMapper.get(e);
         TransformComponent transformComponent = transformComponentComponentMapper.get(e);
         MovementLerpComponent movementLerpComponent = movementLerpComponentComponentMapper.get(e);
+
+
 
         // Get the render position
         if (movementLerpComponent != null)
