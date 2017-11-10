@@ -65,6 +65,7 @@ public class GamePlayScreen implements Screen {
     Skin skin;
 
     HealthBarUI healthBarUI;
+    Label lbFPS;
 
     public GamePlayScreen(final Incadium incadium) {
         batch = incadium.batch;
@@ -128,13 +129,16 @@ public class GamePlayScreen implements Screen {
         table.add(new Label("Health:", skin));
         healthBarUI = new HealthBarUI(skin, new Gradient(Color.RED, Color.GREEN).addPoint(Color.YELLOW, 0.5f), 100);
         table.add(healthBarUI);
+        lbFPS = new Label("FPS: ",skin);
+        table.add().expandX();
+        table.add(lbFPS).right();
     }
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+        lbFPS.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
         camera.update();
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
