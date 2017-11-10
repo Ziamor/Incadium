@@ -8,6 +8,7 @@ import com.artemis.link.EntityLinkManager;
 import com.artemis.managers.TagManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -59,7 +60,7 @@ public class GamePlayScreen implements Screen {
     final float map_width = 16, map_height = 9;
     SpriteBatch batch;
     ShapeRenderer shapeRenderer;
-
+    AssetManager assetManager;
     OrthographicCamera camera;
     Viewport viewport;
 
@@ -79,22 +80,18 @@ public class GamePlayScreen implements Screen {
     public GamePlayScreen(final Incadium incadium) {
         batch = incadium.batch;
         shapeRenderer = incadium.shapeRenderer;
+        assetManager = incadium.assetManager;
         skin = incadium.skin;
 
         camera = new OrthographicCamera();
         viewport = new FitViewport(map_width, map_height, camera);
         camera.translate(map_width / 2, map_height / 2);
 
-        incadium.assetManager.load("player.png", Texture.class);
-        incadium.assetManager.load("bat.png", Texture.class);
-        incadium.assetManager.load("Slime.png", Texture.class);
-        incadium.assetManager.load("Decor.png", Texture.class);
-        incadium.assetManager.load("Item.png", Texture.class);
+        // Sanity check to force anything unloaded to finish
+        assetManager.finishLoading();
 
-        incadium.assetManager.finishLoading();
-
-        DecorFactory.setTexture(incadium.assetManager.get("Decor.png", Texture.class));
-        ItemFactory.setTexture(incadium.assetManager.get("Item.png", Texture.class));
+        DecorFactory.setTexture(assetManager.get("Decor.png", Texture.class));
+        ItemFactory.setTexture(assetManager.get("Item.png", Texture.class));
 
         WorldConfiguration config = new WorldConfigurationBuilder().with(
                 new SuperMapper(),
@@ -131,7 +128,7 @@ public class GamePlayScreen implements Screen {
 
         ePlayer = world.createEntity().getId();
         E.E(ePlayer).tag("player")
-                .textureComponent(incadium.assetManager.get("player.png", Texture.class))
+                .textureComponent(assetManager.get("player.png", Texture.class))
                 .transformComponent(3, 3, 4)
                 .movementComponent()
                 .attackDamageComponent(50f)
@@ -143,7 +140,7 @@ public class GamePlayScreen implements Screen {
                 .factionComponent(0);
 
         E.E().transformComponent(2, 2, 4)
-                .textureComponent(incadium.assetManager.get("bat.png", Texture.class))
+                .textureComponent(assetManager.get("bat.png", Texture.class))
                 .healthComponentHealthStat(100f, 100f)
                 .movementComponent()
                 .turnTakerComponent()
@@ -153,7 +150,7 @@ public class GamePlayScreen implements Screen {
                 .attackDamageComponent(20f)
                 .factionComponent(1);
 
-        Texture slimeTexture = incadium.assetManager.get("Slime.png", Texture.class);
+        Texture slimeTexture = assetManager.get("Slime.png", Texture.class);
         TextureRegion[][] tmp = TextureRegion.split(slimeTexture, slimeTexture.getWidth() / 4, slimeTexture.getHeight());
         Animation<TextureRegion> walkAnimation = new Animation<TextureRegion>(0.1f, tmp[0]);
 

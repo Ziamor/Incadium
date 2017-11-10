@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.ziamor.incadium.Screens.GamePlayScreen;
+import com.ziamor.incadium.Screens.LoadingScreen;
 import com.ziamor.incadium.Screens.MainMenuScreen;
 
 
@@ -17,8 +18,6 @@ public class Incadium extends Game {
     public Skin skin;
     public AssetManager assetManager;
 
-    private boolean doneLoading, started;
-
     @Override
     public void create() {
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
@@ -27,17 +26,14 @@ public class Incadium extends Game {
 
         assetManager = new AssetManager();
         assetManager.load("skin.json", Skin.class);
+        assetManager.finishLoading();
+
+        skin = assetManager.get("skin.json", Skin.class);
+        this.setScreen(new LoadingScreen(this));
     }
 
     public void render() {
         super.render();
-        doneLoading = assetManager.update();
-
-        if (doneLoading && !started) {
-            started = true;
-            skin = assetManager.get("skin.json", Skin.class);
-            this.setScreen(new MainMenuScreen(this));
-        }
     }
 
     public void dispose() {
