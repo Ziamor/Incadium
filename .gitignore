@@ -63,14 +63,40 @@ $RECYCLE.BIN/
 *.lnk
 
 /components/build/
-build/
+# Gradle
+# ------
 .gradle
-core/build/tmp/jar/MANIFEST.MF
-.idea/workspace.xml
+/build
+/buildSrc/build
+/subprojects/*/build
+/subprojects/docs/src/samples/*/*/build
+/subprojects/internal-android-performance-testing/build-android-libs
+
+# IDEA
+# ----
+.idea
+.shelf
+/*.iml
+/*.ipr
+/*.iws
+/buildSrc/*.iml
+/buildSrc/*.ipr
+/buildSrc/*.iws
+/buildSrc/out
+/out
+/subprojects/*/*.iml
+/subprojects/*/out
+/.teamcity/*.iml
+/.teamcity/target
+
+# Local configuration file (sdk path, etc)
 local.properties
-android/build/
-android/android.iml
-desktop/desktop.iml
-core/core.iml
-android/build/intermediates/res/resources-debug.ap_
-android/build/intermediates/incremental/mergeDebugAssets/merger.xml
+
+# Built application files
+/*/build/**
+
+## Android Studio and Intellij and Android in general
+android/libs/armeabi/
+android/libs/armeabi-v7a/
+android/libs/x86/
+android/gen/
