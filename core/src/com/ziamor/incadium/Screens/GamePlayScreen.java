@@ -72,6 +72,8 @@ public class GamePlayScreen implements Screen {
     ProgressBar healthBar;
     HealthBarUI healthBarUI;
 
+    Texture playerTex, batText, slimeTex;
+
     public GamePlayScreen(final Incadium incadium) {
         batch = incadium.batch;
         shapeRenderer = incadium.shapeRenderer;
@@ -81,6 +83,11 @@ public class GamePlayScreen implements Screen {
         viewport = new FitViewport(map_width, map_height, camera);
         camera.translate(map_width / 2, map_height / 2);
 
+        incadium.assetManager.load("player.png", Texture.class);
+        incadium.assetManager.load("bat.png", Texture.class);
+        incadium.assetManager.load("Slime.png", Texture.class);
+
+        incadium.assetManager.finishLoading();
         WorldConfiguration config = new WorldConfigurationBuilder().with(
                 new SuperMapper(),
                 new TagManager(),
@@ -116,7 +123,7 @@ public class GamePlayScreen implements Screen {
 
         ePlayer = world.createEntity().getId();
         E.E(ePlayer).tag("player")
-                .textureComponent("player.png")
+                .textureComponent(incadium.assetManager.get("player.png", Texture.class))
                 .transformComponent(3, 3, 4)
                 .movementComponent()
                 .attackDamageComponent(50f)
@@ -128,17 +135,17 @@ public class GamePlayScreen implements Screen {
                 .factionComponent(0);
 
         E.E().transformComponent(2, 2, 4)
-                .textureComponent("bat.png")
+                .textureComponent(incadium.assetManager.get("bat.png", Texture.class))
                 .healthComponentHealthStat(100f, 100f)
                 .movementComponent()
                 .turnTakerComponent()
                 .monsterComponent()
                 .followTargetComponent(ePlayer)
                 .lootableComponent()
-                .attackDamageComponent(30f)
+                .attackDamageComponent(20f)
                 .factionComponent(1);
 
-        Texture slimeTexture = new Texture("Slime.png");
+        Texture slimeTexture = incadium.assetManager.get("Slime.png", Texture.class);
         TextureRegion[][] tmp = TextureRegion.split(slimeTexture, slimeTexture.getWidth() / 4, slimeTexture.getHeight());
         Animation<TextureRegion> walkAnimation = new Animation<TextureRegion>(0.1f, tmp[0]);
 
@@ -150,7 +157,7 @@ public class GamePlayScreen implements Screen {
                 .monsterComponent()
                 .followTargetComponent(ePlayer)
                 .lootableComponent()
-                .attackDamageComponent(30f)
+                .attackDamageComponent(15f)
                 .factionComponent(1);
     }
 
