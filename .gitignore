@@ -68,3 +68,8 @@ build/
 core/build/tmp/jar/MANIFEST.MF
 .idea/workspace.xml
 local.properties
+android/build/intermediates/res/resources-debug.ap_
+android/build/intermediates/incremental/mergeDebugAssets/merger.xml
+android/android.iml
+desktop/desktop.iml
+core/core.iml
