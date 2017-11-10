@@ -52,7 +52,7 @@ public class AttackSystem extends IteratingSystem {
             E.E(entityId).removeAttackTargetComponent();
 
             if (playerControllerComponentMapper.get(entityId) != null) {
-                E.E(entityId).attackCoolDownComponent(1f);
+                E.E(entityId).attackCoolDownComponent(0.25f);
             }
         } else
             E.E(entityId).removeAttackTargetComponent();
