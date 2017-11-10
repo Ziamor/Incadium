@@ -24,6 +24,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.ziamor.incadium.DecorFactory;
+import com.ziamor.incadium.ItemFactory;
 import com.ziamor.incadium.components.NonComponents.HealthBarUI;
 import com.ziamor.incadium.Incadium;
 import com.ziamor.incadium.components.Movement.MovementLerpComponent;
@@ -86,8 +88,14 @@ public class GamePlayScreen implements Screen {
         incadium.assetManager.load("player.png", Texture.class);
         incadium.assetManager.load("bat.png", Texture.class);
         incadium.assetManager.load("Slime.png", Texture.class);
+        incadium.assetManager.load("Decor.png", Texture.class);
+        incadium.assetManager.load("Item.png", Texture.class);
 
         incadium.assetManager.finishLoading();
+
+        DecorFactory.setTexture(incadium.assetManager.get("Decor.png", Texture.class));
+        ItemFactory.setTexture(incadium.assetManager.get("Item.png", Texture.class));
+
         WorldConfiguration config = new WorldConfigurationBuilder().with(
                 new SuperMapper(),
                 new TagManager(),

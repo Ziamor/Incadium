@@ -10,29 +10,27 @@ public class DecorFactory {
     protected DecorFactory() {
     }
 
-    protected static Texture getDecorTexture() {
-        if (decorTexture == null)
-            decorTexture = new Texture("Decor.png");
-        return decorTexture;
+    public static void  setTexture(Texture texture){
+        decorTexture = texture;
     }
 
     public static int Torch(int x, int y) {
-        return E.E().transformComponent(x, y, 1).textureRegionComponent(getDecorTexture(), 0, 0, tileSize, tileSize).entity().getId();
+        return E.E().transformComponent(x, y, 1).textureRegionComponent(decorTexture, 0, 0, tileSize, tileSize).entity().getId();
     }
 
     public static int Chains(int x, int y) {
-        return E.E().transformComponent(x, y, 0).textureRegionComponent(getDecorTexture(), tileSize, 0, tileSize, tileSize).entity().getId();
+        return E.E().transformComponent(x, y, 0).textureRegionComponent(decorTexture, tileSize, 0, tileSize, tileSize).entity().getId();
     }
 
     public static int Pipe(int x, int y) {
-        return E.E().transformComponent(x, y, 0).textureRegionComponent(getDecorTexture(), tileSize * 2, 0, tileSize, tileSize).entity().getId();
+        return E.E().transformComponent(x, y, 0).textureRegionComponent(decorTexture, tileSize * 2, 0, tileSize, tileSize).entity().getId();
     }
 
     public static int Crack(int x, int y) {
-        return E.E().transformComponent(x, y, 0).textureRegionComponent(getDecorTexture(), tileSize * 3, 0, tileSize, tileSize).entity().getId();
+        return E.E().transformComponent(x, y, 0).textureRegionComponent(decorTexture, tileSize * 3, 0, tileSize, tileSize).entity().getId();
     }
 
     public static int Blood(int x, int y) {
-        return E.E().transformComponent(x, y, 0).textureRegionComponent(getDecorTexture(), tileSize * 4, 0, tileSize, tileSize).entity().getId();
+        return E.E().transformComponent(x, y, 0).textureRegionComponent(decorTexture, tileSize * 4, 0, tileSize, tileSize).entity().getId();
     }
 }
