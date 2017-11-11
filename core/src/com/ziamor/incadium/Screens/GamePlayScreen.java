@@ -7,6 +7,7 @@ import com.artemis.WorldConfigurationBuilder;
 import com.artemis.link.EntityLinkManager;
 import com.artemis.managers.TagManager;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -58,6 +60,7 @@ public class GamePlayScreen implements Screen {
     AssetManager assetManager;
     OrthographicCamera camera;
     Viewport viewport;
+    InputMultiplexer inputMultiplexer;
 
     World world;
 
@@ -74,6 +77,8 @@ public class GamePlayScreen implements Screen {
         assetManager = incadium.assetManager;
         skin = incadium.skin;
 
+        inputMultiplexer = new InputMultiplexer();
+        Gdx.input.setInputProcessor(inputMultiplexer);
         camera = new OrthographicCamera();
         viewport = new FitViewport(map_width, map_height, camera);
         camera.translate(map_width / 2, map_height / 2);
@@ -99,13 +104,13 @@ public class GamePlayScreen implements Screen {
                 new RenderSystem(batch),
                 new TargetCameraSystem(camera),
                 // Input Systems
-                new PlayerControllerSystem(),
+                new PlayerControllerSystem(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()),
                 new BlockPlayerInputSystem(),
                 new TurnSchedulerSystem(),
                 // Movement Systems
                 new MovementSystem(),
                 new MovementLerpSystem(),
-                //new FollowSystem(),
+                new FollowSystem(),
                 // Attack Systems
                 new AttackSystem(),
                 //Health System
@@ -118,11 +123,13 @@ public class GamePlayScreen implements Screen {
                 new PlayerStateSystem()
         ).build().register(assetManager);
         world = new World(config);
+
+        inputMultiplexer.addProcessor(new GestureDetector(world.getSystem(PlayerControllerSystem.class)));
     }
 
     public void constructUI() {
         stage = new Stage();
-        Gdx.input.setInputProcessor(stage);
+        inputMultiplexer.addProcessor(stage);
         table = new Table();
         table.setFillParent(true);
         table.top();
@@ -131,7 +138,7 @@ public class GamePlayScreen implements Screen {
         table.add(new Label("Health:", skin));
         healthBarUI = new HealthBarUI(skin, new Gradient(Color.RED, Color.GREEN).addPoint(Color.YELLOW, 0.5f), 100);
         table.add(healthBarUI);
-        lbFPS = new Label("FPS: ",skin);
+        lbFPS = new Label("FPS: ", skin);
         table.add().expandX();
         table.add(lbFPS).right();
     }
