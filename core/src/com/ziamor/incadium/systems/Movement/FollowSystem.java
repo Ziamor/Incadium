@@ -10,6 +10,7 @@ import com.ziamor.incadium.components.MonsterComponent;
 import com.ziamor.incadium.components.Movement.MovementComponent;
 import com.ziamor.incadium.components.Movement.MovementLerpComponent;
 import com.ziamor.incadium.components.TransformComponent;
+import com.ziamor.incadium.components.TurnComponent;
 import com.ziamor.incadium.systems.Util.MapSystem;
 import com.ziamor.incadium.utils.DijkstraMap;
 
@@ -21,7 +22,7 @@ public class FollowSystem extends IteratingSystem {
     private ComponentMapper<MovementComponent> movementComponentMapper;
 
     public FollowSystem() {
-        super(Aspect.all(FollowTargetComponent.class, TransformComponent.class, MonsterComponent.class).exclude(MovementLerpComponent.class));
+        super(Aspect.all(FollowTargetComponent.class, TransformComponent.class, MonsterComponent.class, TurnComponent.class).exclude(MovementLerpComponent.class));
     }
 
     @Override
