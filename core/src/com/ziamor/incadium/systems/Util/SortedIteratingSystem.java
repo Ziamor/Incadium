@@ -1,6 +1,7 @@
 package com.ziamor.incadium.systems.Util;
 
 import com.artemis.Aspect;
+import com.artemis.BaseEntitySystem;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.artemis.utils.IntBag;
@@ -8,19 +9,9 @@ import com.badlogic.gdx.utils.Array;
 
 import java.util.Comparator;
 
-public abstract class SortedIteratingSystem extends EntitySystem {
+public abstract class SortedIteratingSystem extends BaseEntitySystem {
     protected Array<Integer> sorted;
     protected boolean unsorted = true;
-
-    @Override
-    public void removed(Entity e) {
-        unsorted = true;
-    }
-
-    @Override
-    public void inserted(Entity e) {
-        unsorted = true;
-    }
 
     /**
      * Creates a new SortedIteratingSystem.
@@ -29,6 +20,18 @@ public abstract class SortedIteratingSystem extends EntitySystem {
      */
     public SortedIteratingSystem(Aspect.Builder aspect) {
         super(aspect);
+    }
+
+    @Override
+    protected void inserted(int entityId) {
+        super.inserted(entityId);
+        unsorted = true;
+    }
+
+    @Override
+    protected void removed(int entityId) {
+        super.removed(entityId);
+        unsorted = true;
     }
 
 

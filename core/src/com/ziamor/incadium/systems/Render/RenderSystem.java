@@ -34,9 +34,7 @@ public class RenderSystem extends SortedIteratingSystem {
         TextureRegionComponent textureRegionComponent = textureRegionComponentComponentMapper.get(e);
         TransformComponent transformComponent = transformComponentComponentMapper.get(e);
         MovementLerpComponent movementLerpComponent = movementLerpComponentComponentMapper.get(e);
-
-
-
+        
         // Get the render position
         if (movementLerpComponent != null)
             pos = movementLerpComponent.getCurrentPos(); // The sprite is moving between tiles

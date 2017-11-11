@@ -48,12 +48,6 @@ import com.ziamor.incadium.systems.Util.TurnSchedulerSystem;
 import com.ziamor.incadium.components.NonComponents.Gradient;
 
 public class GamePlayScreen implements Screen {
-    public static final int SO_TURN = 0;
-    public static final int SO_INPUT = 1;
-    public static final int SO_MOVEMENT = 2;
-    public static final int SO_COMBAT = 3;
-    public static final int SO_RENDER = 4;
-
     final float map_width = 16, map_height = 9;
     SpriteBatch batch;
     ShapeRenderer shapeRenderer;
