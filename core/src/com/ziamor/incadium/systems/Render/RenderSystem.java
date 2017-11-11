@@ -72,5 +72,17 @@ public class RenderSystem extends SortedIteratingSystem {
             }
         };
     }
+
+    @Override
+    protected void begin() {
+        super.begin();
+        batch.begin();
+    }
+
+    @Override
+    protected void end() {
+        super.end();
+        batch.end();
+    }
 }
 

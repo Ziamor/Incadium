@@ -32,4 +32,16 @@ public class TerrainRenderSystem extends IteratingSystem {
         if (terrainTileComponent != null)
             batch.draw(terrainTileComponent.region, transformComponent.x, transformComponent.y, 1, 1);
     }
+
+    @Override
+    protected void begin() {
+        super.begin();
+        batch.begin();
+    }
+
+    @Override
+    protected void end() {
+        super.end();
+        batch.end();
+    }
 }

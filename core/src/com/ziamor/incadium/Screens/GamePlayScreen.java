@@ -28,6 +28,7 @@ import com.ziamor.incadium.ItemFactory;
 import com.ziamor.incadium.components.NonComponents.HealthBarUI;
 import com.ziamor.incadium.Incadium;
 import com.ziamor.incadium.systems.Combat.AttackSystem;
+import com.ziamor.incadium.systems.Debug.DrawCurrentTurnTakerSystem;
 import com.ziamor.incadium.systems.Render.AnimationSystem;
 import com.ziamor.incadium.systems.Render.VisibilitySystem;
 import com.ziamor.incadium.systems.TargetCameraSystem;
@@ -114,7 +115,8 @@ public class GamePlayScreen implements Screen {
                 //UI
                 new HealthBarUISystem(healthBarUI),
                 //Debug Systems
-                new PlayerStateSystem()
+                new PlayerStateSystem(),
+                new DrawCurrentTurnTakerSystem(shapeRenderer)
         ).build().register(assetManager);
         world = new World(config);
 
@@ -143,11 +145,11 @@ public class GamePlayScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         lbFPS.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
         camera.update();
+
         batch.setProjectionMatrix(camera.combined);
-        batch.begin();
+        shapeRenderer.setProjectionMatrix(camera.combined);
         world.setDelta(delta);
         world.process();
-        batch.end();
 
         stage.act(delta);
         stage.draw();
