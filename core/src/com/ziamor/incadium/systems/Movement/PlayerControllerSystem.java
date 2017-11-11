@@ -51,11 +51,6 @@ public class PlayerControllerSystem extends IteratingSystem implements GestureDe
 
     @Override
     public boolean touchDown(float x, float y, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean tap(float x, float y, int count, int button) {
         if (upArea.contains(x, y))
             touchArea = TouchArea.UP;
         else if (downArea.contains(x, y))
@@ -64,6 +59,11 @@ public class PlayerControllerSystem extends IteratingSystem implements GestureDe
             touchArea = TouchArea.LEFT;
         else if (rightArea.contains(x, y))
             touchArea = TouchArea.RIGHT;
+        return false;
+    }
+
+    @Override
+    public boolean tap(float x, float y, int count, int button) {
         return false;
     }
 

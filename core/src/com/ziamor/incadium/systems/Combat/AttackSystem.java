@@ -19,29 +19,18 @@ public class AttackSystem extends IteratingSystem {
     private ComponentMapper<AttackDamageComponent> attackDamageComponentMapper;
     private ComponentMapper<HealthComponent> healthComponentMapper;
     private ComponentMapper<PlayerControllerComponent> playerControllerComponentMapper;
-    private ComponentMapper<AttackCoolDownComponent> attackCoolDownComponentMapper;
     private ComponentMapper<TurnComponent> turnComponentMapper;
 
     public AttackSystem() {
-        super(Aspect.all(AttackTargetComponent.class, AttackDamageComponent.class).exclude(DeadComponent.class));
+        super(Aspect.all(AttackTargetComponent.class, AttackDamageComponent.class).exclude(DeadComponent.class, AttackCoolDownComponent.class));
     }
 
     @Override
     protected void process(int entityId) {
         final AttackTargetComponent attackTargetComponent = attackTargetComponentMapper.get(entityId);
         final AttackDamageComponent attackDamageComponent = attackDamageComponentMapper.get(entityId);
-        final AttackCoolDownComponent attackCoolDownComponent = attackCoolDownComponentMapper.get(entityId);
         final TurnComponent turnComponent = turnComponentMapper.get(entityId);
 
-        if (attackCoolDownComponent != null) {
-            attackCoolDownComponent.elapsed += world.getDelta();
-            if (attackCoolDownComponent.elapsed >= attackCoolDownComponent.life)
-                E.E(entityId).removeAttackCoolDownComponent();
-            else {
-                E.E(entityId).removeAttackTargetComponent();
-                return;
-            }
-        }
         if (E.E(attackTargetComponent.target) == null)
             E.E(entityId).removeAttackTargetComponent();
         //TODO link relationship
@@ -52,7 +41,7 @@ public class AttackSystem extends IteratingSystem {
             E.E(entityId).removeAttackTargetComponent();
 
             if (playerControllerComponentMapper.get(entityId) != null) {
-                E.E(entityId).attackCoolDownComponent(0.25f);
+                E.E(entityId).attackCoolDownComponent(1f);
             }
         } else
             E.E(entityId).removeAttackTargetComponent();

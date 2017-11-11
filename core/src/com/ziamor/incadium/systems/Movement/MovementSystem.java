@@ -6,6 +6,7 @@ import com.artemis.E;
 import com.artemis.systems.IteratingSystem;
 import com.artemis.utils.IntBag;
 import com.badlogic.gdx.math.Rectangle;
+import com.ziamor.incadium.components.Combat.AttackCoolDownComponent;
 import com.ziamor.incadium.components.FactionComponent;
 import com.ziamor.incadium.components.MonsterComponent;
 import com.ziamor.incadium.components.Movement.MovementComponent;
@@ -13,20 +14,22 @@ import com.ziamor.incadium.components.Movement.MovementLerpComponent;
 import com.ziamor.incadium.components.Movement.PlayerControllerComponent;
 import com.ziamor.incadium.components.TransformComponent;
 import com.ziamor.incadium.components.TurnComponent;
+import com.ziamor.incadium.systems.Combat.AttackCoolDownSystem;
 import com.ziamor.incadium.systems.Util.MapSystem;
 
 public class MovementSystem extends IteratingSystem {
     MapSystem mapSystem;
-    ComponentMapper<MovementComponent> movementComponentComponentMapper;
-    ComponentMapper<MovementLerpComponent> movementLerpComponentComponentMapper;
-    ComponentMapper<TransformComponent> transformComponentComponentMapper;
-    ComponentMapper<TurnComponent> turnComponentComponentMapper;
+    private ComponentMapper<MovementComponent> movementComponentComponentMapper;
+    private ComponentMapper<MovementLerpComponent> movementLerpComponentComponentMapper;
+    private ComponentMapper<TransformComponent> transformComponentComponentMapper;
+    private ComponentMapper<TurnComponent> turnComponentComponentMapper;
     private ComponentMapper<FactionComponent> factionComponentMapper;
+    private ComponentMapper<AttackCoolDownComponent> attackCoolDownComponentMapper;
 
     private float lerp_life = 0.2f;
 
     public MovementSystem() {
-        super(Aspect.all(MovementComponent.class, TransformComponent.class, TurnComponent.class));
+        super(Aspect.all(MovementComponent.class, TransformComponent.class, TurnComponent.class).exclude(MovementLerpComponent.class));
     }
 
     @Override
@@ -81,7 +84,9 @@ public class MovementSystem extends IteratingSystem {
                         //TODO write this check better
                         FactionComponent monsterFactionComponent = factionComponentMapper.get(target);
                         if (factionComponent != null && monsterFactionComponent != null && factionComponent.factionID != monsterFactionComponent.factionID) {
-                            E.E(entity).attackTargetComponentTarget(target);
+                            final AttackCoolDownComponent attackCoolDownComponent = attackCoolDownComponentMapper.get(entity);
+                            if (attackCoolDownComponent == null)
+                                E.E(entity).attackTargetComponentTarget(target);
                         } else
                             turn.finishedTurn = true; //TODO this will prob cause future problems
 

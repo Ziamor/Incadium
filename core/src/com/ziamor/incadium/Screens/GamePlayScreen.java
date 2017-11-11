@@ -19,19 +19,23 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.ziamor.incadium.DecorFactory;
 import com.ziamor.incadium.ItemFactory;
 import com.ziamor.incadium.components.NonComponents.HealthBarUI;
 import com.ziamor.incadium.Incadium;
+import com.ziamor.incadium.systems.Combat.AttackCoolDownSystem;
 import com.ziamor.incadium.systems.Combat.AttackSystem;
 import com.ziamor.incadium.systems.Debug.DrawCurrentTurnTakerSystem;
 import com.ziamor.incadium.systems.Render.AnimationSystem;
 import com.ziamor.incadium.systems.Render.VisibilitySystem;
 import com.ziamor.incadium.systems.TargetCameraSystem;
+import com.ziamor.incadium.systems.UI.AttackCooldownBarRender;
 import com.ziamor.incadium.systems.UI.HealthBarUISystem;
 import com.ziamor.incadium.systems.Util.BlockPlayerInputSystem;
 import com.ziamor.incadium.systems.Combat.DeathSystem;
@@ -64,6 +68,8 @@ public class GamePlayScreen implements Screen {
     Skin skin;
 
     HealthBarUI healthBarUI;
+    ProgressBar attackCoolDownBar;
+    Touchpad touchpad;
     Label lbFPS;
 
     public GamePlayScreen(final Incadium incadium) {
@@ -107,6 +113,7 @@ public class GamePlayScreen implements Screen {
                 new MovementLerpSystem(),
                 new FollowSystem(),
                 // Attack Systems
+                new AttackCoolDownSystem(),
                 new AttackSystem(),
                 //Health System
                 new HealthSystem(),
@@ -114,9 +121,10 @@ public class GamePlayScreen implements Screen {
                 new DeathSystem(),
                 //UI
                 new HealthBarUISystem(healthBarUI),
+                new AttackCooldownBarRender(attackCoolDownBar),
                 //Debug Systems
-                new PlayerStateSystem(),
-                new DrawCurrentTurnTakerSystem(shapeRenderer)
+                new PlayerStateSystem()
+               // new DrawCurrentTurnTakerSystem(shapeRenderer)
         ).build().register(assetManager);
         world = new World(config);
 
@@ -137,6 +145,13 @@ public class GamePlayScreen implements Screen {
         lbFPS = new Label("FPS: ", skin);
         table.add().expandX();
         table.add(lbFPS).right();
+        table.row();
+        attackCoolDownBar = new ProgressBar(0,0.25f,0.01f, false,skin);
+        table.add(new Label("Attack CD:", skin));
+        table.add(attackCoolDownBar);
+        table.row().expandY();
+        touchpad = new Touchpad(100, skin);
+        //table.add(touchpad);
     }
 
     @Override
