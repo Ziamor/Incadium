@@ -57,7 +57,7 @@ public class MapSystem extends BaseSystem {
         genRandomDungeon();
 
         entitie_map = new int[map_width][map_height];
-
+        
         for (int i = 0; i < entitie_map.length; i++)
             for (int j = 0; j < entitie_map[i].length; j++) {
                 int ent = createTile(map_datasource[i][j], i, j);

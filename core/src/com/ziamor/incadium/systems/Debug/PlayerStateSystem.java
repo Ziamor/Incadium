@@ -23,6 +23,7 @@ public class PlayerStateSystem extends BaseEntitySystem {
     protected void processSystem() {
         if (player == null) {
             player = world.getSystem(TagManager.class).getEntity("player");
+            return;
         }
         final TurnComponent turnComponent = turnComponentMapper.get(player);
         final TransformComponent transformComponent = transformComponentMapper.get(player);

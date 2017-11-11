@@ -54,7 +54,7 @@ public abstract class SortedIteratingSystem extends BaseEntitySystem {
             sorted.clear();
             IntBag actives = subscription.getEntities();
             int[] ids = actives.getData();
-            for (int i = 0; i < ids.length; i++)
+            for (int i = 0; i < actives.size(); i++)
                 sorted.add(ids[i]);
             sorted.sort(getComparator());
         }
