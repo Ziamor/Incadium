@@ -57,7 +57,7 @@ public class MapSystem extends BaseSystem {
         genRandomDungeon();
 
         entitie_map = new int[map_width][map_height];
-        
+
         for (int i = 0; i < entitie_map.length; i++)
             for (int j = 0; j < entitie_map[i].length; j++) {
                 int ent = createTile(map_datasource[i][j], i, j);
@@ -65,9 +65,10 @@ public class MapSystem extends BaseSystem {
             }
 
         int ePlayer = world.createEntity().getId();
+        Vector2 pos = getFreeSpace();
         E.E(ePlayer).tag("player")
                 .textureComponent(assetManager.get("player.png", Texture.class))
-                .transformComponent(3, 3, 4)
+                .transformComponent(pos.x, pos.y, 4)
                 .movementComponent()
                 .attackDamageComponent(50f)
                 .healthComponentHealthStat(100f, 100f)
@@ -78,7 +79,8 @@ public class MapSystem extends BaseSystem {
                 .factionComponent(0)
                 .targetCameraFocusComponent();
 
-        E.E().transformComponent(2, 2, 4)
+        pos = getFreeSpace();
+        E.E().transformComponent(pos.x, pos.y, 4)
                 .textureComponent(assetManager.get("bat.png", Texture.class))
                 .healthComponentHealthStat(100f, 100f)
                 .movementComponent()
@@ -93,16 +95,19 @@ public class MapSystem extends BaseSystem {
         TextureRegion[][] tmp = TextureRegion.split(slimeTexture, slimeTexture.getWidth() / 4, slimeTexture.getHeight());
         Animation<TextureRegion> walkAnimation = new Animation<TextureRegion>(0.1f, tmp[0]);
 
-        E.E().transformComponent(3, 2, 4)
-                .animationComponent(walkAnimation, 0)
-                .healthComponentHealthStat(100f, 100f)
-                .movementComponent()
-                .turnTakerComponent()
-                .monsterComponent()
-                .followTargetComponent(ePlayer)
-                .lootableComponent()
-                .attackDamageComponent(15f)
-                .factionComponent(1);
+        for (int i = 0; i < 25; i++) {
+            pos = getFreeSpace();
+            E.E().transformComponent(pos.x, pos.y, 4)
+                    .animationComponent(walkAnimation, 0)
+                    .healthComponentHealthStat(100f, 100f)
+                    .movementComponent()
+                    .turnTakerComponent()
+                    .monsterComponent()
+                    .followTargetComponent(ePlayer)
+                    .lootableComponent()
+                    .attackDamageComponent(15f)
+                    .factionComponent(1);
+        }
     }
 
     protected int createTile(int id, int x, int y) {
@@ -153,9 +158,21 @@ public class MapSystem extends BaseSystem {
     }
 
     public boolean isBlocking(int x, int y) {
-        int test = entitie_map[x][y];
+        if (x >= entitie_map.length || y >= entitie_map[x].length)
+            return true;
         BlockingComponent blockingComponent = blockingComponentComponentMapper.get(entitie_map[x][y]);
         return blockingComponent != null;
+    }
+
+    public Vector2 getFreeSpace() {
+        int x = 0, y = 0;
+
+        while (isBlocking(x, y)) {
+            x = MathUtils.random(map_width - 1);
+            y = MathUtils.random(map_height - 1);
+        }
+
+        return new Vector2(x, y);
     }
 
     public int getMapWidth() {

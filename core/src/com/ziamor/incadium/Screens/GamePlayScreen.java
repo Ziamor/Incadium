@@ -32,6 +32,7 @@ import com.ziamor.incadium.Incadium;
 import com.ziamor.incadium.systems.Combat.AttackCoolDownSystem;
 import com.ziamor.incadium.systems.Combat.AttackSystem;
 import com.ziamor.incadium.systems.Debug.DrawCurrentTurnTakerSystem;
+import com.ziamor.incadium.systems.Movement.PathFindingSystem;
 import com.ziamor.incadium.systems.Render.AnimationSystem;
 import com.ziamor.incadium.systems.Render.VisibilitySystem;
 import com.ziamor.incadium.systems.TargetCameraSystem;
@@ -109,6 +110,7 @@ public class GamePlayScreen implements Screen {
                 new BlockPlayerInputSystem(),
                 new TurnSchedulerSystem(),
                 // Movement Systems
+                new PathFindingSystem(),
                 new MovementSystem(),
                 new MovementLerpSystem(),
                 new FollowSystem(),
@@ -123,8 +125,8 @@ public class GamePlayScreen implements Screen {
                 new HealthBarUISystem(healthBarUI),
                 new AttackCooldownBarRender(attackCoolDownBar),
                 //Debug Systems
-                new PlayerStateSystem()
-               // new DrawCurrentTurnTakerSystem(shapeRenderer)
+                new PlayerStateSystem(),
+                new DrawCurrentTurnTakerSystem(shapeRenderer)
         ).build().register(assetManager);
         world = new World(config);
 

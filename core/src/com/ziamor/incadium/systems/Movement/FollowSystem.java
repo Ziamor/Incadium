@@ -20,6 +20,9 @@ public class FollowSystem extends IteratingSystem {
     private ComponentMapper<FollowTargetComponent> followTargetComponentMapper;
     private ComponentMapper<TransformComponent> transformComponentMapper;
     private ComponentMapper<MovementComponent> movementComponentMapper;
+    private ComponentMapper<TurnComponent> turnComponentMapper;
+
+    private PathFindingSystem pathFindingSystem;
 
     public FollowSystem() {
         super(Aspect.all(FollowTargetComponent.class, TransformComponent.class, MonsterComponent.class, TurnComponent.class).exclude(MovementLerpComponent.class));
@@ -27,7 +30,9 @@ public class FollowSystem extends IteratingSystem {
 
     @Override
     protected void process(int entityId) {
-        FollowTargetComponent followTargetComponent = followTargetComponentMapper.get(entityId);
+        final FollowTargetComponent followTargetComponent = followTargetComponentMapper.get(entityId);
+        final TurnComponent turnComponent = turnComponentMapper.get(entityId);
+
         if (followTargetComponent.target == -1) {
             E.E(entityId).removeFollowTargetComponent();
             return;
@@ -40,21 +45,25 @@ public class FollowSystem extends IteratingSystem {
             return;
         }
 
+        if (turnComponent.finishedTurn)
+            return;
+
         TransformComponent transformComponent = transformComponentMapper.get(entityId);
         MovementComponent movementComponent = movementComponentMapper.get(entityId);
         int x = (int) transformComponent.x;
         int y = (int) transformComponent.y;
 
-        int[][] weights = DijkstraMap.getDijkstraMap(mapSystem, (int) targetTransformComponent.x, (int) targetTransformComponent.y);
-        Vector2 targetPos = DijkstraMap.gradientDecent(weights, new Vector2(x, y));
+        if (pathFindingSystem.weights != null) {
+            Vector2 targetPos = DijkstraMap.gradientDecent(pathFindingSystem.weights, new Vector2(x, y));
 
-        if (targetPos.x < x)
-            movementComponent.direction = MovementComponent.Direction.WEST;
-        else if (targetPos.x > x)
-            movementComponent.direction = MovementComponent.Direction.EAST;
-        else if (targetPos.y < y)
-            movementComponent.direction = MovementComponent.Direction.SOUTH;
-        else if (targetPos.y > y)
-            movementComponent.direction = MovementComponent.Direction.NORTH;
+            if (targetPos.x < x)
+                movementComponent.direction = MovementComponent.Direction.WEST;
+            else if (targetPos.x > x)
+                movementComponent.direction = MovementComponent.Direction.EAST;
+            else if (targetPos.y < y)
+                movementComponent.direction = MovementComponent.Direction.SOUTH;
+            else if (targetPos.y > y)
+                movementComponent.direction = MovementComponent.Direction.NORTH;
+        }
     }
 }

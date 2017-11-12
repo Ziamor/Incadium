@@ -65,7 +65,9 @@ public class TurnSchedulerSystem extends EntitySystem {
             return; // The entity does not have a turn component so we don't need to process it
         }
 
+        turnComponent.executionTime += world.getDelta();
         if (turnComponent.finishedTurn) {
+            Gdx.app.debug("Turn Scheduler System", "Turn time: " + turnComponent.executionTime);
             turnEntities.addLast(E.E(currentTurnTaker).removeTurnComponent().entity());
             currentTurnTaker = -1;
         }

@@ -12,6 +12,7 @@ import com.ziamor.incadium.components.MonsterComponent;
 import com.ziamor.incadium.components.Movement.MovementComponent;
 import com.ziamor.incadium.components.Movement.MovementLerpComponent;
 import com.ziamor.incadium.components.Movement.PlayerControllerComponent;
+import com.ziamor.incadium.components.Render.NotVisableComponent;
 import com.ziamor.incadium.components.TransformComponent;
 import com.ziamor.incadium.components.TurnComponent;
 import com.ziamor.incadium.systems.Combat.AttackCoolDownSystem;
@@ -25,6 +26,7 @@ public class MovementSystem extends IteratingSystem {
     private ComponentMapper<TurnComponent> turnComponentComponentMapper;
     private ComponentMapper<FactionComponent> factionComponentMapper;
     private ComponentMapper<AttackCoolDownComponent> attackCoolDownComponentMapper;
+    private ComponentMapper<NotVisableComponent> notVisableComponentMapper;
 
     private float lerp_life = 0.2f;
 
@@ -34,9 +36,10 @@ public class MovementSystem extends IteratingSystem {
 
     @Override
     protected void process(int entity) {
-        TransformComponent transformComponent = transformComponentComponentMapper.get(entity);
-        MovementComponent movementComponent = movementComponentComponentMapper.get(entity);
-        TurnComponent turn = turnComponentComponentMapper.get(entity);
+        final TransformComponent transformComponent = transformComponentComponentMapper.get(entity);
+        final MovementComponent movementComponent = movementComponentComponentMapper.get(entity);
+        final TurnComponent turn = turnComponentComponentMapper.get(entity);
+        final NotVisableComponent notVisableComponent = notVisableComponentMapper.get(entity);
         final FactionComponent factionComponent = factionComponentMapper.get(entity);
 
         if (!turn.finishedTurn) {
@@ -91,7 +94,8 @@ public class MovementSystem extends IteratingSystem {
                             turn.finishedTurn = true; //TODO this will prob cause future problems
 
                     } else {
-                        movementLerpComponentComponentMapper.create(entity).set(transformComponent.x, transformComponent.y, transformComponent.x + x_offset, transformComponent.y + y_offset, lerp_life);
+                        if (notVisableComponent == null)
+                            movementLerpComponentComponentMapper.create(entity).set(transformComponent.x, transformComponent.y, transformComponent.x + x_offset, transformComponent.y + y_offset, lerp_life);
                         transformComponent.x += x_offset;
                         transformComponent.y += y_offset;
                         turn.finishedTurn = true;

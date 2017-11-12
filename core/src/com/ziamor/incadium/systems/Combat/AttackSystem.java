@@ -37,7 +37,6 @@ public class AttackSystem extends IteratingSystem {
         HealthComponent targetHealth = healthComponentMapper.get(attackTargetComponent.target);
         if (targetHealth != null) {
             targetHealth.currentHealth -= attackDamageComponent.damage;
-            Gdx.app.log("", "Current target health: " + targetHealth.currentHealth);
             E.E(entityId).removeAttackTargetComponent();
 
             if (playerControllerComponentMapper.get(entityId) != null) {

@@ -29,7 +29,6 @@ public class AttackCooldownBarRender extends IteratingSystem {
             } else {
                 bar.setValue(bar.getMaxValue());
             }
-            Gdx.app.log("", bar.getValue() + " " + bar.getMaxValue());
         }
     }
 }
