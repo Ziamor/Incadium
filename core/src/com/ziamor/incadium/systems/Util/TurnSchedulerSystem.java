@@ -67,7 +67,7 @@ public class TurnSchedulerSystem extends EntitySystem {
 
         turnComponent.executionTime += world.getDelta();
         if (turnComponent.finishedTurn) {
-            Gdx.app.debug("Turn Scheduler System", "Turn time: " + turnComponent.executionTime);
+            Gdx.app.debug("Turn Scheduler System", "Turn time: " + turnComponent.executionTime + " Movement system time: " + turnComponent.movementSystemTime + " total ms:" + turnComponent.totalMovementSystemVisit);
             turnEntities.addLast(E.E(currentTurnTaker).removeTurnComponent().entity());
             currentTurnTaker = -1;
         }

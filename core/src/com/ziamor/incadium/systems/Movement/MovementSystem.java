@@ -42,6 +42,10 @@ public class MovementSystem extends IteratingSystem {
         final NotVisableComponent notVisableComponent = notVisableComponentMapper.get(entity);
         final FactionComponent factionComponent = factionComponentMapper.get(entity);
 
+        turn.movementSystemTime += world.getDelta();
+        turn.totalMovementSystemVisit++;
+        if(entity == 2551)
+            lerp_life = 0.2f;
         if (!turn.finishedTurn) {
             float x_offset = 0;
             float y_offset = 0;

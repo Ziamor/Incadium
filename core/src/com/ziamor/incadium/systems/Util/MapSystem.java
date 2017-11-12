@@ -95,7 +95,7 @@ public class MapSystem extends BaseSystem {
         TextureRegion[][] tmp = TextureRegion.split(slimeTexture, slimeTexture.getWidth() / 4, slimeTexture.getHeight());
         Animation<TextureRegion> walkAnimation = new Animation<TextureRegion>(0.1f, tmp[0]);
 
-        for (int i = 0; i < 25; i++) {
+        for (int i = 0; i < 15; i++) {
             pos = getFreeSpace();
             E.E().transformComponent(pos.x, pos.y, 4)
                     .animationComponent(walkAnimation, 0)

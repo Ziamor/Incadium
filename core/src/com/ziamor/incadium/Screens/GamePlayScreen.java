@@ -111,9 +111,9 @@ public class GamePlayScreen implements Screen {
                 new TurnSchedulerSystem(),
                 // Movement Systems
                 new PathFindingSystem(),
+                new FollowSystem(),
                 new MovementSystem(),
                 new MovementLerpSystem(),
-                new FollowSystem(),
                 // Attack Systems
                 new AttackCoolDownSystem(),
                 new AttackSystem(),
