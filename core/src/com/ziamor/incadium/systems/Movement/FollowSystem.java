@@ -5,6 +5,7 @@ import com.artemis.ComponentMapper;
 import com.artemis.E;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.math.Vector2;
+import com.ziamor.incadium.components.Combat.DeadComponent;
 import com.ziamor.incadium.components.Movement.FollowTargetComponent;
 import com.ziamor.incadium.components.MonsterComponent;
 import com.ziamor.incadium.components.Movement.MovementComponent;
@@ -21,6 +22,7 @@ public class FollowSystem extends IteratingSystem {
     private ComponentMapper<TransformComponent> transformComponentMapper;
     private ComponentMapper<MovementComponent> movementComponentMapper;
     private ComponentMapper<TurnComponent> turnComponentMapper;
+    private ComponentMapper<DeadComponent> deadComponentMapper;
 
     private PathFindingSystem pathFindingSystem;
 
@@ -32,9 +34,12 @@ public class FollowSystem extends IteratingSystem {
     protected void process(int entityId) {
         final FollowTargetComponent followTargetComponent = followTargetComponentMapper.get(entityId);
         final TurnComponent turnComponent = turnComponentMapper.get(entityId);
+        final DeadComponent deadComponent = deadComponentMapper.get(entityId);
 
-        if (followTargetComponent.target == -1) {
+        if (followTargetComponent.target == -1 || deadComponent != null) {
             E.E(entityId).removeFollowTargetComponent();
+            E.E(entityId).idleTurnComponent();
+            turnComponent.finishedTurn = true;
             return;
         }
         TransformComponent targetTransformComponent = transformComponentMapper.get(followTargetComponent.target);

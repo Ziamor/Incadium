@@ -71,7 +71,7 @@ public class MapSystem extends BaseSystem {
                 .transformComponent(pos.x, pos.y, 4)
                 .movementComponent()
                 .attackDamageComponent(50f)
-                .healthComponentHealthStat(100f, 100f)
+                .healthComponentHealthStat(500, 500f)
                 .playerControllerComponent()
                 .turnTakerComponent()
                 .healthBarUIComponent(ePlayer)
@@ -79,7 +79,7 @@ public class MapSystem extends BaseSystem {
                 .factionComponent(0)
                 .targetCameraFocusComponent();
 
-        pos = getFreeSpace();
+        /*pos = getFreeSpace();
         E.E().transformComponent(pos.x, pos.y, 4)
                 .textureComponent(assetManager.get("bat.png", Texture.class))
                 .healthComponentHealthStat(100f, 100f)
@@ -89,17 +89,17 @@ public class MapSystem extends BaseSystem {
                 .followTargetComponent(ePlayer)
                 .lootableComponent()
                 .attackDamageComponent(20f)
-                .factionComponent(1);
+                .factionComponent(1);*/
 
         Texture slimeTexture = assetManager.get("Slime.png", Texture.class);
         TextureRegion[][] tmp = TextureRegion.split(slimeTexture, slimeTexture.getWidth() / 4, slimeTexture.getHeight());
         Animation<TextureRegion> walkAnimation = new Animation<TextureRegion>(0.1f, tmp[0]);
 
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 50; i++) {
             pos = getFreeSpace();
             E.E().transformComponent(pos.x, pos.y, 4)
                     .animationComponent(walkAnimation, 0)
-                    .healthComponentHealthStat(100f, 100f)
+                    .healthComponentHealthStat(50, 50f)
                     .movementComponent()
                     .turnTakerComponent()
                     .monsterComponent()
@@ -139,7 +139,7 @@ public class MapSystem extends BaseSystem {
             blockingComponentComponentMapper.create(ent);
 
             //Randomly generate torches
-            if (bitmask == 31) {
+            /*if (bitmask == 31) {
                 if (MathUtils.random() <= 0.2f)
                     DecorFactory.Torch(x, y);
                 else if (MathUtils.random() <= 0.1f)
@@ -150,7 +150,7 @@ public class MapSystem extends BaseSystem {
                     DecorFactory.Crack(x, y);
                 else if (MathUtils.random() <= 0.1f)
                     DecorFactory.Blood(x, y);
-            }
+            }*/
         }
         groundTileComponentComponentMapper.create(ent).groundTexture = groundTex; //TODO load one texture for all ground tiles rather
         transformComponentComponentMapper.create(ent).set(x, y, 1);

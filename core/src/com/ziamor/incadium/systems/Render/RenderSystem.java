@@ -2,6 +2,7 @@ package com.ziamor.incadium.systems.Render;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
+import com.artemis.managers.TagManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -21,7 +22,7 @@ public class RenderSystem extends SortedIteratingSystem {
     ComponentMapper<MovementLerpComponent> movementLerpComponentComponentMapper;
     private SpriteBatch batch;
     private Vector2 pos;
-
+    TagManager tagManager;
     public RenderSystem(SpriteBatch batch) {
         super(Aspect.all(TransformComponent.class).one(TextureComponent.class, TextureRegionComponent.class).exclude(NotVisableComponent.class));
         this.batch = batch;
@@ -35,6 +36,9 @@ public class RenderSystem extends SortedIteratingSystem {
         TransformComponent transformComponent = transformComponentComponentMapper.get(e);
         MovementLerpComponent movementLerpComponent = movementLerpComponentComponentMapper.get(e);
 
+        float a;
+        if(e == tagManager.getEntityId("player"))
+            a = 5;
         // Get the render position
         if (movementLerpComponent != null)
             pos = movementLerpComponent.getCurrentPos(); // The sprite is moving between tiles

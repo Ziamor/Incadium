@@ -20,7 +20,7 @@ public class PlayerControllerSystem extends IteratingSystem implements GestureDe
     }
 
     ComponentMapper<MovementComponent> movementComponentComponentMapper;
-
+    private ComponentMapper<MovementLerpComponent> movementLerpComponentMapper;
     TouchArea touchArea;
     Rectangle upArea, downArea, leftArea, rightArea;
 
@@ -36,7 +36,7 @@ public class PlayerControllerSystem extends IteratingSystem implements GestureDe
     @Override
     protected void process(int entity) {
         MovementComponent movementComponent = movementComponentComponentMapper.get(entity);
-
+        final MovementLerpComponent movementLerpComponent = movementLerpComponentMapper.get(entity);
         if (Gdx.input.isKeyPressed(Input.Keys.W) || touchArea == TouchArea.UP)
             movementComponent.direction = MovementComponent.Direction.NORTH;
         else if (Gdx.input.isKeyPressed(Input.Keys.S) || touchArea == TouchArea.DOWN)

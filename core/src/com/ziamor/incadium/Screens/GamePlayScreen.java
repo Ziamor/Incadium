@@ -1,11 +1,19 @@
 package com.ziamor.incadium.Screens;
 
+import com.artemis.Aspect;
+import com.artemis.AspectSubscriptionManager;
+import com.artemis.ComponentManager;
+import com.artemis.ComponentMapper;
+import com.artemis.E;
+import com.artemis.Entity;
+import com.artemis.EntityManager;
 import com.artemis.SuperMapper;
 import com.artemis.World;
 import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
 import com.artemis.link.EntityLinkManager;
 import com.artemis.managers.TagManager;
+import com.artemis.utils.IntBag;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
@@ -27,8 +35,15 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.ziamor.incadium.DecorFactory;
 import com.ziamor.incadium.ItemFactory;
+import com.ziamor.incadium.IncadiumInvocationStrategy;
+import com.ziamor.incadium.components.Combat.DeadComponent;
+import com.ziamor.incadium.components.MonsterComponent;
+import com.ziamor.incadium.components.Movement.IdleTurnComponent;
+import com.ziamor.incadium.components.Movement.PlayerControllerComponent;
 import com.ziamor.incadium.components.NonComponents.HealthBarUI;
 import com.ziamor.incadium.Incadium;
+import com.ziamor.incadium.components.TurnComponent;
+import com.ziamor.incadium.components.TurnTakerComponent;
 import com.ziamor.incadium.systems.Combat.AttackCoolDownSystem;
 import com.ziamor.incadium.systems.Combat.AttackSystem;
 import com.ziamor.incadium.systems.Debug.DrawCurrentTurnTakerSystem;
@@ -62,6 +77,7 @@ public class GamePlayScreen implements Screen {
     Viewport viewport;
     InputMultiplexer inputMultiplexer;
 
+    WorldConfiguration config;
     World world;
 
     Stage stage;
@@ -72,6 +88,10 @@ public class GamePlayScreen implements Screen {
     ProgressBar attackCoolDownBar;
     Touchpad touchpad;
     Label lbFPS;
+
+    IncadiumInvocationStrategy incadiumInvocationStrategy;
+
+    int frame = 0;
 
     public GamePlayScreen(final Incadium incadium) {
         batch = incadium.batch;
@@ -93,7 +113,7 @@ public class GamePlayScreen implements Screen {
 
         constructUI();
 
-        WorldConfiguration config = new WorldConfigurationBuilder().with(
+        config = new WorldConfigurationBuilder().with(
                 new SuperMapper(),
                 new TagManager(),
                 new EntityLinkManager(),
@@ -108,12 +128,12 @@ public class GamePlayScreen implements Screen {
                 // Input Systems
                 new PlayerControllerSystem(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()),
                 new BlockPlayerInputSystem(),
-                new TurnSchedulerSystem(),
+                //new TurnSchedulerSystem(),
                 // Movement Systems
+                new MovementLerpSystem(),
                 new PathFindingSystem(),
                 new FollowSystem(),
                 new MovementSystem(),
-                new MovementLerpSystem(),
                 // Attack Systems
                 new AttackCoolDownSystem(),
                 new AttackSystem(),
@@ -128,8 +148,15 @@ public class GamePlayScreen implements Screen {
                 new PlayerStateSystem(),
                 new DrawCurrentTurnTakerSystem(shapeRenderer)
         ).build().register(assetManager);
+        incadiumInvocationStrategy = new IncadiumInvocationStrategy();
+        config.setInvocationStrategy(incadiumInvocationStrategy);
         world = new World(config);
 
+        incadiumInvocationStrategy.setMandatorySystems(SuperMapper.class, TagManager.class, EntityLinkManager.class, ComponentManager.class, EntityManager.class, AspectSubscriptionManager.class);
+        incadiumInvocationStrategy.setRenderSystems(MapSystem.class, RenderSystem.class, TargetCameraSystem.class, TerrainRenderSystem.class, AnimationSystem.class, VisibilitySystem.class, MovementLerpSystem.class);
+        incadiumInvocationStrategy.setTurnSystems(PlayerControllerSystem.class, BlockPlayerInputSystem.class, TurnSchedulerSystem.class, MovementSystem.class,
+                FollowSystem.class, PathFindingSystem.class, DrawCurrentTurnTakerSystem.class, AttackCoolDownSystem.class, AttackSystem.class, HealthSystem.class, DeathSystem.class);
+        incadiumInvocationStrategy.setPostTurnSystems();
         inputMultiplexer.addProcessor(new GestureDetector(world.getSystem(PlayerControllerSystem.class)));
     }
 
@@ -148,7 +175,7 @@ public class GamePlayScreen implements Screen {
         table.add().expandX();
         table.add(lbFPS).right();
         table.row();
-        attackCoolDownBar = new ProgressBar(0,0.25f,0.01f, false,skin);
+        attackCoolDownBar = new ProgressBar(0, 0.25f, 0.01f, false, skin);
         table.add(new Label("Attack CD:", skin));
         table.add(attackCoolDownBar);
         table.row().expandY();
@@ -166,10 +193,57 @@ public class GamePlayScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
         shapeRenderer.setProjectionMatrix(camera.combined);
         world.setDelta(delta);
+
+        incadiumInvocationStrategy.phase = IncadiumInvocationStrategy.Phase.Render;
+        world.process();
+
+        incadiumInvocationStrategy.phase = IncadiumInvocationStrategy.Phase.Turn;
+        ComponentMapper<TurnComponent> turnComponentMapper = world.getMapper(TurnComponent.class);
+        ComponentMapper<DeadComponent> deadComponentMapper = world.getMapper(DeadComponent.class);
+
+        Entity playerID = world.getSystem(TagManager.class).getEntity("player");
+        TurnComponent playerTurnComponent = null;
+        DeadComponent playerDeadComponent = null;
+        if (playerID != null) {
+            playerTurnComponent = turnComponentMapper.get(playerID);
+            playerDeadComponent = deadComponentMapper.get(playerID);
+            if (playerTurnComponent != null && !playerTurnComponent.finishedTurn && playerDeadComponent == null) {
+                world.process();
+            }
+            if(playerTurnComponent.finishedTurn)
+                E.E(playerID).removeTurnComponent();
+        } else
+            playerTurnComponent = null;
+        if (playerTurnComponent == null || playerTurnComponent.finishedTurn || playerDeadComponent != null) {
+
+            IntBag turnTakersIDs = world.getAspectSubscriptionManager().get(Aspect.one(TurnTakerComponent.class).exclude(PlayerControllerComponent.class)).getEntities();
+            for (int i = 0; i < turnTakersIDs.size(); i++) {
+                int currentEnt = turnTakersIDs.get(i);
+                E.E(currentEnt).turnComponent();
+                TurnComponent currentEntTurnComponent = turnComponentMapper.get(currentEnt);
+                DeadComponent currentEntDeadComponent = deadComponentMapper.get(currentEnt);
+                while (currentEntTurnComponent != null && !currentEntTurnComponent.finishedTurn && currentEntDeadComponent == null) {
+                    IdleTurnComponent idleTurnComponent = world.getMapper(IdleTurnComponent.class).get(currentEnt);
+                    if(idleTurnComponent != null)
+                        break;
+                    world.process();
+                    currentEntTurnComponent = turnComponentMapper.get(currentEnt);
+                    currentEntDeadComponent = deadComponentMapper.get(currentEnt);
+                }
+                E.E(currentEnt).removeTurnComponent();
+            }
+            playerID = world.getSystem(TagManager.class).getEntity("player");
+            if (playerID != null)
+                E.E(playerID).turnComponent();
+        }
+
+        incadiumInvocationStrategy.phase = IncadiumInvocationStrategy.Phase.POST_TURN;
         world.process();
 
         stage.act(delta);
         stage.draw();
+
+        // Gdx.app.log("", "frame: " + frame++);
     }
 
     @Override

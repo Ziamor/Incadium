@@ -42,10 +42,6 @@ public class MovementSystem extends IteratingSystem {
         final NotVisableComponent notVisableComponent = notVisableComponentMapper.get(entity);
         final FactionComponent factionComponent = factionComponentMapper.get(entity);
 
-        turn.movementSystemTime += world.getDelta();
-        turn.totalMovementSystemVisit++;
-        if(entity == 2551)
-            lerp_life = 0.2f;
         if (!turn.finishedTurn) {
             float x_offset = 0;
             float y_offset = 0;
@@ -94,8 +90,8 @@ public class MovementSystem extends IteratingSystem {
                             final AttackCoolDownComponent attackCoolDownComponent = attackCoolDownComponentMapper.get(entity);
                             if (attackCoolDownComponent == null)
                                 E.E(entity).attackTargetComponentTarget(target);
-                        } else
-                            turn.finishedTurn = true; //TODO this will prob cause future problems
+                        }
+                        turn.finishedTurn = true;
 
                     } else {
                         if (notVisableComponent == null)

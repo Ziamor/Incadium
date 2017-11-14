@@ -29,7 +29,7 @@ public class BSP {
     }
 
     public BSP(int width, int height, int depth) {
-        rand = new Random();
+        rand = new Random(0x123);
         root = split(new Rectangle(0, 0, width, height), depth);
     }
 

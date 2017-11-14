@@ -12,11 +12,10 @@ import com.ziamor.incadium.components.TurnTakerComponent;
 
 
 public class TurnSchedulerSystem extends EntitySystem {
-    private int currentTurnTaker = -1;
+    public int currentTurnTaker = -1;
     private Queue<Entity> turnEntities;
     private ComponentMapper<TurnComponent> turnComponentMapper;
     private ComponentMapper<TurnTakerComponent> turnTakerComponentMapper;
-
     public TurnSchedulerSystem() {
         super(Aspect.all(TurnTakerComponent.class));
         turnEntities = new Queue<Entity>();
@@ -67,7 +66,7 @@ public class TurnSchedulerSystem extends EntitySystem {
 
         turnComponent.executionTime += world.getDelta();
         if (turnComponent.finishedTurn) {
-            Gdx.app.debug("Turn Scheduler System", "Turn time: " + turnComponent.executionTime + " Movement system time: " + turnComponent.movementSystemTime + " total ms:" + turnComponent.totalMovementSystemVisit);
+            //Gdx.app.debug("Turn Scheduler System", "Turn time: " + turnComponent.executionTime + " Movement system time: " + turnComponent.movementSystemTime + " total ms:" + turnComponent.totalMovementSystemVisit);
             turnEntities.addLast(E.E(currentTurnTaker).removeTurnComponent().entity());
             currentTurnTaker = -1;
         }
