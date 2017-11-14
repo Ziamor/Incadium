@@ -153,9 +153,14 @@ public class GamePlayScreen implements Screen {
         world = new World(config);
 
         incadiumInvocationStrategy.setMandatorySystems(SuperMapper.class, TagManager.class, EntityLinkManager.class, ComponentManager.class, EntityManager.class, AspectSubscriptionManager.class);
-        incadiumInvocationStrategy.setRenderSystems(MapSystem.class, RenderSystem.class, TargetCameraSystem.class, TerrainRenderSystem.class, AnimationSystem.class, VisibilitySystem.class, MovementLerpSystem.class);
+
+        incadiumInvocationStrategy.setRenderSystems(MapSystem.class, RenderSystem.class,
+                TargetCameraSystem.class, TerrainRenderSystem.class, AnimationSystem.class,
+                VisibilitySystem.class, MovementLerpSystem.class,HealthBarUISystem.class,AttackCooldownBarRender.class,AttackCoolDownSystem.class);//TODO move lerp anc cooldown system
+
         incadiumInvocationStrategy.setTurnSystems(PlayerControllerSystem.class, BlockPlayerInputSystem.class, TurnSchedulerSystem.class, MovementSystem.class,
-                FollowSystem.class, PathFindingSystem.class, DrawCurrentTurnTakerSystem.class, AttackCoolDownSystem.class, AttackSystem.class, HealthSystem.class, DeathSystem.class);
+                FollowSystem.class, PathFindingSystem.class, DrawCurrentTurnTakerSystem.class, AttackSystem.class, HealthSystem.class, DeathSystem.class);
+
         incadiumInvocationStrategy.setPostTurnSystems();
         inputMultiplexer.addProcessor(new GestureDetector(world.getSystem(PlayerControllerSystem.class)));
     }
@@ -210,26 +215,16 @@ public class GamePlayScreen implements Screen {
             if (playerTurnComponent != null && !playerTurnComponent.finishedTurn && playerDeadComponent == null) {
                 world.process();
             }
-            if(playerTurnComponent.finishedTurn)
+            if (playerTurnComponent.finishedTurn)
                 E.E(playerID).removeTurnComponent();
         } else
             playerTurnComponent = null;
         if (playerTurnComponent == null || playerTurnComponent.finishedTurn || playerDeadComponent != null) {
-
             IntBag turnTakersIDs = world.getAspectSubscriptionManager().get(Aspect.one(TurnTakerComponent.class).exclude(PlayerControllerComponent.class)).getEntities();
             for (int i = 0; i < turnTakersIDs.size(); i++) {
                 int currentEnt = turnTakersIDs.get(i);
                 E.E(currentEnt).turnComponent();
-                TurnComponent currentEntTurnComponent = turnComponentMapper.get(currentEnt);
-                DeadComponent currentEntDeadComponent = deadComponentMapper.get(currentEnt);
-                while (currentEntTurnComponent != null && !currentEntTurnComponent.finishedTurn && currentEntDeadComponent == null) {
-                    IdleTurnComponent idleTurnComponent = world.getMapper(IdleTurnComponent.class).get(currentEnt);
-                    if(idleTurnComponent != null)
-                        break;
-                    world.process();
-                    currentEntTurnComponent = turnComponentMapper.get(currentEnt);
-                    currentEntDeadComponent = deadComponentMapper.get(currentEnt);
-                }
+                world.process();
                 E.E(currentEnt).removeTurnComponent();
             }
             playerID = world.getSystem(TagManager.class).getEntity("player");
@@ -243,7 +238,7 @@ public class GamePlayScreen implements Screen {
         stage.act(delta);
         stage.draw();
 
-        // Gdx.app.log("", "frame: " + frame++);
+        //Gdx.app.log("", "frame: " + frame++);
     }
 
     @Override

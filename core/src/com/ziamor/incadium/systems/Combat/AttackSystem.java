@@ -38,7 +38,7 @@ public class AttackSystem extends IteratingSystem {
         if (targetHealth != null) {
             targetHealth.currentHealth -= attackDamageComponent.damage;
             E.E(entityId).removeAttackTargetComponent();
-
+            
             if (playerControllerComponentMapper.get(entityId) != null) {
                 E.E(entityId).attackCoolDownComponent(1f);
             }

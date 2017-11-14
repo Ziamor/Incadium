@@ -70,7 +70,7 @@ public class MapSystem extends BaseSystem {
                 .textureComponent(assetManager.get("player.png", Texture.class))
                 .transformComponent(pos.x, pos.y, 4)
                 .movementComponent()
-                .attackDamageComponent(50f)
+                .attackDamageComponent(25f)
                 .healthComponentHealthStat(500, 500f)
                 .playerControllerComponent()
                 .turnTakerComponent()
@@ -79,23 +79,11 @@ public class MapSystem extends BaseSystem {
                 .factionComponent(0)
                 .targetCameraFocusComponent();
 
-        /*pos = getFreeSpace();
-        E.E().transformComponent(pos.x, pos.y, 4)
-                .textureComponent(assetManager.get("bat.png", Texture.class))
-                .healthComponentHealthStat(100f, 100f)
-                .movementComponent()
-                .turnTakerComponent()
-                .monsterComponent()
-                .followTargetComponent(ePlayer)
-                .lootableComponent()
-                .attackDamageComponent(20f)
-                .factionComponent(1);*/
-
         Texture slimeTexture = assetManager.get("Slime.png", Texture.class);
         TextureRegion[][] tmp = TextureRegion.split(slimeTexture, slimeTexture.getWidth() / 4, slimeTexture.getHeight());
         Animation<TextureRegion> walkAnimation = new Animation<TextureRegion>(0.1f, tmp[0]);
 
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 25; i++) {
             pos = getFreeSpace();
             E.E().transformComponent(pos.x, pos.y, 4)
                     .animationComponent(walkAnimation, 0)
