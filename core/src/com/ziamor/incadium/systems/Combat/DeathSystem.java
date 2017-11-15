@@ -5,11 +5,13 @@ import com.artemis.E;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import com.ziamor.incadium.components.Combat.DeadComponent;
+import com.ziamor.incadium.components.Movement.AttackLerpComponent;
+import com.ziamor.incadium.components.Movement.MovementLerpComponent;
 
 
 public class DeathSystem extends IteratingSystem {
     public DeathSystem() {
-        super(Aspect.all(DeadComponent.class));
+        super(Aspect.all(DeadComponent.class).exclude(MovementLerpComponent.class, AttackLerpComponent.class));
     }
 
     @Override

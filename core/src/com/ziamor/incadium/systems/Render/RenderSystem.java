@@ -6,6 +6,7 @@ import com.artemis.managers.TagManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.ziamor.incadium.components.Movement.AttackLerpComponent;
 import com.ziamor.incadium.components.Render.NotVisableComponent;
 import com.ziamor.incadium.components.Render.TextureRegionComponent;
 import com.ziamor.incadium.components.Movement.MovementLerpComponent;
@@ -20,9 +21,11 @@ public class RenderSystem extends SortedIteratingSystem {
     ComponentMapper<TextureRegionComponent> textureRegionComponentComponentMapper;
     ComponentMapper<TransformComponent> transformComponentComponentMapper;
     ComponentMapper<MovementLerpComponent> movementLerpComponentComponentMapper;
+    private ComponentMapper<AttackLerpComponent> attackLerpComponentMapper;
     private SpriteBatch batch;
     private Vector2 pos;
     TagManager tagManager;
+
     public RenderSystem(SpriteBatch batch) {
         super(Aspect.all(TransformComponent.class).one(TextureComponent.class, TextureRegionComponent.class).exclude(NotVisableComponent.class));
         this.batch = batch;
@@ -30,18 +33,18 @@ public class RenderSystem extends SortedIteratingSystem {
     }
 
     @Override
-    protected void process(int e) {
-        TextureComponent textureComponent = textureComponentComponentMapper.get(e);
-        TextureRegionComponent textureRegionComponent = textureRegionComponentComponentMapper.get(e);
-        TransformComponent transformComponent = transformComponentComponentMapper.get(e);
-        MovementLerpComponent movementLerpComponent = movementLerpComponentComponentMapper.get(e);
+    protected void process(int entityId) {
+        final TextureComponent textureComponent = textureComponentComponentMapper.get(entityId);
+        final TextureRegionComponent textureRegionComponent = textureRegionComponentComponentMapper.get(entityId);
+        final TransformComponent transformComponent = transformComponentComponentMapper.get(entityId);
+        final MovementLerpComponent movementLerpComponent = movementLerpComponentComponentMapper.get(entityId);
+        final AttackLerpComponent attackLerpComponent = attackLerpComponentMapper.get(entityId);
 
-        float a;
-        if(e == tagManager.getEntityId("player"))
-            a = 5;
         // Get the render position
         if (movementLerpComponent != null)
             pos = movementLerpComponent.getCurrentPos(); // The sprite is moving between tiles
+        else if (attackLerpComponent != null)
+            pos = attackLerpComponent.getCurrentPos(); // The sprite is moving between tiles
         else {
             pos.set(transformComponent.x, transformComponent.y);
         }

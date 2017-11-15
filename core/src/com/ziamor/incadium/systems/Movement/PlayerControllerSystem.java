@@ -9,7 +9,7 @@ import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.ziamor.incadium.components.Combat.AttackTargetComponent;
-import com.ziamor.incadium.components.BlockPlayerInputComponent;
+import com.ziamor.incadium.components.Movement.AttackLerpComponent;
 import com.ziamor.incadium.components.Movement.MovementComponent;
 import com.ziamor.incadium.components.Movement.MovementLerpComponent;
 import com.ziamor.incadium.components.Movement.PlayerControllerComponent;
@@ -25,7 +25,7 @@ public class PlayerControllerSystem extends IteratingSystem implements GestureDe
     Rectangle upArea, downArea, leftArea, rightArea;
 
     public PlayerControllerSystem(int width, int height) {
-        super(Aspect.all(PlayerControllerComponent.class, MovementComponent.class).exclude(BlockPlayerInputComponent.class, MovementLerpComponent.class, AttackTargetComponent.class));
+        super(Aspect.all(PlayerControllerComponent.class, MovementComponent.class).exclude(MovementLerpComponent.class, AttackLerpComponent.class, AttackTargetComponent.class));
         upArea = new Rectangle(width * 0.3f, 0, width * 0.3f, height * 0.5f);
         downArea = new Rectangle(width * 0.3f, height * 0.5f, width * 0.3f, height * 0.5f);
         rightArea = new Rectangle(width * 0.6f, 0, width * 0.3f, height);

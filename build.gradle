@@ -57,6 +57,7 @@ project(":components") {
 
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+        compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
         compile "net.onedaybeard.artemis:artemis-odb:$artemisVersion"
     }
 }

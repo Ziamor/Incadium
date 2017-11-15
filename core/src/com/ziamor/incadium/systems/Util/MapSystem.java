@@ -11,12 +11,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.ziamor.incadium.DecorFactory;
+import com.badlogic.gdx.utils.ObjectMap;
 import com.ziamor.incadium.components.BlockingComponent;
 import com.ziamor.incadium.components.Render.GroundTileComponent;
 import com.ziamor.incadium.components.Render.TerrainTileComponent;
 import com.ziamor.incadium.components.TransformComponent;
-import com.ziamor.incadium.systems.TargetCameraSystem;
 import com.ziamor.incadium.utils.BSP;
 import com.ziamor.incadium.utils.BSPLeafIterator;
 import com.ziamor.incadium.utils.BSPPostorderIterator;
@@ -70,8 +69,8 @@ public class MapSystem extends BaseSystem {
                 .textureComponent(assetManager.get("player.png", Texture.class))
                 .transformComponent(pos.x, pos.y, 4)
                 .movementComponent()
-                .attackDamageComponent(25f)
-                .healthComponentHealthStat(500, 500f)
+                .attackDamageComponent(25)
+                .healthComponentHealthStat(500, 500)
                 .playerControllerComponent()
                 .turnTakerComponent()
                 .healthBarUIComponent(ePlayer)
@@ -80,13 +79,21 @@ public class MapSystem extends BaseSystem {
                 .targetCameraFocusComponent();
 
         Texture slimeTexture = assetManager.get("Slime.png", Texture.class);
-        TextureRegion[][] tmp = TextureRegion.split(slimeTexture, slimeTexture.getWidth() / 4, slimeTexture.getHeight());
-        Animation<TextureRegion> walkAnimation = new Animation<TextureRegion>(0.1f, tmp[0]);
+        int numFrameWidth = slimeTexture.getWidth() / 4;
+        int numFrameHright = slimeTexture.getHeight() / 2;
+        float speed = 0.1f;
+        TextureRegion[][] splitRegions = TextureRegion.split(slimeTexture, numFrameWidth, numFrameHright);
+        Animation<TextureRegion> walkAnimation = new Animation<TextureRegion>(speed, splitRegions[0]);
+        Animation<TextureRegion> attackAnimation = new Animation<TextureRegion>(speed, splitRegions[1]);
 
-        for (int i = 0; i < 25; i++) {
+        ObjectMap<String, Animation<TextureRegion>> animation = new ObjectMap<String, Animation<TextureRegion>>();
+        animation.put("walk", walkAnimation);
+        animation.put("attack", attackAnimation);
+
+        for (int i = 0; i < 10; i++) {
             pos = getFreeSpace();
             E.E().transformComponent(pos.x, pos.y, 4)
-                    .animationComponent(walkAnimation, 0)
+                    .animationComponent(animation, 0)
                     .healthComponentHealthStat(50, 50f)
                     .movementComponent()
                     .turnTakerComponent()
@@ -94,7 +101,8 @@ public class MapSystem extends BaseSystem {
                     .followTargetComponent(ePlayer)
                     .lootableComponent()
                     .attackDamageComponent(15f)
-                    .factionComponent(1);
+                    .factionComponent(1)
+                    .slimeAnimation();
         }
     }
 

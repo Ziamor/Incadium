@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.ziamor.incadium.components.Combat.AttackCoolDownComponent;
 import com.ziamor.incadium.components.FactionComponent;
 import com.ziamor.incadium.components.MonsterComponent;
+import com.ziamor.incadium.components.Movement.AttackLerpComponent;
 import com.ziamor.incadium.components.Movement.MovementComponent;
 import com.ziamor.incadium.components.Movement.MovementLerpComponent;
 import com.ziamor.incadium.components.Movement.PlayerControllerComponent;
@@ -31,7 +32,7 @@ public class MovementSystem extends IteratingSystem {
     private float lerp_life = 0.2f;
 
     public MovementSystem() {
-        super(Aspect.all(MovementComponent.class, TransformComponent.class, TurnComponent.class).exclude(MovementLerpComponent.class));
+        super(Aspect.all(MovementComponent.class, TransformComponent.class, TurnComponent.class).exclude(MovementLerpComponent.class, AttackLerpComponent.class));
     }
 
     @Override

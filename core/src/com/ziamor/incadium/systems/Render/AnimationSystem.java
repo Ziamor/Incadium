@@ -25,6 +25,6 @@ public class AnimationSystem extends IteratingSystem {
             textureRegionComponent = textureRegionComponentMapper.create(entityId);
 
         animationComponent.time += world.getDelta();
-        textureRegionComponent.region = animationComponent.animation.getKeyFrame(animationComponent.time, true);
+        textureRegionComponent.region = animationComponent.currentAnimation.getKeyFrame(animationComponent.time, true);
     }
 }

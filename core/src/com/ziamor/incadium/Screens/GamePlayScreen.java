@@ -4,7 +4,6 @@ import com.artemis.Aspect;
 import com.artemis.AspectSubscriptionManager;
 import com.artemis.ComponentManager;
 import com.artemis.ComponentMapper;
-import com.artemis.E;
 import com.artemis.Entity;
 import com.artemis.EntityManager;
 import com.artemis.SuperMapper;
@@ -37,8 +36,6 @@ import com.ziamor.incadium.DecorFactory;
 import com.ziamor.incadium.ItemFactory;
 import com.ziamor.incadium.IncadiumInvocationStrategy;
 import com.ziamor.incadium.components.Combat.DeadComponent;
-import com.ziamor.incadium.components.MonsterComponent;
-import com.ziamor.incadium.components.Movement.IdleTurnComponent;
 import com.ziamor.incadium.components.Movement.PlayerControllerComponent;
 import com.ziamor.incadium.components.NonComponents.HealthBarUI;
 import com.ziamor.incadium.Incadium;
@@ -49,11 +46,11 @@ import com.ziamor.incadium.systems.Combat.AttackSystem;
 import com.ziamor.incadium.systems.Debug.DrawCurrentTurnTakerSystem;
 import com.ziamor.incadium.systems.Movement.PathFindingSystem;
 import com.ziamor.incadium.systems.Render.AnimationSystem;
+import com.ziamor.incadium.systems.Render.SlimeAnimationControllerSystem;
 import com.ziamor.incadium.systems.Render.VisibilitySystem;
 import com.ziamor.incadium.systems.TargetCameraSystem;
 import com.ziamor.incadium.systems.UI.AttackCooldownBarRender;
 import com.ziamor.incadium.systems.UI.HealthBarUISystem;
-import com.ziamor.incadium.systems.Util.BlockPlayerInputSystem;
 import com.ziamor.incadium.systems.Combat.DeathSystem;
 import com.ziamor.incadium.systems.Movement.FollowSystem;
 import com.ziamor.incadium.systems.Stats.HealthSystem;
@@ -64,7 +61,7 @@ import com.ziamor.incadium.systems.Movement.PlayerControllerSystem;
 import com.ziamor.incadium.systems.Debug.PlayerStateSystem;
 import com.ziamor.incadium.systems.Render.RenderSystem;
 import com.ziamor.incadium.systems.Render.TerrainRenderSystem;
-import com.ziamor.incadium.systems.Util.MovementLerpSystem;
+import com.ziamor.incadium.systems.Util.LerpSystem;
 import com.ziamor.incadium.systems.Util.TurnSchedulerSystem;
 import com.ziamor.incadium.components.NonComponents.Gradient;
 
@@ -120,17 +117,17 @@ public class GamePlayScreen implements Screen {
                 // Setup Systems
                 new MapSystem(),
                 // Render Systems
-                new VisibilitySystem(5),
+                new VisibilitySystem(8),
+                new SlimeAnimationControllerSystem(),
                 new AnimationSystem(),
                 new TerrainRenderSystem(batch),
                 new RenderSystem(batch),
                 new TargetCameraSystem(camera),
                 // Input Systems
                 new PlayerControllerSystem(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()),
-                new BlockPlayerInputSystem(),
                 //new TurnSchedulerSystem(),
                 // Movement Systems
-                new MovementLerpSystem(),
+                new LerpSystem(),
                 new PathFindingSystem(),
                 new FollowSystem(),
                 new MovementSystem(),
@@ -155,10 +152,10 @@ public class GamePlayScreen implements Screen {
         incadiumInvocationStrategy.setMandatorySystems(SuperMapper.class, TagManager.class, EntityLinkManager.class, ComponentManager.class, EntityManager.class, AspectSubscriptionManager.class);
 
         incadiumInvocationStrategy.setRenderSystems(MapSystem.class, RenderSystem.class,
-                TargetCameraSystem.class, TerrainRenderSystem.class, AnimationSystem.class,
-                VisibilitySystem.class, MovementLerpSystem.class, HealthBarUISystem.class, AttackCooldownBarRender.class, AttackCoolDownSystem.class);//TODO move lerp anc cooldown system
+                TargetCameraSystem.class, TerrainRenderSystem.class, AnimationSystem.class, SlimeAnimationControllerSystem.class,
+                VisibilitySystem.class, LerpSystem.class, HealthBarUISystem.class, AttackCooldownBarRender.class, AttackCoolDownSystem.class);//TODO move lerp anc cooldown system
 
-        incadiumInvocationStrategy.setTurnSystems(PlayerControllerSystem.class, BlockPlayerInputSystem.class, TurnSchedulerSystem.class, MovementSystem.class,
+        incadiumInvocationStrategy.setTurnSystems(PlayerControllerSystem.class, TurnSchedulerSystem.class, MovementSystem.class,
                 FollowSystem.class, PathFindingSystem.class, DrawCurrentTurnTakerSystem.class, AttackSystem.class, HealthSystem.class, DeathSystem.class);
 
         incadiumInvocationStrategy.setPostTurnSystems();
