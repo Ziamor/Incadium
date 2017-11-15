@@ -156,7 +156,7 @@ public class GamePlayScreen implements Screen {
 
         incadiumInvocationStrategy.setRenderSystems(MapSystem.class, RenderSystem.class,
                 TargetCameraSystem.class, TerrainRenderSystem.class, AnimationSystem.class,
-                VisibilitySystem.class, MovementLerpSystem.class,HealthBarUISystem.class,AttackCooldownBarRender.class,AttackCoolDownSystem.class);//TODO move lerp anc cooldown system
+                VisibilitySystem.class, MovementLerpSystem.class, HealthBarUISystem.class, AttackCooldownBarRender.class, AttackCoolDownSystem.class);//TODO move lerp anc cooldown system
 
         incadiumInvocationStrategy.setTurnSystems(PlayerControllerSystem.class, BlockPlayerInputSystem.class, TurnSchedulerSystem.class, MovementSystem.class,
                 FollowSystem.class, PathFindingSystem.class, DrawCurrentTurnTakerSystem.class, AttackSystem.class, HealthSystem.class, DeathSystem.class);
@@ -206,30 +206,37 @@ public class GamePlayScreen implements Screen {
         ComponentMapper<TurnComponent> turnComponentMapper = world.getMapper(TurnComponent.class);
         ComponentMapper<DeadComponent> deadComponentMapper = world.getMapper(DeadComponent.class);
 
-        Entity playerID = world.getSystem(TagManager.class).getEntity("player");
+        Entity playerEnt = world.getSystem(TagManager.class).getEntity("player");
+
         TurnComponent playerTurnComponent = null;
-        DeadComponent playerDeadComponent = null;
-        if (playerID != null) {
-            playerTurnComponent = turnComponentMapper.get(playerID);
-            playerDeadComponent = deadComponentMapper.get(playerID);
-            if (playerTurnComponent != null && !playerTurnComponent.finishedTurn && playerDeadComponent == null) {
+
+        // Execute the players turn
+        if (playerEnt != null) {
+            playerTurnComponent = turnComponentMapper.get(playerEnt);
+            if (playerTurnComponent == null)
+                turnComponentMapper.create(playerEnt);
+
+            // If player isn't finished with their turn
+            if (playerTurnComponent != null && !playerTurnComponent.finishedTurn)
                 world.process();
+
+            // Players turn is done
+            if (playerTurnComponent != null && playerTurnComponent.finishedTurn) {
+                turnComponentMapper.remove(playerEnt);
+                playerTurnComponent = null;
             }
-            if (playerTurnComponent.finishedTurn)
-                E.E(playerID).removeTurnComponent();
-        } else
-            playerTurnComponent = null;
-        if (playerTurnComponent == null || playerTurnComponent.finishedTurn || playerDeadComponent != null) {
+
+        }
+
+        // Execute NPC turn when it's not the players turn
+        if (playerTurnComponent == null) {
             IntBag turnTakersIDs = world.getAspectSubscriptionManager().get(Aspect.one(TurnTakerComponent.class).exclude(PlayerControllerComponent.class)).getEntities();
             for (int i = 0; i < turnTakersIDs.size(); i++) {
                 int currentEnt = turnTakersIDs.get(i);
-                E.E(currentEnt).turnComponent();
+                turnComponentMapper.create(currentEnt);
                 world.process();
-                E.E(currentEnt).removeTurnComponent();
+                turnComponentMapper.remove(currentEnt);
             }
-            playerID = world.getSystem(TagManager.class).getEntity("player");
-            if (playerID != null)
-                E.E(playerID).turnComponent();
         }
 
         incadiumInvocationStrategy.phase = IncadiumInvocationStrategy.Phase.POST_TURN;
