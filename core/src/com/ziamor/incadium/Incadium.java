@@ -37,6 +37,7 @@ public class Incadium extends Game {
     }
 
     public void dispose() {
+        this.getScreen().dispose();
         batch.dispose();
         shapeRenderer.dispose();
         assetManager.dispose();

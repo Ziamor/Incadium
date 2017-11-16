@@ -42,6 +42,7 @@ import com.ziamor.incadium.IncadiumInvocationStrategy;
 import com.ziamor.incadium.components.Asset.AnimationResolverComponent;
 import com.ziamor.incadium.components.Asset.TextureResolverComponent;
 import com.ziamor.incadium.components.Combat.DeadComponent;
+import com.ziamor.incadium.components.MonsterComponent;
 import com.ziamor.incadium.components.Movement.PlayerControllerComponent;
 import com.ziamor.incadium.components.NonComponents.HealthBarUI;
 import com.ziamor.incadium.Incadium;
@@ -75,7 +76,10 @@ import com.ziamor.incadium.components.NonComponents.Gradient;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 public class GamePlayScreen implements Screen {
     final float map_width = 16, map_height = 9;
@@ -102,6 +106,7 @@ public class GamePlayScreen implements Screen {
     WorldSerializationManager worldSerializationManager;
     int frame = 0;
 
+    boolean saveGameOnExit = false;
     public GamePlayScreen(final Incadium incadium) {
         batch = incadium.batch;
         shapeRenderer = incadium.shapeRenderer;
@@ -187,7 +192,10 @@ public class GamePlayScreen implements Screen {
             FileHandle file = Gdx.files.local("/level.json");
             InputStream is = new FileInputStream(file.file());
             SaveFileFormat load = worldSerializationManager.load(is, SaveFileFormat.class);
+            is.close();
         } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -304,7 +312,20 @@ public class GamePlayScreen implements Screen {
 
     @Override
     public void dispose() {
+        if(saveGameOnExit) {
+            IntBag entities = world.getAspectSubscriptionManager().get(Aspect.one(PlayerControllerComponent.class, MonsterComponent.class)).getEntities();
+            try {
+                FileHandle file = Gdx.files.local("/level.json");
+                OutputStream out = new FileOutputStream(file.file());
+                worldSerializationManager.save(out, new SaveFileFormat(entities));
+                out.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         stage.dispose();
-        //TODO dispose asset manager?
+        // Incadium disposes of assetmanager and spritebatch
     }
 }
