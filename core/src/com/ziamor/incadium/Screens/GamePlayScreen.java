@@ -41,6 +41,7 @@ import com.ziamor.incadium.DecorFactory;
 import com.ziamor.incadium.ItemFactory;
 import com.ziamor.incadium.IncadiumInvocationStrategy;
 import com.ziamor.incadium.components.Combat.DeadComponent;
+import com.ziamor.incadium.components.ItemComponent;
 import com.ziamor.incadium.components.MapComponent;
 import com.ziamor.incadium.components.MonsterComponent;
 import com.ziamor.incadium.components.Movement.PlayerControllerComponent;
@@ -49,6 +50,7 @@ import com.ziamor.incadium.Incadium;
 import com.ziamor.incadium.components.TurnComponent;
 import com.ziamor.incadium.components.TurnTakerComponent;
 import com.ziamor.incadium.systems.Asset.AnimationResolverSystem;
+import com.ziamor.incadium.systems.Asset.TextureRegionResolverSystem;
 import com.ziamor.incadium.systems.Asset.TextureResolverSystem;
 import com.ziamor.incadium.systems.Combat.AttackCoolDownSystem;
 import com.ziamor.incadium.systems.Combat.AttackSystem;
@@ -123,9 +125,6 @@ public class GamePlayScreen implements Screen {
         // Sanity check to force anything unloaded to finish
         assetManager.finishLoading();
 
-        DecorFactory.setTexture(assetManager.get("Decor.png", Texture.class));
-        ItemFactory.setTexture(assetManager.get("Item.png", Texture.class));
-
         constructUI();
 
         worldSerializationManager = new WorldSerializationManager();
@@ -136,6 +135,7 @@ public class GamePlayScreen implements Screen {
                 worldSerializationManager,
                 // Load Assets
                 new TextureResolverSystem(), //TODO maybe find a way to generalize asset loading?
+                new TextureRegionResolverSystem(),
                 new AnimationResolverSystem(),
                 // Setup Systems
                 new MapSystem(),
@@ -180,14 +180,14 @@ public class GamePlayScreen implements Screen {
         backend.prettyPrint(true);
         worldSerializationManager.setSerializer(backend);
 
-        incadiumInvocationStrategy.setMandatorySystems(SuperMapper.class, TagManager.class, EntityLinkManager.class, ComponentManager.class, EntityManager.class, AspectSubscriptionManager.class, WorldSerializationManager.class, TextureResolverSystem.class, AnimationResolverSystem.class);
+        incadiumInvocationStrategy.setMandatorySystems(SuperMapper.class, TagManager.class, EntityLinkManager.class, ComponentManager.class, EntityManager.class, AspectSubscriptionManager.class, WorldSerializationManager.class, TextureResolverSystem.class, AnimationResolverSystem.class, TextureRegionResolverSystem.class);
 
         incadiumInvocationStrategy.setRenderSystems(MapSystem.class, RenderSystem.class,
                 TargetCameraSystem.class, TerrainRenderSystem.class, AnimationSystem.class, SlimeAnimationControllerSystem.class,
                 VisibilitySystem.class, LerpSystem.class, HealthBarUISystem.class, AttackCooldownBarRender.class, AttackCoolDownSystem.class);//TODO move lerp anc cooldown system
 
         incadiumInvocationStrategy.setTurnSystems(PlayerControllerSystem.class, TurnSchedulerSystem.class, MovementSystem.class,
-                FollowSystem.class, PathFindingSystem.class, DrawCurrentTurnTakerSystem.class, AttackSystem.class, HealthSystem.class, DeathSystem.class);
+                FollowSystem.class, PathFindingSystem.class, DrawCurrentTurnTakerSystem.class, AttackSystem.class, HealthSystem.class, DeathSystem.class, LootSystem.class);
 
         incadiumInvocationStrategy.setPostTurnSystems();
         inputMultiplexer.addProcessor(new GestureDetector(world.getSystem(PlayerControllerSystem.class)));
@@ -316,8 +316,8 @@ public class GamePlayScreen implements Screen {
 
     @Override
     public void dispose() {
-        if(saveGameOnExit) {
-            IntBag entities = world.getAspectSubscriptionManager().get(Aspect.one(PlayerControllerComponent.class, MonsterComponent.class, MapComponent.class)).getEntities();
+        if (saveGameOnExit) {
+            IntBag entities = world.getAspectSubscriptionManager().get(Aspect.one(PlayerControllerComponent.class, MonsterComponent.class, MapComponent.class, ItemComponent.class)).getEntities();
             try {
                 FileHandle file = Gdx.files.local("/level.json");
                 OutputStream out = new FileOutputStream(file.file());

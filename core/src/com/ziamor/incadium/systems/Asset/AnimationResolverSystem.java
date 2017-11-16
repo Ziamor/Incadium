@@ -15,8 +15,6 @@ import com.ziamor.incadium.components.Render.AnimationComponent;
 
 
 public class AnimationResolverSystem extends AssetResolver {
-    @Wire
-    AssetManager assetManager;
     private ComponentMapper<AnimationResolverComponent> animationResolverComponentMapper;
     private ComponentMapper<AnimationComponent> animationComponentMapper;
 

@@ -11,8 +11,6 @@ import com.ziamor.incadium.components.Render.TextureComponent;
 
 
 public class TextureResolverSystem extends AssetResolver {
-    @Wire
-    AssetManager assetManager;
     private ComponentMapper<TextureResolverComponent> textureResolverComponentMapper;
     private ComponentMapper<TextureComponent> textureComponentMapper;
 
