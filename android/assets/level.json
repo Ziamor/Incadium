@@ -62,15 +62,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -101,15 +102,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -140,15 +142,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -179,15 +182,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -218,15 +222,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -257,15 +262,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -296,15 +302,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -335,15 +342,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -374,15 +382,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -413,15 +422,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -452,15 +462,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -491,15 +502,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -530,15 +542,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -569,15 +582,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -608,15 +622,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -647,15 +662,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -686,15 +702,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -725,15 +742,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -764,15 +782,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -803,15 +822,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -842,15 +862,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -881,15 +902,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -920,15 +942,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -959,15 +982,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -998,15 +1022,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -1037,15 +1062,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -1076,15 +1102,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -1115,15 +1142,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -1154,15 +1182,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -1193,15 +1222,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -1232,15 +1262,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -1271,15 +1302,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -1310,15 +1342,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -1349,15 +1382,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -1388,15 +1422,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -1427,15 +1462,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -1466,15 +1502,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -1505,15 +1542,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -1544,15 +1582,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -1583,15 +1622,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -1622,15 +1662,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -1661,15 +1702,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -1700,15 +1742,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -1739,15 +1782,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -1778,15 +1822,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -1817,15 +1862,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -1856,15 +1902,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -1895,15 +1942,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -1934,15 +1982,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},
@@ -1973,15 +2022,16 @@
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1,
 				"animationMetaData": [
 					{
 						"name": "walk",
-						"frames": [ 0, 1, 2, 3 ]
+						"frames": [ 0, 1, 2, 3 ],
+						"speed": 0.1
 					},
 					{
 						"name": "attack",
-						"frames": [ 4, 5, 6, 7 ]
+						"frames": [ 4, 5, 6, 7 ],
+						"speed": 0.1
 					}
 				]
 			},

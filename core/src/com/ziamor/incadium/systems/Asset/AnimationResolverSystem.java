@@ -60,7 +60,7 @@ public class AnimationResolverSystem extends AssetResolver {
                     int y = (frames[j] / numFrameWidth) * frameHeight;
                     regions[j] = new TextureRegion(texture, x, y, frameWidth, frameHeight);
                 }
-                Animation<TextureRegion> splitAnimation = new Animation<TextureRegion>(animationResolverComponent.speed, regions);
+                Animation<TextureRegion> splitAnimation = new Animation<TextureRegion>(animationResolverComponent.animationMetaData[i].speed, regions);
                 animation.put(animationResolverComponent.animationMetaData[i].name, splitAnimation);
             }
             animationComponentMapper.create(entityId).set(animation, 0);

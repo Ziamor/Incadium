@@ -6,7 +6,6 @@ import com.artemis.ComponentMapper;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.ziamor.incadium.DecorFactory;
@@ -167,8 +166,8 @@ public class MapSystem extends BaseEntitySystem {
         int x = 0, y = 0;
 
         while (isBlocking(x, y)) {
-            x = MathUtils.random(map_width - 1);
-            y = MathUtils.random(map_height - 1);
+            x = random.nextInt(map_width - 1);
+            y = random.nextInt(map_height - 1);
         }
 
         return new Vector2(x, y);
