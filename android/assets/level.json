@@ -3,23 +3,23 @@
 	"version": 1
 },
 "componentIdentifiers": {
-	"com.ziamor.incadium.components.Combat.LootableComponent": "LootableComponent",
-	"com.ziamor.incadium.components.TurnTakerComponent": "TurnTakerComponent",
-	"com.ziamor.incadium.components.MapComponent": "MapComponent",
-	"com.ziamor.incadium.components.Stats.HealthComponent": "HealthComponent",
-	"com.ziamor.incadium.components.Movement.PlayerControllerComponent": "PlayerControllerComponent",
-	"com.ziamor.incadium.components.TurnComponent": "TurnComponent",
-	"com.ziamor.incadium.components.TransformComponent": "TransformComponent",
-	"com.ziamor.incadium.components.TargetCameraFocusComponent": "TargetCameraFocusComponent",
-	"com.ziamor.incadium.components.MonsterComponent": "MonsterComponent",
-	"com.ziamor.incadium.components.FactionComponent": "FactionComponent",
-	"com.ziamor.incadium.components.Movement.FollowTargetComponent": "FollowTargetComponent",
-	"com.ziamor.incadium.components.UI.HealthBarUIComponent": "HealthBarUIComponent",
-	"com.ziamor.incadium.components.Asset.AnimationResolverComponent": "AnimationResolverComponent",
 	"com.ziamor.incadium.components.Render.SlimeAnimation": "SlimeAnimation",
-	"com.ziamor.incadium.components.Asset.TextureResolverComponent": "TextureResolverComponent",
+	"com.ziamor.incadium.components.Stats.HealthComponent": "HealthComponent",
+	"com.ziamor.incadium.components.UI.HealthBarUIComponent": "HealthBarUIComponent",
 	"com.ziamor.incadium.components.Movement.MovementComponent": "MovementComponent",
-	"com.ziamor.incadium.components.Combat.AttackDamageComponent": "AttackDamageComponent"
+	"com.ziamor.incadium.components.Asset.TextureResolverComponent": "TextureResolverComponent",
+	"com.ziamor.incadium.components.TransformComponent": "TransformComponent",
+	"com.ziamor.incadium.components.Combat.AttackDamageComponent": "AttackDamageComponent",
+	"com.ziamor.incadium.components.FactionComponent": "FactionComponent",
+	"com.ziamor.incadium.components.MonsterComponent": "MonsterComponent",
+	"com.ziamor.incadium.components.Asset.AnimationResolverComponent": "AnimationResolverComponent",
+	"com.ziamor.incadium.components.TurnComponent": "TurnComponent",
+	"com.ziamor.incadium.components.Movement.FollowTargetComponent": "FollowTargetComponent",
+	"com.ziamor.incadium.components.Combat.LootableComponent": "LootableComponent",
+	"com.ziamor.incadium.components.TargetCameraFocusComponent": "TargetCameraFocusComponent",
+	"com.ziamor.incadium.components.MapComponent": "MapComponent",
+	"com.ziamor.incadium.components.TurnTakerComponent": "TurnTakerComponent",
+	"com.ziamor.incadium.components.Movement.PlayerControllerComponent": "PlayerControllerComponent"
 },
 "entities": {
 	"0": {
@@ -32,7 +32,7 @@
 		}
 	},
 	"1": {
-		"archetype": 10,
+		"archetype": 12,
 		"tag": "player",
 		"components": {
 			"AttackDamageComponent": {
@@ -56,13 +56,23 @@
 		}
 	},
 	"2": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -85,13 +95,23 @@
 		}
 	},
 	"3": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -114,13 +134,23 @@
 		}
 	},
 	"4": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -143,13 +173,23 @@
 		}
 	},
 	"5": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -172,13 +212,23 @@
 		}
 	},
 	"6": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -201,13 +251,23 @@
 		}
 	},
 	"7": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -230,13 +290,23 @@
 		}
 	},
 	"8": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -259,13 +329,23 @@
 		}
 	},
 	"9": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -288,13 +368,23 @@
 		}
 	},
 	"10": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -317,13 +407,23 @@
 		}
 	},
 	"11": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -346,13 +446,23 @@
 		}
 	},
 	"12": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -375,13 +485,23 @@
 		}
 	},
 	"13": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -404,13 +524,23 @@
 		}
 	},
 	"14": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -433,13 +563,23 @@
 		}
 	},
 	"15": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -462,13 +602,23 @@
 		}
 	},
 	"16": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -491,13 +641,23 @@
 		}
 	},
 	"17": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -520,13 +680,23 @@
 		}
 	},
 	"18": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -549,13 +719,23 @@
 		}
 	},
 	"19": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -578,13 +758,23 @@
 		}
 	},
 	"20": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -607,13 +797,23 @@
 		}
 	},
 	"21": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -636,13 +836,23 @@
 		}
 	},
 	"22": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -665,13 +875,23 @@
 		}
 	},
 	"23": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -694,13 +914,23 @@
 		}
 	},
 	"24": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -723,13 +953,23 @@
 		}
 	},
 	"25": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -752,13 +992,23 @@
 		}
 	},
 	"26": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -781,13 +1031,23 @@
 		}
 	},
 	"27": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -810,13 +1070,23 @@
 		}
 	},
 	"28": {
-		"archetype": 14,
+		"archetype": 17,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -839,13 +1109,23 @@
 		}
 	},
 	"29": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -868,13 +1148,23 @@
 		}
 	},
 	"30": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -897,13 +1187,23 @@
 		}
 	},
 	"31": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -926,13 +1226,23 @@
 		}
 	},
 	"32": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -955,13 +1265,23 @@
 		}
 	},
 	"33": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -984,13 +1304,23 @@
 		}
 	},
 	"34": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -1013,13 +1343,23 @@
 		}
 	},
 	"35": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -1042,13 +1382,23 @@
 		}
 	},
 	"36": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -1071,13 +1421,23 @@
 		}
 	},
 	"37": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -1100,13 +1460,23 @@
 		}
 	},
 	"38": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -1129,13 +1499,23 @@
 		}
 	},
 	"39": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -1158,13 +1538,23 @@
 		}
 	},
 	"40": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -1187,13 +1577,23 @@
 		}
 	},
 	"41": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -1216,13 +1616,23 @@
 		}
 	},
 	"42": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -1245,13 +1655,23 @@
 		}
 	},
 	"43": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -1274,13 +1694,23 @@
 		}
 	},
 	"44": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -1303,13 +1733,23 @@
 		}
 	},
 	"45": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -1332,13 +1772,23 @@
 		}
 	},
 	"46": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -1361,13 +1811,23 @@
 		}
 	},
 	"47": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -1390,13 +1850,23 @@
 		}
 	},
 	"48": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -1419,13 +1889,23 @@
 		}
 	},
 	"49": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -1448,13 +1928,23 @@
 		}
 	},
 	"50": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -1477,13 +1967,23 @@
 		}
 	},
 	"51": {
-		"archetype": 15,
+		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
 				"path": "slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
-				"speed": 0.1
+				"speed": 0.1,
+				"animationMetaData": [
+					{
+						"name": "walk",
+						"frames": [ 0, 1, 2, 3 ]
+					},
+					{
+						"name": "attack",
+						"frames": [ 4, 5, 6, 7 ]
+					}
+				]
 			},
 			"AttackDamageComponent": {
 				"damage": 15
@@ -1510,7 +2010,33 @@
 	"1": [
 		"MapComponent"
 	],
-	"10": [
+	"17": [
+		"AnimationResolverComponent",
+		"TransformComponent",
+		"SlimeAnimation",
+		"MovementComponent",
+		"FollowTargetComponent",
+		"MonsterComponent",
+		"AttackDamageComponent",
+		"HealthComponent",
+		"LootableComponent",
+		"FactionComponent",
+		"TurnTakerComponent"
+	],
+	"18": [
+		"AnimationResolverComponent",
+		"TransformComponent",
+		"SlimeAnimation",
+		"MovementComponent",
+		"FollowTargetComponent",
+		"MonsterComponent",
+		"AttackDamageComponent",
+		"HealthComponent",
+		"LootableComponent",
+		"FactionComponent",
+		"TurnTakerComponent"
+	],
+	"12": [
 		"TextureResolverComponent",
 		"TransformComponent",
 		"TargetCameraFocusComponent",
@@ -1520,32 +2046,6 @@
 		"AttackDamageComponent",
 		"HealthComponent",
 		"HealthBarUIComponent",
-		"FactionComponent",
-		"TurnTakerComponent"
-	],
-	"14": [
-		"AnimationResolverComponent",
-		"TransformComponent",
-		"SlimeAnimation",
-		"MovementComponent",
-		"FollowTargetComponent",
-		"MonsterComponent",
-		"AttackDamageComponent",
-		"HealthComponent",
-		"LootableComponent",
-		"FactionComponent",
-		"TurnTakerComponent"
-	],
-	"15": [
-		"AnimationResolverComponent",
-		"TransformComponent",
-		"SlimeAnimation",
-		"MovementComponent",
-		"FollowTargetComponent",
-		"MonsterComponent",
-		"AttackDamageComponent",
-		"HealthComponent",
-		"LootableComponent",
 		"FactionComponent",
 		"TurnTakerComponent"
 	]

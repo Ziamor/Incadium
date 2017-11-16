@@ -8,6 +8,7 @@ public class AnimationResolverComponent extends Component {
     public int numFrameWidth;
     public int numFrameHeight;
     public float speed;
+    public AnimationMetaData[] animationMetaData;
 
     public void set(String path, int numFrameWidth, int numFrameHeight, float speed) {
         this.path = path;
