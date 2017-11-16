@@ -10,13 +10,17 @@ import com.artemis.SuperMapper;
 import com.artemis.World;
 import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
+import com.artemis.io.JsonArtemisSerializer;
+import com.artemis.io.SaveFileFormat;
 import com.artemis.link.EntityLinkManager;
 import com.artemis.managers.TagManager;
+import com.artemis.managers.WorldSerializationManager;
 import com.artemis.utils.IntBag;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -35,12 +39,16 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.ziamor.incadium.DecorFactory;
 import com.ziamor.incadium.ItemFactory;
 import com.ziamor.incadium.IncadiumInvocationStrategy;
+import com.ziamor.incadium.components.Asset.AnimationResolverComponent;
+import com.ziamor.incadium.components.Asset.TextureResolverComponent;
 import com.ziamor.incadium.components.Combat.DeadComponent;
 import com.ziamor.incadium.components.Movement.PlayerControllerComponent;
 import com.ziamor.incadium.components.NonComponents.HealthBarUI;
 import com.ziamor.incadium.Incadium;
 import com.ziamor.incadium.components.TurnComponent;
 import com.ziamor.incadium.components.TurnTakerComponent;
+import com.ziamor.incadium.systems.Asset.AnimationResolverSystem;
+import com.ziamor.incadium.systems.Asset.TextureResolverSystem;
 import com.ziamor.incadium.systems.Combat.AttackCoolDownSystem;
 import com.ziamor.incadium.systems.Combat.AttackSystem;
 import com.ziamor.incadium.systems.Debug.DrawCurrentTurnTakerSystem;
@@ -65,6 +73,10 @@ import com.ziamor.incadium.systems.Util.LerpSystem;
 import com.ziamor.incadium.systems.Util.TurnSchedulerSystem;
 import com.ziamor.incadium.components.NonComponents.Gradient;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
 public class GamePlayScreen implements Screen {
     final float map_width = 16, map_height = 9;
     SpriteBatch batch;
@@ -87,7 +99,7 @@ public class GamePlayScreen implements Screen {
     Label lbFPS;
 
     IncadiumInvocationStrategy incadiumInvocationStrategy;
-
+    WorldSerializationManager worldSerializationManager;
     int frame = 0;
 
     public GamePlayScreen(final Incadium incadium) {
@@ -110,10 +122,16 @@ public class GamePlayScreen implements Screen {
 
         constructUI();
 
+        worldSerializationManager = new WorldSerializationManager();
+
         config = new WorldConfigurationBuilder().with(
                 new SuperMapper(),
                 new TagManager(),
                 new EntityLinkManager(),
+                worldSerializationManager,
+                // Load Assets
+                new TextureResolverSystem(), //TODO maybe find a way to generalize asset loading?
+                new AnimationResolverSystem(),
                 // Setup Systems
                 new MapSystem(),
                 // Render Systems
@@ -149,7 +167,11 @@ public class GamePlayScreen implements Screen {
         config.setInvocationStrategy(incadiumInvocationStrategy);
         world = new World(config);
 
-        incadiumInvocationStrategy.setMandatorySystems(SuperMapper.class, TagManager.class, EntityLinkManager.class, ComponentManager.class, EntityManager.class, AspectSubscriptionManager.class);
+        JsonArtemisSerializer backend = new JsonArtemisSerializer(world);
+        backend.prettyPrint(true);
+        worldSerializationManager.setSerializer(backend);
+
+        incadiumInvocationStrategy.setMandatorySystems(SuperMapper.class, TagManager.class, EntityLinkManager.class, ComponentManager.class, EntityManager.class, AspectSubscriptionManager.class, WorldSerializationManager.class, TextureResolverSystem.class, AnimationResolverSystem.class);
 
         incadiumInvocationStrategy.setRenderSystems(MapSystem.class, RenderSystem.class,
                 TargetCameraSystem.class, TerrainRenderSystem.class, AnimationSystem.class, SlimeAnimationControllerSystem.class,
@@ -160,6 +182,14 @@ public class GamePlayScreen implements Screen {
 
         incadiumInvocationStrategy.setPostTurnSystems();
         inputMultiplexer.addProcessor(new GestureDetector(world.getSystem(PlayerControllerSystem.class)));
+
+        try {
+            FileHandle file = Gdx.files.local("/level.json");
+            InputStream is = new FileInputStream(file.file());
+            SaveFileFormat load = worldSerializationManager.load(is, SaveFileFormat.class);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public void constructUI() {
@@ -187,6 +217,8 @@ public class GamePlayScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        assetManager.update();
+
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         lbFPS.setText("FPS: " + Gdx.graphics.getFramesPerSecond());

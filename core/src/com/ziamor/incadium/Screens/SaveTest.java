@@ -32,6 +32,7 @@ import com.ziamor.incadium.components.Render.TextureRegionComponent;
 import com.ziamor.incadium.components.TargetCameraFocusComponent;
 import com.ziamor.incadium.components.TransformComponent;
 import com.ziamor.incadium.components.TurnComponent;
+import com.ziamor.incadium.systems.Asset.AnimationResolverSystem;
 import com.ziamor.incadium.systems.Asset.TextureResolverSystem;
 import com.ziamor.incadium.systems.Movement.FollowSystem;
 import com.ziamor.incadium.systems.Movement.MovementSystem;
@@ -89,7 +90,8 @@ public class SaveTest implements Screen {
                 new EntityLinkManager(),
                 worldSerializationManager,
                 new MapSystem(),
-                new TextureResolverSystem(), //TODO maybe find a way to generalize asset loading?
+                new TextureResolverSystem(),
+                new AnimationResolverSystem(),
                 new SlimeAnimationControllerSystem(),
                 new AnimationSystem(),
                 new TerrainRenderSystem(batch),
@@ -103,7 +105,6 @@ public class SaveTest implements Screen {
         ).build().register(assetManager);
         world = new World(config);
 
-        world.inject(this);
         JsonArtemisSerializer backend = new JsonArtemisSerializer(world);
         backend.prettyPrint(true);
         worldSerializationManager.setSerializer(backend);

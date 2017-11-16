@@ -3,25 +3,26 @@
 	"version": 1
 },
 "componentIdentifiers": {
-	"com.ziamor.incadium.components.Render.SlimeAnimation": "SlimeAnimation",
-	"com.ziamor.incadium.components.TransformComponent": "TransformComponent",
-	"com.ziamor.incadium.components.MonsterComponent": "MonsterComponent",
 	"com.ziamor.incadium.components.TurnComponent": "TurnComponent",
-	"com.ziamor.incadium.components.FactionComponent": "FactionComponent",
-	"com.ziamor.incadium.components.UI.HealthBarUIComponent": "HealthBarUIComponent",
-	"com.ziamor.incadium.components.Combat.AttackDamageComponent": "AttackDamageComponent",
-	"com.ziamor.incadium.components.Stats.HealthComponent": "HealthComponent",
 	"com.ziamor.incadium.components.Movement.FollowTargetComponent": "FollowTargetComponent",
-	"com.ziamor.incadium.components.Movement.MovementComponent": "MovementComponent",
 	"com.ziamor.incadium.components.Movement.PlayerControllerComponent": "PlayerControllerComponent",
-	"com.ziamor.incadium.components.TurnTakerComponent": "TurnTakerComponent",
-	"com.ziamor.incadium.components.Asset.TextureResolverComponent": "TextureResolverComponent",
+	"com.ziamor.incadium.components.MonsterComponent": "MonsterComponent",
+	"com.ziamor.incadium.components.Render.SlimeAnimation": "SlimeAnimation",
+	"com.ziamor.incadium.components.Stats.HealthComponent": "HealthComponent",
+	"com.ziamor.incadium.components.Combat.AttackDamageComponent": "AttackDamageComponent",
+	"com.ziamor.incadium.components.TransformComponent": "TransformComponent",
+	"com.ziamor.incadium.components.Combat.LootableComponent": "LootableComponent",
+	"com.ziamor.incadium.components.Asset.AnimationResolverComponent": "AnimationResolverComponent",
+	"com.ziamor.incadium.components.UI.HealthBarUIComponent": "HealthBarUIComponent",
 	"com.ziamor.incadium.components.TargetCameraFocusComponent": "TargetCameraFocusComponent",
-	"com.ziamor.incadium.components.Combat.LootableComponent": "LootableComponent"
+	"com.ziamor.incadium.components.Movement.MovementComponent": "MovementComponent",
+	"com.ziamor.incadium.components.Asset.TextureResolverComponent": "TextureResolverComponent",
+	"com.ziamor.incadium.components.FactionComponent": "FactionComponent",
+	"com.ziamor.incadium.components.TurnTakerComponent": "TurnTakerComponent"
 },
 "entities": {
 	"0": {
-		"archetype": 28,
+		"archetype": 29,
 		"tag": "player",
 		"components": {
 			"AttackDamageComponent": {
@@ -45,8 +46,14 @@
 		}
 	},
 	"2501": {
-		"archetype": 29,
+		"archetype": 28,
 		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
 			"AttackDamageComponent": {
 				"damage": 15
 			},
@@ -60,19 +67,22 @@
 				"maxHealth": 50,
 				"currentHealth": 50
 			},
-			"TextureResolverComponent": {
-				"path": "bat.png"
-			},
 			"TransformComponent": {
-				"x": 27,
-				"y": 20,
+				"x": 41,
+				"y": 14,
 				"z": 4
 			}
 		}
 	},
 	"2502": {
-		"archetype": 29,
+		"archetype": 28,
 		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
 			"AttackDamageComponent": {
 				"damage": 15
 			},
@@ -86,201 +96,22 @@
 				"maxHealth": 50,
 				"currentHealth": 50
 			},
-			"TextureResolverComponent": {
-				"path": "bat.png"
-			},
 			"TransformComponent": {
-				"x": 17,
-				"y": 30,
-				"z": 4
-			}
-		}
-	},
-	"2503": {
-		"archetype": 29,
-		"components": {
-			"AttackDamageComponent": {
-				"damage": 15
-			},
-			"FactionComponent": {
-				"factionID": 1
-			},
-			"FollowTargetComponent": {
-				"target": 0
-			},
-			"HealthComponent": {
-				"maxHealth": 50,
-				"currentHealth": 50
-			},
-			"TextureResolverComponent": {
-				"path": "bat.png"
-			},
-			"TransformComponent": {
-				"x": 44,
-				"y": 19,
-				"z": 4
-			}
-		}
-	},
-	"2504": {
-		"archetype": 29,
-		"components": {
-			"AttackDamageComponent": {
-				"damage": 15
-			},
-			"FactionComponent": {
-				"factionID": 1
-			},
-			"FollowTargetComponent": {
-				"target": 0
-			},
-			"HealthComponent": {
-				"maxHealth": 50,
-				"currentHealth": 50
-			},
-			"TextureResolverComponent": {
-				"path": "bat.png"
-			},
-			"TransformComponent": {
-				"x": 14,
-				"y": 42,
-				"z": 4
-			}
-		}
-	},
-	"2505": {
-		"archetype": 29,
-		"components": {
-			"AttackDamageComponent": {
-				"damage": 15
-			},
-			"FactionComponent": {
-				"factionID": 1
-			},
-			"FollowTargetComponent": {
-				"target": 0
-			},
-			"HealthComponent": {
-				"maxHealth": 50,
-				"currentHealth": 50
-			},
-			"TextureResolverComponent": {
-				"path": "bat.png"
-			},
-			"TransformComponent": {
-				"x": 43,
-				"y": 8,
-				"z": 4
-			}
-		}
-	},
-	"2506": {
-		"archetype": 29,
-		"components": {
-			"AttackDamageComponent": {
-				"damage": 15
-			},
-			"FactionComponent": {
-				"factionID": 1
-			},
-			"FollowTargetComponent": {
-				"target": 0
-			},
-			"HealthComponent": {
-				"maxHealth": 50,
-				"currentHealth": 50
-			},
-			"TextureResolverComponent": {
-				"path": "bat.png"
-			},
-			"TransformComponent": {
-				"x": 21,
-				"y": 6,
-				"z": 4
-			}
-		}
-	},
-	"2507": {
-		"archetype": 29,
-		"components": {
-			"AttackDamageComponent": {
-				"damage": 15
-			},
-			"FactionComponent": {
-				"factionID": 1
-			},
-			"FollowTargetComponent": {
-				"target": 0
-			},
-			"HealthComponent": {
-				"maxHealth": 50,
-				"currentHealth": 50
-			},
-			"TextureResolverComponent": {
-				"path": "bat.png"
-			},
-			"TransformComponent": {
-				"x": 36,
-				"y": 37,
-				"z": 4
-			}
-		}
-	},
-	"2508": {
-		"archetype": 29,
-		"components": {
-			"AttackDamageComponent": {
-				"damage": 15
-			},
-			"FactionComponent": {
-				"factionID": 1
-			},
-			"FollowTargetComponent": {
-				"target": 0
-			},
-			"HealthComponent": {
-				"maxHealth": 50,
-				"currentHealth": 50
-			},
-			"TextureResolverComponent": {
-				"path": "bat.png"
-			},
-			"TransformComponent": {
-				"x": 45,
-				"y": 33,
-				"z": 4
-			}
-		}
-	},
-	"2509": {
-		"archetype": 29,
-		"components": {
-			"AttackDamageComponent": {
-				"damage": 15
-			},
-			"FactionComponent": {
-				"factionID": 1
-			},
-			"FollowTargetComponent": {
-				"target": 0
-			},
-			"HealthComponent": {
-				"maxHealth": 50,
-				"currentHealth": 50
-			},
-			"TextureResolverComponent": {
-				"path": "bat.png"
-			},
-			"TransformComponent": {
-				"x": 46,
+				"x": 20,
 				"y": 21,
 				"z": 4
 			}
 		}
 	},
-	"2510": {
-		"archetype": 29,
+	"2503": {
+		"archetype": 28,
 		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
 			"AttackDamageComponent": {
 				"damage": 15
 			},
@@ -294,12 +125,1372 @@
 				"maxHealth": 50,
 				"currentHealth": 50
 			},
-			"TextureResolverComponent": {
-				"path": "bat.png"
+			"TransformComponent": {
+				"x": 29,
+				"y": 44,
+				"z": 4
+			}
+		}
+	},
+	"2504": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 12,
+				"y": 13,
+				"z": 4
+			}
+		}
+	},
+	"2505": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 23,
+				"y": 38,
+				"z": 4
+			}
+		}
+	},
+	"2506": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 5,
+				"y": 29,
+				"z": 4
+			}
+		}
+	},
+	"2507": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 5,
+				"y": 42,
+				"z": 4
+			}
+		}
+	},
+	"2508": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 7,
+				"y": 20,
+				"z": 4
+			}
+		}
+	},
+	"2509": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 47,
+				"y": 27,
+				"z": 4
+			}
+		}
+	},
+	"2510": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 21,
+				"y": 24,
+				"z": 4
+			}
+		}
+	},
+	"2511": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 33,
+				"y": 17,
+				"z": 4
+			}
+		}
+	},
+	"2512": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 2,
+				"y": 12,
+				"z": 4
+			}
+		}
+	},
+	"2513": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 27,
+				"y": 34,
+				"z": 4
+			}
+		}
+	},
+	"2514": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 1,
+				"y": 30,
+				"z": 4
+			}
+		}
+	},
+	"2515": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 14,
+				"y": 29,
+				"z": 4
+			}
+		}
+	},
+	"2516": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 12,
+				"y": 5,
+				"z": 4
+			}
+		}
+	},
+	"2517": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 22,
+				"y": 28,
+				"z": 4
+			}
+		}
+	},
+	"2518": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 10,
+				"y": 40,
+				"z": 4
+			}
+		}
+	},
+	"2519": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 7,
+				"y": 13,
+				"z": 4
+			}
+		}
+	},
+	"2520": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 1,
+				"y": 28,
+				"z": 4
+			}
+		}
+	},
+	"2521": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 27,
+				"y": 38,
+				"z": 4
+			}
+		}
+	},
+	"2522": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 9,
+				"y": 12,
+				"z": 4
+			}
+		}
+	},
+	"2523": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 32,
+				"y": 2,
+				"z": 4
+			}
+		}
+	},
+	"2524": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 31,
+				"y": 8,
+				"z": 4
+			}
+		}
+	},
+	"2525": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 17,
+				"y": 41,
+				"z": 4
+			}
+		}
+	},
+	"2526": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 35,
+				"y": 28,
+				"z": 4
+			}
+		}
+	},
+	"2527": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
 			},
 			"TransformComponent": {
 				"x": 3,
-				"y": 41,
+				"y": 3,
+				"z": 4
+			}
+		}
+	},
+	"2528": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 47,
+				"y": 8,
+				"z": 4
+			}
+		}
+	},
+	"2529": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 32,
+				"y": 10,
+				"z": 4
+			}
+		}
+	},
+	"2530": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 25,
+				"y": 48,
+				"z": 4
+			}
+		}
+	},
+	"2531": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 19,
+				"y": 38,
+				"z": 4
+			}
+		}
+	},
+	"2532": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 5,
+				"y": 14,
+				"z": 4
+			}
+		}
+	},
+	"2533": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 2,
+				"y": 40,
+				"z": 4
+			}
+		}
+	},
+	"2534": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 17,
+				"y": 36,
+				"z": 4
+			}
+		}
+	},
+	"2535": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 27,
+				"y": 28,
+				"z": 4
+			}
+		}
+	},
+	"2536": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 31,
+				"y": 11,
+				"z": 4
+			}
+		}
+	},
+	"2537": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 42,
+				"y": 27,
+				"z": 4
+			}
+		}
+	},
+	"2538": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 1,
+				"y": 22,
+				"z": 4
+			}
+		}
+	},
+	"2539": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 7,
+				"y": 36,
+				"z": 4
+			}
+		}
+	},
+	"2540": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 8,
+				"y": 12,
+				"z": 4
+			}
+		}
+	},
+	"2541": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 23,
+				"y": 48,
+				"z": 4
+			}
+		}
+	},
+	"2542": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 24,
+				"y": 48,
+				"z": 4
+			}
+		}
+	},
+	"2543": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 13,
+				"y": 22,
+				"z": 4
+			}
+		}
+	},
+	"2544": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 25,
+				"y": 14,
+				"z": 4
+			}
+		}
+	},
+	"2545": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 6,
+				"y": 23,
+				"z": 4
+			}
+		}
+	},
+	"2546": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 45,
+				"y": 3,
+				"z": 4
+			}
+		}
+	},
+	"2547": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 10,
+				"y": 32,
+				"z": 4
+			}
+		}
+	},
+	"2548": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 41,
+				"y": 3,
+				"z": 4
+			}
+		}
+	},
+	"2549": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 41,
+				"y": 8,
+				"z": 4
+			}
+		}
+	},
+	"2550": {
+		"archetype": 28,
+		"components": {
+			"AnimationResolverComponent": {
+				"path": "slime.png",
+				"numFrameWidth": 4,
+				"numFrameHeight": 2,
+				"speed": 0.1
+			},
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TransformComponent": {
+				"x": 26,
+				"y": 16,
 				"z": 4
 			}
 		}
@@ -307,30 +1498,30 @@
 },
 "archetypes": {
 	"28": [
-		"TextureResolverComponent",
-		"TransformComponent",
-		"TargetCameraFocusComponent",
-		"PlayerControllerComponent",
-		"MovementComponent",
-		"TurnComponent",
-		"FactionComponent",
-		"HealthBarUIComponent",
-		"TurnTakerComponent",
-		"AttackDamageComponent",
-		"HealthComponent"
-	],
-	"29": [
-		"TextureResolverComponent",
+		"AnimationResolverComponent",
 		"SlimeAnimation",
 		"TransformComponent",
 		"MovementComponent",
 		"FollowTargetComponent",
 		"MonsterComponent",
 		"FactionComponent",
-		"TurnTakerComponent",
-		"AttackDamageComponent",
 		"HealthComponent",
+		"AttackDamageComponent",
+		"TurnTakerComponent",
 		"LootableComponent"
+	],
+	"29": [
+		"TextureResolverComponent",
+		"TransformComponent",
+		"TargetCameraFocusComponent",
+		"PlayerControllerComponent",
+		"MovementComponent",
+		"TurnComponent",
+		"HealthBarUIComponent",
+		"FactionComponent",
+		"HealthComponent",
+		"AttackDamageComponent",
+		"TurnTakerComponent"
 	]
 }
 }

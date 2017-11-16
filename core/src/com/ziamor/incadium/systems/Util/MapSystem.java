@@ -79,10 +79,10 @@ public class MapSystem extends BaseSystem {
                 .turnComponent()
                 .factionComponent(0)
                 .targetCameraFocusComponent();
-
+*/
         int ePlayer = world.getSystem(TagManager.class).getEntityId("player");
         if (ePlayer != -1) {
-            Texture slimeTexture = assetManager.get("Slime.png", Texture.class);
+            /*Texture slimeTexture = assetManager.get("Slime.png", Texture.class);
             int numFrameWidth = slimeTexture.getWidth() / 4;
             int numFrameHright = slimeTexture.getHeight() / 2;
             float speed = 0.1f;
@@ -94,11 +94,10 @@ public class MapSystem extends BaseSystem {
             animation.put("walk", walkAnimation);
             animation.put("attack", attackAnimation);
 
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 50; i++) {
                 pos = getFreeSpace();
                 E.E().transformComponent(pos.x, pos.y, 4)
-                        //.animationComponent(animation, 0)
-                        .textureResolverComponent("bat.png")
+                        .animationResolverComponent("slime.png", 4, 2, 0.1f)
                         .healthComponentHealthStat(50, 50f)
                         .movementComponent()
                         .turnTakerComponent()
@@ -108,8 +107,8 @@ public class MapSystem extends BaseSystem {
                         .attackDamageComponent(15f)
                         .factionComponent(1)
                         .slimeAnimation();
-            }
-        }*/
+            }*/
+        }
     }
 
     protected int createTile(int id, int x, int y) {
