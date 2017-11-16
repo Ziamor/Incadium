@@ -1,11 +1,12 @@
 package com.ziamor.incadium.components.Render;
 
 import com.artemis.Component;
+import com.artemis.annotations.Transient;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ObjectMap;
 
-
+@Transient
 public class AnimationComponent extends Component {
     public ObjectMap<String, Animation<TextureRegion>> animation;
     public float time = 0;
