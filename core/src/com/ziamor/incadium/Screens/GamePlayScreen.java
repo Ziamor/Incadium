@@ -39,8 +39,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.ziamor.incadium.DecorFactory;
 import com.ziamor.incadium.ItemFactory;
 import com.ziamor.incadium.IncadiumInvocationStrategy;
-import com.ziamor.incadium.components.Asset.AnimationResolverComponent;
-import com.ziamor.incadium.components.Asset.TextureResolverComponent;
 import com.ziamor.incadium.components.Combat.DeadComponent;
 import com.ziamor.incadium.components.MonsterComponent;
 import com.ziamor.incadium.components.Movement.PlayerControllerComponent;
@@ -57,7 +55,7 @@ import com.ziamor.incadium.systems.Movement.PathFindingSystem;
 import com.ziamor.incadium.systems.Render.AnimationSystem;
 import com.ziamor.incadium.systems.Render.SlimeAnimationControllerSystem;
 import com.ziamor.incadium.systems.Render.VisibilitySystem;
-import com.ziamor.incadium.systems.TargetCameraSystem;
+import com.ziamor.incadium.systems.Render.TargetCameraSystem;
 import com.ziamor.incadium.systems.UI.AttackCooldownBarRender;
 import com.ziamor.incadium.systems.UI.HealthBarUISystem;
 import com.ziamor.incadium.systems.Combat.DeathSystem;
@@ -143,9 +141,9 @@ public class GamePlayScreen implements Screen {
                 new VisibilitySystem(8),
                 new SlimeAnimationControllerSystem(),
                 new AnimationSystem(),
-                new TerrainRenderSystem(batch),
-                new RenderSystem(batch),
-                new TargetCameraSystem(camera),
+                new TerrainRenderSystem(),
+                new RenderSystem(),
+                new TargetCameraSystem(),
                 // Input Systems
                 new PlayerControllerSystem(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()),
                 //new TurnSchedulerSystem(),
@@ -167,7 +165,11 @@ public class GamePlayScreen implements Screen {
                 //Debug Systems
                 new PlayerStateSystem(),
                 new DrawCurrentTurnTakerSystem(shapeRenderer)
-        ).build().register(assetManager);
+        ).build()
+                .register(batch)
+                .register(shapeRenderer)
+                .register(camera)
+                .register(assetManager);
         incadiumInvocationStrategy = new IncadiumInvocationStrategy();
         config.setInvocationStrategy(incadiumInvocationStrategy);
         world = new World(config);

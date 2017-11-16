@@ -2,6 +2,7 @@ package com.ziamor.incadium.systems.Render;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
+import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.ziamor.incadium.components.Render.GroundTileComponent;
@@ -13,12 +14,11 @@ public class TerrainRenderSystem extends IteratingSystem {
     ComponentMapper<TransformComponent> transformComponentComponentMapper;
     ComponentMapper<TerrainTileComponent> terrainTileComponentComponentMapper;
     ComponentMapper<GroundTileComponent> groundTileComponentComponentMapper;
-
+@Wire
     private SpriteBatch batch;
 
-    public TerrainRenderSystem(SpriteBatch batch) {
+    public TerrainRenderSystem() {
         super(Aspect.all(TransformComponent.class).one(TerrainTileComponent.class, GroundTileComponent.class).exclude(NotVisableComponent.class));
-        this.batch = batch;
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.ziamor.incadium.systems.Render;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
+import com.artemis.annotations.Wire;
 import com.artemis.managers.TagManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -23,13 +24,13 @@ public class RenderSystem extends SortedIteratingSystem {
     ComponentMapper<TransformComponent> transformComponentComponentMapper;
     ComponentMapper<MovementLerpComponent> movementLerpComponentComponentMapper;
     private ComponentMapper<AttackLerpComponent> attackLerpComponentMapper;
+    @Wire
     private SpriteBatch batch;
     private Vector2 pos;
     TagManager tagManager;
 
-    public RenderSystem(SpriteBatch batch) {
+    public RenderSystem() {
         super(Aspect.all(TransformComponent.class).one(TextureComponent.class, TextureRegionComponent.class).exclude(NotVisableComponent.class));
-        this.batch = batch;
         this.pos = new Vector2();
     }
 

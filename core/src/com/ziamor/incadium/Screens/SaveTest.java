@@ -19,7 +19,6 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -28,7 +27,6 @@ import com.ziamor.incadium.components.Asset.TextureResolverComponent;
 import com.ziamor.incadium.components.MonsterComponent;
 import com.ziamor.incadium.components.Movement.PlayerControllerComponent;
 import com.ziamor.incadium.components.Render.TextureComponent;
-import com.ziamor.incadium.components.Render.TextureRegionComponent;
 import com.ziamor.incadium.components.TargetCameraFocusComponent;
 import com.ziamor.incadium.components.TransformComponent;
 import com.ziamor.incadium.components.TurnComponent;
@@ -42,7 +40,7 @@ import com.ziamor.incadium.systems.Render.AnimationSystem;
 import com.ziamor.incadium.systems.Render.RenderSystem;
 import com.ziamor.incadium.systems.Render.SlimeAnimationControllerSystem;
 import com.ziamor.incadium.systems.Render.TerrainRenderSystem;
-import com.ziamor.incadium.systems.TargetCameraSystem;
+import com.ziamor.incadium.systems.Render.TargetCameraSystem;
 import com.ziamor.incadium.systems.Util.LerpSystem;
 import com.ziamor.incadium.systems.Util.MapSystem;
 
@@ -94,9 +92,9 @@ public class SaveTest implements Screen {
                 new AnimationResolverSystem(),
                 new SlimeAnimationControllerSystem(),
                 new AnimationSystem(),
-                new TerrainRenderSystem(batch),
-                new RenderSystem(batch),
-                new TargetCameraSystem(camera),
+                new TerrainRenderSystem(),
+                new RenderSystem(),
+                new TargetCameraSystem(),
                 new PlayerControllerSystem(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()),
                 new LerpSystem(),
                 new PathFindingSystem(),

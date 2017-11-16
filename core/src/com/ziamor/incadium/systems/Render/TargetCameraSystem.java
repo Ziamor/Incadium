@@ -1,9 +1,10 @@
-package com.ziamor.incadium.systems;
+package com.ziamor.incadium.systems.Render;
 
 import com.artemis.Aspect;
 import com.artemis.BaseEntitySystem;
 import com.artemis.ComponentMapper;
 import com.artemis.annotations.EntityId;
+import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.ziamor.incadium.components.Movement.MovementLerpComponent;
@@ -12,6 +13,7 @@ import com.ziamor.incadium.components.TransformComponent;
 
 
 public class TargetCameraSystem extends BaseEntitySystem {
+    @Wire
     private OrthographicCamera camera;
 
     private ComponentMapper<TransformComponent> transformComponentMapper;
@@ -19,9 +21,8 @@ public class TargetCameraSystem extends BaseEntitySystem {
     @EntityId
     private int target = -1;
 
-    public TargetCameraSystem(OrthographicCamera camera) {
+    public TargetCameraSystem() {
         super(Aspect.all(TargetCameraFocusComponent.class, TransformComponent.class));
-        this.camera = camera;
     }
 
     @Override
