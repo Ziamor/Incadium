@@ -2,7 +2,9 @@ package com.ziamor.incadium.components.Combat;
 
 
 import com.artemis.Component;
+import com.artemis.annotations.Transient;
 
+@Transient
 public class AttackCoolDownComponent extends Component {
     public float life, elapsed;
 

@@ -1,10 +1,11 @@
 package com.ziamor.incadium.components.Movement;
 
 import com.artemis.Component;
+import com.artemis.annotations.Transient;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 
-
+@Transient
 public class AttackLerpComponent extends Component {
     private float startX, startY, targetX, targetY;
     public float elapsed = 0;
