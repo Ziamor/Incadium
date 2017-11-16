@@ -65,7 +65,7 @@ public class MainMenuScreen implements Screen {
     @Override
     public void render(float delta) {
         //TODO remove later
-        incadium.setScreen(new GamePlayScreen(incadium));
+        incadium.setScreen(new SaveTest(incadium));
         dispose();
 
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);

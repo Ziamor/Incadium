@@ -1,0 +1,59 @@
+{
+"metadata": {
+	"version": 1
+},
+"componentIdentifiers": {
+	"com.ziamor.incadium.components.TransformComponent": "TransformComponent",
+	"com.ziamor.incadium.components.Combat.AttackDamageComponent": "AttackDamageComponent",
+	"com.ziamor.incadium.components.TurnTakerComponent": "TurnTakerComponent",
+	"com.ziamor.incadium.components.Movement.MovementComponent": "MovementComponent",
+	"com.ziamor.incadium.components.UI.HealthBarUIComponent": "HealthBarUIComponent",
+	"com.ziamor.incadium.components.FactionComponent": "FactionComponent",
+	"com.ziamor.incadium.components.Stats.HealthComponent": "HealthComponent",
+	"com.ziamor.incadium.components.TargetCameraFocusComponent": "TargetCameraFocusComponent",
+	"com.ziamor.incadium.components.Movement.PlayerControllerComponent": "PlayerControllerComponent",
+	"com.ziamor.incadium.components.Asset.TextureResolverComponent": "TextureResolverComponent",
+	"com.ziamor.incadium.components.TurnComponent": "TurnComponent"
+},
+"entities": {
+	"0": {
+		"archetype": 12,
+		"tag": "player",
+		"components": {
+			"AttackDamageComponent": {
+				"damage": 25
+			},
+			"HealthBarUIComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 500,
+				"currentHealth": 500
+			},
+			"TextureResolverComponent": {
+				"path": "player.png"
+			},
+			"TransformComponent": {
+				"x": 1,
+				"y": 1,
+				"z": 4
+			}
+		}
+	}
+},
+"archetypes": {
+	"12": [
+		"TextureResolverComponent",
+		"TransformComponent",
+		"TargetCameraFocusComponent",
+		"TurnTakerComponent",
+		"HealthComponent",
+		"AttackDamageComponent",
+		"HealthBarUIComponent",
+		"FactionComponent",
+		"MovementComponent",
+		"TurnComponent",
+		"PlayerControllerComponent"
+	]
+}
+}

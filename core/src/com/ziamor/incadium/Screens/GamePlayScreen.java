@@ -272,5 +272,7 @@ public class GamePlayScreen implements Screen {
 
     @Override
     public void dispose() {
+        stage.dispose();
+        //TODO dispose asset manager?
     }
 }

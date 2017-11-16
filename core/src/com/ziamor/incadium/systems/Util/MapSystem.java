@@ -4,6 +4,7 @@ import com.artemis.BaseSystem;
 import com.artemis.ComponentMapper;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
+import com.artemis.managers.TagManager;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -63,8 +64,9 @@ public class MapSystem extends BaseSystem {
                 entitie_map[i][j] = ent;
             }
 
-        int ePlayer = world.createEntity().getId();
+
         Vector2 pos = getFreeSpace();
+        /*int ePlayer = world.createEntity().getId();
         E.E(ePlayer).tag("player")
                 .textureComponent(assetManager.get("player.png", Texture.class))
                 .transformComponent(pos.x, pos.y, 4)
@@ -78,32 +80,36 @@ public class MapSystem extends BaseSystem {
                 .factionComponent(0)
                 .targetCameraFocusComponent();
 
-        Texture slimeTexture = assetManager.get("Slime.png", Texture.class);
-        int numFrameWidth = slimeTexture.getWidth() / 4;
-        int numFrameHright = slimeTexture.getHeight() / 2;
-        float speed = 0.1f;
-        TextureRegion[][] splitRegions = TextureRegion.split(slimeTexture, numFrameWidth, numFrameHright);
-        Animation<TextureRegion> walkAnimation = new Animation<TextureRegion>(speed, splitRegions[0]);
-        Animation<TextureRegion> attackAnimation = new Animation<TextureRegion>(speed, splitRegions[1]);
+        int ePlayer = world.getSystem(TagManager.class).getEntityId("player");
+        if (ePlayer != -1) {
+            Texture slimeTexture = assetManager.get("Slime.png", Texture.class);
+            int numFrameWidth = slimeTexture.getWidth() / 4;
+            int numFrameHright = slimeTexture.getHeight() / 2;
+            float speed = 0.1f;
+            TextureRegion[][] splitRegions = TextureRegion.split(slimeTexture, numFrameWidth, numFrameHright);
+            Animation<TextureRegion> walkAnimation = new Animation<TextureRegion>(speed, splitRegions[0]);
+            Animation<TextureRegion> attackAnimation = new Animation<TextureRegion>(speed, splitRegions[1]);
 
-        ObjectMap<String, Animation<TextureRegion>> animation = new ObjectMap<String, Animation<TextureRegion>>();
-        animation.put("walk", walkAnimation);
-        animation.put("attack", attackAnimation);
+            ObjectMap<String, Animation<TextureRegion>> animation = new ObjectMap<String, Animation<TextureRegion>>();
+            animation.put("walk", walkAnimation);
+            animation.put("attack", attackAnimation);
 
-        for (int i = 0; i < 10; i++) {
-            pos = getFreeSpace();
-            E.E().transformComponent(pos.x, pos.y, 4)
-                    .animationComponent(animation, 0)
-                    .healthComponentHealthStat(50, 50f)
-                    .movementComponent()
-                    .turnTakerComponent()
-                    .monsterComponent()
-                    .followTargetComponent(ePlayer)
-                    .lootableComponent()
-                    .attackDamageComponent(15f)
-                    .factionComponent(1)
-                    .slimeAnimation();
-        }
+            for (int i = 0; i < 10; i++) {
+                pos = getFreeSpace();
+                E.E().transformComponent(pos.x, pos.y, 4)
+                        //.animationComponent(animation, 0)
+                        .textureResolverComponent("bat.png")
+                        .healthComponentHealthStat(50, 50f)
+                        .movementComponent()
+                        .turnTakerComponent()
+                        .monsterComponent()
+                        .followTargetComponent(ePlayer)
+                        .lootableComponent()
+                        .attackDamageComponent(15f)
+                        .factionComponent(1)
+                        .slimeAnimation();
+            }
+        }*/
     }
 
     protected int createTile(int id, int x, int y) {

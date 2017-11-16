@@ -1,0 +1,336 @@
+{
+"metadata": {
+	"version": 1
+},
+"componentIdentifiers": {
+	"com.ziamor.incadium.components.Render.SlimeAnimation": "SlimeAnimation",
+	"com.ziamor.incadium.components.TransformComponent": "TransformComponent",
+	"com.ziamor.incadium.components.MonsterComponent": "MonsterComponent",
+	"com.ziamor.incadium.components.TurnComponent": "TurnComponent",
+	"com.ziamor.incadium.components.FactionComponent": "FactionComponent",
+	"com.ziamor.incadium.components.UI.HealthBarUIComponent": "HealthBarUIComponent",
+	"com.ziamor.incadium.components.Combat.AttackDamageComponent": "AttackDamageComponent",
+	"com.ziamor.incadium.components.Stats.HealthComponent": "HealthComponent",
+	"com.ziamor.incadium.components.Movement.FollowTargetComponent": "FollowTargetComponent",
+	"com.ziamor.incadium.components.Movement.MovementComponent": "MovementComponent",
+	"com.ziamor.incadium.components.Movement.PlayerControllerComponent": "PlayerControllerComponent",
+	"com.ziamor.incadium.components.TurnTakerComponent": "TurnTakerComponent",
+	"com.ziamor.incadium.components.Asset.TextureResolverComponent": "TextureResolverComponent",
+	"com.ziamor.incadium.components.TargetCameraFocusComponent": "TargetCameraFocusComponent",
+	"com.ziamor.incadium.components.Combat.LootableComponent": "LootableComponent"
+},
+"entities": {
+	"0": {
+		"archetype": 28,
+		"tag": "player",
+		"components": {
+			"AttackDamageComponent": {
+				"damage": 25
+			},
+			"HealthBarUIComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 500,
+				"currentHealth": 500
+			},
+			"TextureResolverComponent": {
+				"path": "player.png"
+			},
+			"TransformComponent": {
+				"x": 1,
+				"y": 1,
+				"z": 4
+			}
+		}
+	},
+	"2501": {
+		"archetype": 29,
+		"components": {
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TextureResolverComponent": {
+				"path": "bat.png"
+			},
+			"TransformComponent": {
+				"x": 27,
+				"y": 20,
+				"z": 4
+			}
+		}
+	},
+	"2502": {
+		"archetype": 29,
+		"components": {
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TextureResolverComponent": {
+				"path": "bat.png"
+			},
+			"TransformComponent": {
+				"x": 17,
+				"y": 30,
+				"z": 4
+			}
+		}
+	},
+	"2503": {
+		"archetype": 29,
+		"components": {
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TextureResolverComponent": {
+				"path": "bat.png"
+			},
+			"TransformComponent": {
+				"x": 44,
+				"y": 19,
+				"z": 4
+			}
+		}
+	},
+	"2504": {
+		"archetype": 29,
+		"components": {
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TextureResolverComponent": {
+				"path": "bat.png"
+			},
+			"TransformComponent": {
+				"x": 14,
+				"y": 42,
+				"z": 4
+			}
+		}
+	},
+	"2505": {
+		"archetype": 29,
+		"components": {
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TextureResolverComponent": {
+				"path": "bat.png"
+			},
+			"TransformComponent": {
+				"x": 43,
+				"y": 8,
+				"z": 4
+			}
+		}
+	},
+	"2506": {
+		"archetype": 29,
+		"components": {
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TextureResolverComponent": {
+				"path": "bat.png"
+			},
+			"TransformComponent": {
+				"x": 21,
+				"y": 6,
+				"z": 4
+			}
+		}
+	},
+	"2507": {
+		"archetype": 29,
+		"components": {
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TextureResolverComponent": {
+				"path": "bat.png"
+			},
+			"TransformComponent": {
+				"x": 36,
+				"y": 37,
+				"z": 4
+			}
+		}
+	},
+	"2508": {
+		"archetype": 29,
+		"components": {
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TextureResolverComponent": {
+				"path": "bat.png"
+			},
+			"TransformComponent": {
+				"x": 45,
+				"y": 33,
+				"z": 4
+			}
+		}
+	},
+	"2509": {
+		"archetype": 29,
+		"components": {
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TextureResolverComponent": {
+				"path": "bat.png"
+			},
+			"TransformComponent": {
+				"x": 46,
+				"y": 21,
+				"z": 4
+			}
+		}
+	},
+	"2510": {
+		"archetype": 29,
+		"components": {
+			"AttackDamageComponent": {
+				"damage": 15
+			},
+			"FactionComponent": {
+				"factionID": 1
+			},
+			"FollowTargetComponent": {
+				"target": 0
+			},
+			"HealthComponent": {
+				"maxHealth": 50,
+				"currentHealth": 50
+			},
+			"TextureResolverComponent": {
+				"path": "bat.png"
+			},
+			"TransformComponent": {
+				"x": 3,
+				"y": 41,
+				"z": 4
+			}
+		}
+	}
+},
+"archetypes": {
+	"28": [
+		"TextureResolverComponent",
+		"TransformComponent",
+		"TargetCameraFocusComponent",
+		"PlayerControllerComponent",
+		"MovementComponent",
+		"TurnComponent",
+		"FactionComponent",
+		"HealthBarUIComponent",
+		"TurnTakerComponent",
+		"AttackDamageComponent",
+		"HealthComponent"
+	],
+	"29": [
+		"TextureResolverComponent",
+		"SlimeAnimation",
+		"TransformComponent",
+		"MovementComponent",
+		"FollowTargetComponent",
+		"MonsterComponent",
+		"FactionComponent",
+		"TurnTakerComponent",
+		"AttackDamageComponent",
+		"HealthComponent",
+		"LootableComponent"
+	]
+}
+}
