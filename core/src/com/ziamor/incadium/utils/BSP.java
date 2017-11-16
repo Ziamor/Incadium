@@ -28,8 +28,8 @@ public class BSP {
         }
     }
 
-    public BSP(int width, int height, int depth) {
-        rand = new Random(0x123);
+    public BSP(int width, int height, int depth, long seed) {
+        rand = new Random(seed);
         root = split(new Rectangle(0, 0, width, height), depth);
     }
 

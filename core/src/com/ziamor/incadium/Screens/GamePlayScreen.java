@@ -4,6 +4,7 @@ import com.artemis.Aspect;
 import com.artemis.AspectSubscriptionManager;
 import com.artemis.ComponentManager;
 import com.artemis.ComponentMapper;
+import com.artemis.E;
 import com.artemis.Entity;
 import com.artemis.EntityManager;
 import com.artemis.SuperMapper;
@@ -40,6 +41,7 @@ import com.ziamor.incadium.DecorFactory;
 import com.ziamor.incadium.ItemFactory;
 import com.ziamor.incadium.IncadiumInvocationStrategy;
 import com.ziamor.incadium.components.Combat.DeadComponent;
+import com.ziamor.incadium.components.MapComponent;
 import com.ziamor.incadium.components.MonsterComponent;
 import com.ziamor.incadium.components.Movement.PlayerControllerComponent;
 import com.ziamor.incadium.components.NonComponents.HealthBarUI;
@@ -105,6 +107,7 @@ public class GamePlayScreen implements Screen {
     int frame = 0;
 
     boolean saveGameOnExit = false;
+
     public GamePlayScreen(final Incadium incadium) {
         batch = incadium.batch;
         shapeRenderer = incadium.shapeRenderer;
@@ -126,7 +129,6 @@ public class GamePlayScreen implements Screen {
         constructUI();
 
         worldSerializationManager = new WorldSerializationManager();
-
         config = new WorldConfigurationBuilder().with(
                 new SuperMapper(),
                 new TagManager(),
@@ -315,7 +317,7 @@ public class GamePlayScreen implements Screen {
     @Override
     public void dispose() {
         if(saveGameOnExit) {
-            IntBag entities = world.getAspectSubscriptionManager().get(Aspect.one(PlayerControllerComponent.class, MonsterComponent.class)).getEntities();
+            IntBag entities = world.getAspectSubscriptionManager().get(Aspect.one(PlayerControllerComponent.class, MonsterComponent.class, MapComponent.class)).getEntities();
             try {
                 FileHandle file = Gdx.files.local("/level.json");
                 OutputStream out = new FileOutputStream(file.file());
