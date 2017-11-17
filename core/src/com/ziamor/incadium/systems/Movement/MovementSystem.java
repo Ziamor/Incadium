@@ -16,7 +16,6 @@ import com.ziamor.incadium.components.Movement.PlayerControllerComponent;
 import com.ziamor.incadium.components.Render.NotVisableComponent;
 import com.ziamor.incadium.components.TransformComponent;
 import com.ziamor.incadium.components.TurnComponent;
-import com.ziamor.incadium.systems.Combat.AttackCoolDownSystem;
 import com.ziamor.incadium.systems.Util.MapSystem;
 
 public class MovementSystem extends IteratingSystem {
@@ -64,7 +63,7 @@ public class MovementSystem extends IteratingSystem {
                 float targetX = transformComponent.x + x_offset;
                 float targetY = transformComponent.y + y_offset;
                 // Check if the map tile doesn't block
-                if (!mapSystem.isBlocking((int) targetX, (int) targetY)) {
+                if (!mapSystem.isWallBlocking((int) targetX, (int) targetY)) {
 
                     int target = -1;
                     IntBag monsterIDs = world.getAspectSubscriptionManager().get(Aspect.one(MonsterComponent.class, PlayerControllerComponent.class)).getEntities();

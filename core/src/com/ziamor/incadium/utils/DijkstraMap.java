@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.ziamor.incadium.components.NonComponents.Gradient;
 import com.ziamor.incadium.systems.Util.MapSystem;
 
@@ -32,7 +33,7 @@ public class DijkstraMap {
         boolean[][] blockers = new boolean[map_width][map_height];
         for (int x = 0; x < blockers.length; x++)
             for (int y = 0; y < blockers[x].length; y++)
-                if (map.isBlocking(x, y))
+                if (map.isWallBlocking(x, y))
                     blockers[x][y] = true;
 
         boolean changed = true;
@@ -88,36 +89,53 @@ public class DijkstraMap {
                 float weight = weights[x][y];
                 if (weight == defaultValue)
                     continue;
-                float prog =(weight - max_weight) * -1 / max_weight;
+                float prog = (weight - max_weight) * -1 / max_weight;
                 batch.setColor(g.getColor(prog));
                 batch.rect(x, y, 1, 1);
             }
         batch.end();
     }
 
-    public static Vector2 gradientDecent(int[][] weights, Vector2 pos) {
-        Vector2 nextPos = new Vector2();
+    public static Array<Vector2> getTargetTiles(int[][] weights, Vector2 pos) {
+        Array<Vector2> targets = new Array<Vector2>();
 
         int lowest = DijkstraMap.defaultValue;
 
         int x = (int) pos.x;
         int y = (int) pos.y;
 
-        if (x - 1 >= 0 && weights[x - 1][y] != DijkstraMap.defaultValue && weights[x - 1][y] < lowest) {
-            lowest = weights[x - 1][y];
-            nextPos.set(x - 1, y);
+        if (x - 1 >= 0 && weights[x - 1][y] != DijkstraMap.defaultValue) {
+            if (weights[x - 1][y] < lowest) {
+                lowest = weights[x - 1][y];
+                targets.clear();
+            }
+            if (weights[x - 1][y] == lowest)
+                targets.add(new Vector2(x - 1, y));
         }
-        if (x + 1 < weights.length && weights[x + 1][y] != DijkstraMap.defaultValue && weights[x + 1][y] < lowest) {
-            lowest = weights[x + 1][y];
-            nextPos.set(x + 1, y);
+        if (x + 1 < weights.length && weights[x + 1][y] != DijkstraMap.defaultValue) {
+            if (weights[x + 1][y] < lowest) {
+                lowest = weights[x + 1][y];
+                targets.clear();
+            }
+            if (weights[x + 1][y] == lowest)
+                targets.add(new Vector2(x + 1, y));
         }
-        if (y - 1 >= 0 && weights[x][y - 1] != DijkstraMap.defaultValue && weights[x][y - 1] < lowest) {
-            lowest = weights[x][y - 1];
-            nextPos.set(x, y - 1);
+        if (y - 1 >= 0 && weights[x][y - 1] != DijkstraMap.defaultValue) {
+            if (weights[x][y - 1] < lowest) {
+                lowest = weights[x][y - 1];
+                targets.clear();
+            }
+            if (weights[x][y - 1] == lowest)
+                targets.add(new Vector2(x, y - 1));
         }
-        if (y + 1 < weights[x].length && weights[x][y + 1] != DijkstraMap.defaultValue && weights[x][y + 1] < lowest)
-            nextPos.set(x, y + 1);
+        if (y + 1 < weights[x].length && weights[x][y + 1] != DijkstraMap.defaultValue)
+            if (weights[x][y + 1] < lowest) {
+                lowest = weights[x][y + 1];
+                targets.clear();
+            }
+            if (weights[x][y + 1] == lowest)
+                targets.add(new Vector2(x, y + 1));
 
-        return nextPos;
+        return targets;
     }
 }

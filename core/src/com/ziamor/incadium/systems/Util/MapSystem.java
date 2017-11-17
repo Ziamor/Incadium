@@ -4,6 +4,7 @@ import com.artemis.Aspect;
 import com.artemis.BaseEntitySystem;
 import com.artemis.ComponentMapper;
 import com.artemis.annotations.Wire;
+import com.artemis.utils.IntBag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
@@ -18,6 +19,7 @@ import com.ziamor.incadium.utils.BSP;
 import com.ziamor.incadium.utils.BSPLeafIterator;
 import com.ziamor.incadium.utils.BSPPostorderIterator;
 
+import java.beans.Transient;
 import java.util.Random;
 
 //TODO helpful https://stackoverflow.com/questions/23222053/data-structure-for-tile-map-for-use-with-artemis
@@ -46,6 +48,7 @@ public class MapSystem extends BaseEntitySystem {
     }
 
     Random random;
+
     @Override
     protected void inserted(int entityId) {
         //TODO clear old map if it exists
@@ -106,7 +109,7 @@ public class MapSystem extends BaseEntitySystem {
             }
     }*/
 
-}
+    }
 
     protected int createTile(int id, int x, int y) {
         int ent = world.create();
@@ -155,17 +158,31 @@ public class MapSystem extends BaseEntitySystem {
         return ent;
     }
 
-    public boolean isBlocking(int x, int y) {
+    public boolean isWallBlocking(int x, int y) {
         if (x >= entityMap.length || y >= entityMap[x].length)
             return true;
         BlockingComponent blockingComponent = blockingComponentComponentMapper.get(entityMap[x][y]);
         return blockingComponent != null;
     }
 
+    public IntBag getBlockingEntities(int x, int y, Aspect.Builder builder) {
+        IntBag blockers = new IntBag();
+        if (builder == null)
+            return blockers;
+        IntBag possibleBlockers = world.getAspectSubscriptionManager().get(builder).getEntities();
+
+        for (int i = 0; i < possibleBlockers.size(); i++) {
+            TransformComponent entTransform = transformComponentComponentMapper.get(possibleBlockers.get(i));
+            if (entTransform != null && entTransform.x == x && entTransform.y == y)
+                blockers.add(possibleBlockers.get(i));
+        }
+        return blockers;
+    }
+
     public Vector2 getFreeSpace() {
         int x = 0, y = 0;
 
-        while (isBlocking(x, y)) {
+        while (isWallBlocking(x, y)) {
             x = random.nextInt(map_width - 1);
             y = random.nextInt(map_height - 1);
         }

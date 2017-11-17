@@ -4,7 +4,9 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.E;
 import com.artemis.systems.IteratingSystem;
+import com.artemis.utils.IntBag;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.ziamor.incadium.components.Combat.DeadComponent;
 import com.ziamor.incadium.components.Movement.FollowTargetComponent;
 import com.ziamor.incadium.components.MonsterComponent;
@@ -17,7 +19,6 @@ import com.ziamor.incadium.utils.DijkstraMap;
 
 
 public class FollowSystem extends IteratingSystem {
-    private MapSystem mapSystem;
     private ComponentMapper<FollowTargetComponent> followTargetComponentMapper;
     private ComponentMapper<TransformComponent> transformComponentMapper;
     private ComponentMapper<MovementComponent> movementComponentMapper;
@@ -25,6 +26,7 @@ public class FollowSystem extends IteratingSystem {
     private ComponentMapper<DeadComponent> deadComponentMapper;
 
     private PathFindingSystem pathFindingSystem;
+    private MapSystem mapSystem;
 
     public FollowSystem() {
         super(Aspect.all(FollowTargetComponent.class, TransformComponent.class, MonsterComponent.class, TurnComponent.class).exclude(MovementLerpComponent.class));
@@ -59,16 +61,23 @@ public class FollowSystem extends IteratingSystem {
         int y = (int) transformComponent.y;
 
         if (pathFindingSystem.weights != null) {
-            Vector2 targetPos = DijkstraMap.gradientDecent(pathFindingSystem.weights, new Vector2(x, y));
+            Array<Vector2> targets = DijkstraMap.getTargetTiles(pathFindingSystem.weights, new Vector2(x, y));
+            for (int i = 0; i < targets.size; i++) {
+                Vector2 targetPos = targets.get(i);
+                IntBag blockers = mapSystem.getBlockingEntities((int) targetPos.x, (int) targetPos.y, Aspect.all(MonsterComponent.class));
+                if (!blockers.isEmpty())
+                    continue;
 
-            if (targetPos.x < x)
-                movementComponent.direction = MovementComponent.Direction.WEST;
-            else if (targetPos.x > x)
-                movementComponent.direction = MovementComponent.Direction.EAST;
-            else if (targetPos.y < y)
-                movementComponent.direction = MovementComponent.Direction.SOUTH;
-            else if (targetPos.y > y)
-                movementComponent.direction = MovementComponent.Direction.NORTH;
+                if (targetPos.x < x)
+                    movementComponent.direction = MovementComponent.Direction.WEST;
+                else if (targetPos.x > x)
+                    movementComponent.direction = MovementComponent.Direction.EAST;
+                else if (targetPos.y < y)
+                    movementComponent.direction = MovementComponent.Direction.SOUTH;
+                else if (targetPos.y > y)
+                    movementComponent.direction = MovementComponent.Direction.NORTH;
+                break;
+            }
         }
     }
 }
