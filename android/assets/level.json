@@ -59,7 +59,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -99,7 +99,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -139,7 +139,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -179,7 +179,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -219,7 +219,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -259,7 +259,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -299,7 +299,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -339,7 +339,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -379,7 +379,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -419,7 +419,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -459,7 +459,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -499,7 +499,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -539,7 +539,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -579,7 +579,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -619,7 +619,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -659,7 +659,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -699,7 +699,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -739,7 +739,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -779,7 +779,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -819,7 +819,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -859,7 +859,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -899,7 +899,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -939,7 +939,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -979,7 +979,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -1019,7 +1019,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -1059,7 +1059,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -1099,7 +1099,7 @@
 		"archetype": 17,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -1139,7 +1139,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -1179,7 +1179,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -1219,7 +1219,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -1259,7 +1259,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -1299,7 +1299,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -1339,7 +1339,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -1379,7 +1379,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -1419,7 +1419,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -1459,7 +1459,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -1499,7 +1499,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -1539,7 +1539,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -1579,7 +1579,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -1619,7 +1619,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -1659,7 +1659,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -1699,7 +1699,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -1739,7 +1739,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -1779,7 +1779,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -1819,7 +1819,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -1859,7 +1859,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -1899,7 +1899,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -1939,7 +1939,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -1979,7 +1979,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [
@@ -2019,7 +2019,7 @@
 		"archetype": 18,
 		"components": {
 			"AnimationResolverComponent": {
-				"path": "slime.png",
+				"path": "Slime.png",
 				"numFrameWidth": 4,
 				"numFrameHeight": 2,
 				"animationMetaData": [

@@ -85,6 +85,7 @@ import java.io.OutputStream;
 
 public class GamePlayScreen implements Screen {
     final float map_width = 16, map_height = 9;
+    final int viabilityRange = 8;
     SpriteBatch batch;
     ShapeRenderer shapeRenderer;
     AssetManager assetManager;
@@ -108,7 +109,7 @@ public class GamePlayScreen implements Screen {
     WorldSerializationManager worldSerializationManager;
     int frame = 0;
 
-    boolean saveGameOnExit = false;
+    boolean saveGameOnExit = true;
 
     public GamePlayScreen(final Incadium incadium) {
         batch = incadium.batch;
@@ -140,7 +141,7 @@ public class GamePlayScreen implements Screen {
                 // Setup Systems
                 new MapSystem(),
                 // Render Systems
-                new VisibilitySystem(8),
+                new VisibilitySystem(viabilityRange),
                 new SlimeAnimationControllerSystem(),
                 new AnimationSystem(),
                 new TerrainRenderSystem(),

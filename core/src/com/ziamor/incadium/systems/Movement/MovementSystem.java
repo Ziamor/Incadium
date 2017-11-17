@@ -95,7 +95,7 @@ public class MovementSystem extends IteratingSystem {
                         turn.finishedTurn = true;
 
                     } else {
-                        if (notVisableComponent == null)
+                        //if (notVisableComponent == null) //TODO revisit this if statement
                             movementLerpComponentComponentMapper.create(entity).set(transformComponent.x, transformComponent.y, transformComponent.x + x_offset, transformComponent.y + y_offset, lerp_life);
                         transformComponent.x += x_offset;
                         transformComponent.y += y_offset;
