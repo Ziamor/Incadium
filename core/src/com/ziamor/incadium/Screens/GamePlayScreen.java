@@ -109,7 +109,7 @@ public class GamePlayScreen implements Screen {
     WorldSerializationManager worldSerializationManager;
     int frame = 0;
 
-    boolean saveGameOnExit = true;
+    boolean saveGameOnExit = false;
 
     public GamePlayScreen(final Incadium incadium) {
         batch = incadium.batch;

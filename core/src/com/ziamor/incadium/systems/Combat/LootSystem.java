@@ -8,6 +8,8 @@ import com.ziamor.incadium.components.Combat.DeadComponent;
 import com.ziamor.incadium.components.Combat.LootableComponent;
 import com.ziamor.incadium.components.TransformComponent;
 
+import java.util.Random;
+
 // https://www.codeproject.com/Articles/420046/Loot-Tables-Random-Maps-and-Monsters-Part-I
 public class LootSystem extends IteratingSystem {
     private ComponentMapper<TransformComponent> transformComponentMapper;
@@ -19,6 +21,15 @@ public class LootSystem extends IteratingSystem {
     @Override
     protected void process(int entityId) {
         final TransformComponent transformComponent = transformComponentMapper.get(entityId);
-        ItemFactory.Potion((int) transformComponent.x, (int) transformComponent.y);
+        Random rand = new Random();
+        float num = rand.nextFloat();
+        if (num < 0.25)
+            ItemFactory.Potion((int) transformComponent.x, (int) transformComponent.y);
+        else if (num < 0.5)
+            ItemFactory.Sword((int) transformComponent.x, (int) transformComponent.y);
+        else if (num < 0.75)
+            ItemFactory.Coin((int) transformComponent.x, (int) transformComponent.y);
+        else
+            ItemFactory.Rune((int) transformComponent.x, (int) transformComponent.y);
     }
 }
