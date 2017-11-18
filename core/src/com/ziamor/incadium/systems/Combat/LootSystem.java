@@ -13,6 +13,7 @@ import java.util.Random;
 // https://www.codeproject.com/Articles/420046/Loot-Tables-Random-Maps-and-Monsters-Part-I
 public class LootSystem extends IteratingSystem {
     private ComponentMapper<TransformComponent> transformComponentMapper;
+    private ComponentMapper<LootableComponent> lootableComponentMapper;
 
     public LootSystem() {
         super(Aspect.all(LootableComponent.class, TransformComponent.class, DeadComponent.class));
@@ -31,5 +32,7 @@ public class LootSystem extends IteratingSystem {
             ItemFactory.Coin((int) transformComponent.x, (int) transformComponent.y);
         else
             ItemFactory.Rune((int) transformComponent.x, (int) transformComponent.y);
+
+        lootableComponentMapper.remove(entityId);
     }
 }
