@@ -76,6 +76,7 @@ import com.ziamor.incadium.systems.Util.LerpSystem;
 import com.ziamor.incadium.systems.Util.TurnSchedulerSystem;
 import com.ziamor.incadium.components.NonComponents.Gradient;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -166,8 +167,8 @@ public class GamePlayScreen implements Screen {
                 new HealthBarUISystem(healthBarUI),
                 new AttackCooldownBarRender(attackCoolDownBar),
                 //Debug Systems
-                new PlayerStateSystem(),
-                new DrawCurrentTurnTakerSystem(shapeRenderer)
+                new PlayerStateSystem()
+                //new DrawCurrentTurnTakerSystem(shapeRenderer)
         ).build()
                 .register(batch)
                 .register(shapeRenderer)
@@ -194,10 +195,14 @@ public class GamePlayScreen implements Screen {
         inputMultiplexer.addProcessor(new GestureDetector(world.getSystem(PlayerControllerSystem.class)));
 
         try {
-            FileHandle file = Gdx.files.local("/level.json");
-            InputStream is = new FileInputStream(file.file());
-            SaveFileFormat load = worldSerializationManager.load(is, SaveFileFormat.class);
-            is.close();
+            if (Gdx.files.isLocalStorageAvailable()) {
+                FileHandle file = Gdx.files.internal("level.json");
+                String data = file.readString(); //TODO load files correctly, android was having issues with directly loading the file into the input stream
+                InputStream is = new ByteArrayInputStream(data.getBytes());
+                SaveFileFormat load = worldSerializationManager.load(is, SaveFileFormat.class);
+                is.close();
+            } else
+                Gdx.app.debug("Main", "Internal file storage not available");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
