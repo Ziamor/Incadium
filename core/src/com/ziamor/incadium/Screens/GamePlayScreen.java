@@ -44,6 +44,7 @@ import com.ziamor.incadium.components.MonsterComponent;
 import com.ziamor.incadium.components.Movement.PlayerControllerComponent;
 import com.ziamor.incadium.components.NonComponents.HealthBarUI;
 import com.ziamor.incadium.Incadium;
+import com.ziamor.incadium.components.Render.RenderPositionSystem;
 import com.ziamor.incadium.components.TurnComponent;
 import com.ziamor.incadium.components.TurnTakerComponent;
 import com.ziamor.incadium.systems.Asset.AnimationResolverSystem;
@@ -57,6 +58,7 @@ import com.ziamor.incadium.systems.Debug.DrawCurrentTurnTakerSystem;
 import com.ziamor.incadium.systems.Movement.PathFindingSystem;
 import com.ziamor.incadium.systems.Render.AnimationSystem;
 import com.ziamor.incadium.systems.Render.MeshSystem;
+import com.ziamor.incadium.systems.Render.RenderPositionInitSystem;
 import com.ziamor.incadium.systems.Render.SlimeAnimationControllerSystem;
 import com.ziamor.incadium.systems.Render.VisibilitySystem;
 import com.ziamor.incadium.systems.Render.TargetCameraSystem;
@@ -142,6 +144,8 @@ public class GamePlayScreen implements Screen {
                 // Setup Systems
                 new MapSystem(),
                 // Render Systems
+                new RenderPositionInitSystem(),
+                new RenderPositionSystem(),
                 new VisibilitySystem(viabilityRange),
                 new SlimeAnimationControllerSystem(),
                 new AnimationSystem(),
@@ -186,7 +190,7 @@ public class GamePlayScreen implements Screen {
 
         incadiumInvocationStrategy.setMandatorySystems(SuperMapper.class, TagManager.class, EntityLinkManager.class, ComponentManager.class, EntityManager.class, AspectSubscriptionManager.class, WorldSerializationManager.class, TextureResolverSystem.class, AnimationResolverSystem.class, TextureRegionResolverSystem.class, ShaderResolverSystem.class, MeshSystem.class);
 
-        incadiumInvocationStrategy.setRenderSystems(MapSystem.class, RenderSystem.class,
+        incadiumInvocationStrategy.setRenderSystems(RenderPositionInitSystem.class, RenderPositionSystem.class, MapSystem.class, RenderSystem.class,
                 TargetCameraSystem.class, TerrainRenderSystem.class, AnimationSystem.class, SlimeAnimationControllerSystem.class,
                 VisibilitySystem.class, DurationManagerSystem.class, HealthBarUISystem.class, AttackCooldownBarRender.class, AttackCoolDownSystem.class, TookDamageSystem.class);//TODO move lerp anc cooldown system
 
