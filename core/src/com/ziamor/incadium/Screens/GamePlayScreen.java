@@ -210,57 +210,49 @@ public class GamePlayScreen implements Screen {
 
         incadiumInvocationStrategy.phase = IncadiumInvocationStrategy.Phase.Turn;
         ComponentMapper<TurnComponent> turnComponentMapper = world.getMapper(TurnComponent.class);
-        ComponentMapper<DeadComponent> deadComponentMapper = world.getMapper(DeadComponent.class);
 
         Entity playerEnt = world.getSystem(TagManager.class).getEntity("player");
 
         TurnComponent playerTurnComponent = null;
 
-        // Execute the players turn
-        if (playerEnt != null && playerTurn) {
-            playerTurnComponent = turnComponentMapper.get(playerEnt);
-            if (playerTurnComponent == null)
-                turnComponentMapper.create(playerEnt);
-
-            // If player isn't finished with their turn
-            if (playerTurnComponent != null && !playerTurnComponent.finishedTurn)
-                world.process();
-
-            // Players turn is done
-            if (playerTurnComponent != null && playerTurnComponent.finishedTurn) {
-                turnComponentMapper.remove(playerEnt);
-                playerTurnComponent = null;
-                playerTurn = false;
-            }
-
-        }
-
-        playerEnt = world.getSystem(TagManager.class).getEntity("player");
         if (playerEnt != null) {
-            incadiumInvocationStrategy.phase = IncadiumInvocationStrategy.Phase.Render;
             MovementLerpComponent playerMovementLerp = movementLerpComponentMapper.get(playerEnt);
             AttackLerpComponent playerAttackLerpComponent = attackLerpComponentMapper.get(playerEnt);
-            if (!playerTurn && (playerMovementLerp != null || playerAttackLerpComponent != null))
-                world.process();
-            else {
-                incadiumInvocationStrategy.phase = IncadiumInvocationStrategy.Phase.Turn;
-                // Execute NPC turn when it's not the players turn
-                if (playerTurnComponent == null && !playerTurn) {
-                    IntBag turnTakersIDs = world.getAspectSubscriptionManager().get(Aspect.one(TurnTakerComponent.class).exclude(PlayerControllerComponent.class)).getEntities();
-                    for (int i = 0; i < turnTakersIDs.size(); i++) {
-                        int currentEnt = turnTakersIDs.get(i);
-                        turnComponentMapper.create(currentEnt);
+            if (playerMovementLerp == null && playerAttackLerpComponent == null) {
+                // Execute the players turn
+                if (playerTurn) {
+                    playerTurnComponent = turnComponentMapper.get(playerEnt);
+                    if (playerTurnComponent == null)
+                        turnComponentMapper.create(playerEnt);
+
+                    // If player isn't finished with their turn
+                    if (playerTurnComponent != null && !playerTurnComponent.finishedTurn)
                         world.process();
-                        turnComponentMapper.remove(currentEnt);
+
+                    // Players turn is done
+                    if (playerTurnComponent != null && playerTurnComponent.finishedTurn) {
+                        turnComponentMapper.remove(playerEnt);
+                        playerTurn = false;
                     }
-                    playerTurn = true;
+                } else {
+                    // Execute NPC turn when it's not the players turn
+                    if (playerTurnComponent == null && !playerTurn) {
+                        IntBag turnTakersIDs = world.getAspectSubscriptionManager().get(Aspect.one(TurnTakerComponent.class).exclude(PlayerControllerComponent.class)).getEntities();
+                        for (int i = 0; i < turnTakersIDs.size(); i++) {
+                            int currentEnt = turnTakersIDs.get(i);
+                            turnComponentMapper.create(currentEnt);
+                            world.process();
+                            turnComponentMapper.remove(currentEnt);
+                        }
+                        playerTurn = true;
+                    }
                 }
             }
         }
         stage.act(delta);
         stage.draw();
 
-        //Gdx.app.log("", "frame: " + frame++);
+        Gdx.app.log("", "frame: " + frame++);
     }
 
     @Override
