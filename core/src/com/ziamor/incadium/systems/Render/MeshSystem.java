@@ -7,21 +7,22 @@ import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.ziamor.incadium.components.Render.MeshComponent;
+import com.ziamor.incadium.components.Render.RenderPositionComponent;
 import com.ziamor.incadium.components.TransformComponent;
 
 
 public class MeshSystem extends IteratingSystem {
     private ComponentMapper<MeshComponent> meshComponentMapper;
-    private ComponentMapper<TransformComponent> transformComponentMapper;
+    private ComponentMapper<RenderPositionComponent> renderPositionComponentMapper;
 
     public MeshSystem() {
-        super(Aspect.all(MeshComponent.class, TransformComponent.class));
+        super(Aspect.all(MeshComponent.class, RenderPositionComponent.class));
     }
 
     @Override
     protected void process(int entityId) {
         final MeshComponent meshComponent = meshComponentMapper.get(entityId);
-        final TransformComponent transformComponent = transformComponentMapper.get(entityId);
+        final RenderPositionComponent renderPositionComponent = renderPositionComponentMapper.get(entityId);
 
         if (meshComponent.mesh == null) {
             meshComponent.mesh = new com.badlogic.gdx.graphics.Mesh(true, 6, 0,
@@ -29,8 +30,8 @@ public class MeshSystem extends IteratingSystem {
                     new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE + "0"));
         }
 
-        float x = transformComponent.x;
-        float y = transformComponent.y;
+        float x = renderPositionComponent.x;
+        float y = renderPositionComponent.y;
         float width = 1;
         float height = 1;
 
