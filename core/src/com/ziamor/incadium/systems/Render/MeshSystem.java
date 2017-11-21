@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.ziamor.incadium.components.Render.MeshComponent;
 import com.ziamor.incadium.components.Render.RenderPositionComponent;
-import com.ziamor.incadium.components.TransformComponent;
 
 
 public class MeshSystem extends IteratingSystem {
