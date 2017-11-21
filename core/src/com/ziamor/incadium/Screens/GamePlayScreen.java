@@ -2,6 +2,7 @@ package com.ziamor.incadium.Screens;
 
 import com.artemis.Aspect;
 import com.artemis.AspectSubscriptionManager;
+import com.artemis.BaseSystem;
 import com.artemis.ComponentManager;
 import com.artemis.ComponentMapper;
 import com.artemis.E;
@@ -34,9 +35,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.ziamor.incadium.IncadiumInvocationStrategy;
+import com.ziamor.incadium.SystemSetupBuilder;
 import com.ziamor.incadium.components.Combat.DeadComponent;
 import com.ziamor.incadium.components.ItemComponent;
 import com.ziamor.incadium.components.MapComponent;
@@ -131,51 +134,59 @@ public class GamePlayScreen implements Screen {
         constructUI();
 
         worldSerializationManager = new WorldSerializationManager();
-        config = new WorldConfigurationBuilder().with(
-                new SuperMapper(),
-                new TagManager(),
-                new EntityLinkManager(),
-                worldSerializationManager,
-                // Load Assets
-                new TextureResolverSystem(), //TODO maybe find a way to generalize asset loading?
-                new TextureRegionResolverSystem(),
-                new AnimationResolverSystem(),
-                new ShaderResolverSystem(),
-                // Setup Systems
-                new MapSystem(),
-                // Render Systems
-                new RenderPositionInitSystem(),
-                new RenderPositionSystem(),
-                new VisibilitySystem(viabilityRange),
-                new SlimeAnimationControllerSystem(),
-                new AnimationSystem(),
-                new MeshSystem(),
-                new TerrainRenderSystem(),
-                new RenderSystem(),
-                new TargetCameraSystem(),
-                // Input Systems
-                new PlayerControllerSystem(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()),
-                //new TurnSchedulerSystem(),
-                // Movement Systems
-                new DurationManagerSystem(),
-                new PathFindingSystem(),
-                new FollowSystem(),
-                new MovementSystem(),
-                // Attack Systems
-                new AttackCoolDownSystem(),
-                new TookDamageSystem(),
-                new AttackSystem(),
-                //Health System
-                new HealthSystem(),
-                new LootSystem(),
-                new DeathSystem(),
-                //UI
-                new HealthBarUISystem(healthBarUI),
-                new AttackCooldownBarRender(attackCoolDownBar),
-                //Debug Systems
-                new PlayerStateSystem()
-                //new DrawCurrentTurnTakerSystem(shapeRenderer)
-        ).build()
+        SystemSetupBuilder systemSetupBuilder = new SystemSetupBuilder();
+        
+        // Mandatory        
+        systemSetupBuilder.add(new SuperMapper(), "mandatory");
+        systemSetupBuilder.add(new TagManager(), "mandatory");
+        systemSetupBuilder.add(new EntityLinkManager(), "mandatory");
+        systemSetupBuilder.add(worldSerializationManager, "mandatory");
+
+        systemSetupBuilder.add(new TextureResolverSystem(), "mandatory"); //TODO maybe find a way to generalize asset loading?
+        systemSetupBuilder.add(new TextureRegionResolverSystem(), "mandatory");
+        systemSetupBuilder.add(new AnimationResolverSystem(), "mandatory");
+        systemSetupBuilder.add(new ShaderResolverSystem(), "mandatory");
+
+        // Setup Systems
+        systemSetupBuilder.add(new MapSystem(), "render");
+        // Render Systems;
+        systemSetupBuilder.add(new RenderPositionInitSystem(), "render");
+        systemSetupBuilder.add(new RenderPositionSystem(), "render");
+        systemSetupBuilder.add(new VisibilitySystem(viabilityRange), "render");;
+        systemSetupBuilder.add(new SlimeAnimationControllerSystem(), "render");
+        systemSetupBuilder.add(new AnimationSystem(), "render");
+        systemSetupBuilder.add(new MeshSystem(), "render");
+        systemSetupBuilder.add(new TerrainRenderSystem(), "render");
+        systemSetupBuilder.add(new RenderSystem(), "render");
+        systemSetupBuilder.add(new TargetCameraSystem(), "render");
+        
+        // Input Systems
+        systemSetupBuilder.add(new PlayerControllerSystem(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()),"turn");
+        //new TurnSchedulerSystem(),
+        // Movement Systems
+        systemSetupBuilder.add(new DurationManagerSystem(),"render");
+        systemSetupBuilder.add(new PathFindingSystem(),"turn");
+        systemSetupBuilder.add(new FollowSystem(),"turn");
+        systemSetupBuilder.add(new MovementSystem(),"turn");
+        // Attack Systems
+        systemSetupBuilder.add(new AttackCoolDownSystem(),"render");
+        systemSetupBuilder.add(new TookDamageSystem(),"render");
+        systemSetupBuilder.add(new AttackSystem(),"turn");
+        //Health System
+        systemSetupBuilder.add(new HealthSystem(),"turn");
+        systemSetupBuilder.add(new LootSystem(),"turn");
+        systemSetupBuilder.add(new DeathSystem(),"turn");
+        //UI
+        systemSetupBuilder.add(new HealthBarUISystem(healthBarUI),"render");
+        systemSetupBuilder.add(new AttackCooldownBarRender(attackCoolDownBar),"render");
+        //Debug Systems
+        systemSetupBuilder.add(new PlayerStateSystem(),"turn");
+        //new DrawCurrentTurnTakerSystem(shapeRenderer)
+
+
+        config = new WorldConfigurationBuilder()
+                .with(systemSetupBuilder.getSystemArray())
+                .build()
                 .register(batch)
                 .register(shapeRenderer)
                 .register(camera)
@@ -188,16 +199,9 @@ public class GamePlayScreen implements Screen {
         backend.prettyPrint(true);
         worldSerializationManager.setSerializer(backend);
 
-        incadiumInvocationStrategy.setMandatorySystems(SuperMapper.class, TagManager.class, EntityLinkManager.class, ComponentManager.class, EntityManager.class, AspectSubscriptionManager.class, WorldSerializationManager.class, TextureResolverSystem.class, AnimationResolverSystem.class, TextureRegionResolverSystem.class, ShaderResolverSystem.class, MeshSystem.class);
-
-        incadiumInvocationStrategy.setRenderSystems(RenderPositionInitSystem.class, RenderPositionSystem.class, MapSystem.class, RenderSystem.class,
-                TargetCameraSystem.class, TerrainRenderSystem.class, AnimationSystem.class, SlimeAnimationControllerSystem.class,
-                VisibilitySystem.class, DurationManagerSystem.class, HealthBarUISystem.class, AttackCooldownBarRender.class, AttackCoolDownSystem.class, TookDamageSystem.class);//TODO move lerp anc cooldown system
-
-        incadiumInvocationStrategy.setTurnSystems(PlayerControllerSystem.class, TurnSchedulerSystem.class, MovementSystem.class,
-                FollowSystem.class, PathFindingSystem.class, DrawCurrentTurnTakerSystem.class, AttackSystem.class, HealthSystem.class, DeathSystem.class, LootSystem.class);
-
-        incadiumInvocationStrategy.setPostTurnSystems();
+        incadiumInvocationStrategy.setMandatorySystems(systemSetupBuilder.getGroup("mandatory"));
+        incadiumInvocationStrategy.setRenderSystems(systemSetupBuilder.getGroup("render"));
+        incadiumInvocationStrategy.setTurnSystems(systemSetupBuilder.getGroup("turn"));
         inputMultiplexer.addProcessor(new GestureDetector(world.getSystem(PlayerControllerSystem.class)));
 
         try {
@@ -209,9 +213,11 @@ public class GamePlayScreen implements Screen {
                 is.close();
             } else
                 Gdx.app.debug("Main", "Internal file storage not available");
-        } catch (FileNotFoundException e) {
+        } catch (
+                FileNotFoundException e) {
             e.printStackTrace();
-        } catch (IOException e) {
+        } catch (
+                IOException e) {
             e.printStackTrace();
         }
     }
@@ -292,9 +298,6 @@ public class GamePlayScreen implements Screen {
                 turnComponentMapper.remove(currentEnt);
             }
         }
-
-        incadiumInvocationStrategy.phase = IncadiumInvocationStrategy.Phase.POST_TURN;
-        world.process();
 
         stage.act(delta);
         stage.draw();
