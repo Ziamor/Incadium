@@ -78,7 +78,6 @@ import com.ziamor.incadium.systems.Debug.PlayerStateSystem;
 import com.ziamor.incadium.systems.Render.RenderSystem;
 import com.ziamor.incadium.systems.Render.TerrainRenderSystem;
 import com.ziamor.incadium.systems.Util.DurationManagerSystem;
-import com.ziamor.incadium.systems.Util.TurnSchedulerSystem;
 import com.ziamor.incadium.components.NonComponents.Gradient;
 
 import java.io.ByteArrayInputStream;
@@ -133,75 +132,12 @@ public class GamePlayScreen implements Screen {
 
         constructUI();
 
-        worldSerializationManager = new WorldSerializationManager();
-        SystemSetupBuilder systemSetupBuilder = new SystemSetupBuilder();
-        
-        // Mandatory        
-        systemSetupBuilder.add(new SuperMapper(), "mandatory");
-        systemSetupBuilder.add(new TagManager(), "mandatory");
-        systemSetupBuilder.add(new EntityLinkManager(), "mandatory");
-        systemSetupBuilder.add(worldSerializationManager, "mandatory");
-
-        systemSetupBuilder.add(new TextureResolverSystem(), "mandatory"); //TODO maybe find a way to generalize asset loading?
-        systemSetupBuilder.add(new TextureRegionResolverSystem(), "mandatory");
-        systemSetupBuilder.add(new AnimationResolverSystem(), "mandatory");
-        systemSetupBuilder.add(new ShaderResolverSystem(), "mandatory");
-
-        // Setup Systems
-        systemSetupBuilder.add(new MapSystem(), "render");
-        // Render Systems;
-        systemSetupBuilder.add(new RenderPositionInitSystem(), "render");
-        systemSetupBuilder.add(new RenderPositionSystem(), "render");
-        systemSetupBuilder.add(new VisibilitySystem(viabilityRange), "render");;
-        systemSetupBuilder.add(new SlimeAnimationControllerSystem(), "render");
-        systemSetupBuilder.add(new AnimationSystem(), "render");
-        systemSetupBuilder.add(new MeshSystem(), "render");
-        systemSetupBuilder.add(new TerrainRenderSystem(), "render");
-        systemSetupBuilder.add(new RenderSystem(), "render");
-        systemSetupBuilder.add(new TargetCameraSystem(), "render");
-        
-        // Input Systems
-        systemSetupBuilder.add(new PlayerControllerSystem(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()),"turn");
-        //new TurnSchedulerSystem(),
-        // Movement Systems
-        systemSetupBuilder.add(new DurationManagerSystem(),"render");
-        systemSetupBuilder.add(new PathFindingSystem(),"turn");
-        systemSetupBuilder.add(new FollowSystem(),"turn");
-        systemSetupBuilder.add(new MovementSystem(),"turn");
-        // Attack Systems
-        systemSetupBuilder.add(new AttackCoolDownSystem(),"render");
-        systemSetupBuilder.add(new TookDamageSystem(),"render");
-        systemSetupBuilder.add(new AttackSystem(),"turn");
-        //Health System
-        systemSetupBuilder.add(new HealthSystem(),"turn");
-        systemSetupBuilder.add(new LootSystem(),"turn");
-        systemSetupBuilder.add(new DeathSystem(),"turn");
-        //UI
-        systemSetupBuilder.add(new HealthBarUISystem(healthBarUI),"render");
-        systemSetupBuilder.add(new AttackCooldownBarRender(attackCoolDownBar),"render");
-        //Debug Systems
-        systemSetupBuilder.add(new PlayerStateSystem(),"turn");
-        //new DrawCurrentTurnTakerSystem(shapeRenderer)
-
-
-        config = new WorldConfigurationBuilder()
-                .with(systemSetupBuilder.getSystemArray())
-                .build()
-                .register(batch)
-                .register(shapeRenderer)
-                .register(camera)
-                .register(assetManager);
-        incadiumInvocationStrategy = new IncadiumInvocationStrategy();
-        config.setInvocationStrategy(incadiumInvocationStrategy);
-        world = new World(config);
+        buildWorld();
 
         JsonArtemisSerializer backend = new JsonArtemisSerializer(world);
         backend.prettyPrint(true);
         worldSerializationManager.setSerializer(backend);
 
-        incadiumInvocationStrategy.setMandatorySystems(systemSetupBuilder.getGroup("mandatory"));
-        incadiumInvocationStrategy.setRenderSystems(systemSetupBuilder.getGroup("render"));
-        incadiumInvocationStrategy.setTurnSystems(systemSetupBuilder.getGroup("turn"));
         inputMultiplexer.addProcessor(new GestureDetector(world.getSystem(PlayerControllerSystem.class)));
 
         try {
@@ -347,5 +283,73 @@ public class GamePlayScreen implements Screen {
         }
         stage.dispose();
         // Incadium disposes of assetmanager and spritebatch
+    }
+
+    public void buildWorld(){
+        worldSerializationManager = new WorldSerializationManager();
+        SystemSetupBuilder systemSetupBuilder = new SystemSetupBuilder();
+
+        // Mandatory
+        systemSetupBuilder.add(new SuperMapper(), "mandatory");
+        systemSetupBuilder.add(new TagManager(), "mandatory");
+        systemSetupBuilder.add(new EntityLinkManager(), "mandatory");
+        systemSetupBuilder.add(worldSerializationManager, "mandatory");
+
+        systemSetupBuilder.add(new TextureResolverSystem(), "mandatory"); //TODO maybe find a way to generalize asset loading?
+        systemSetupBuilder.add(new TextureRegionResolverSystem(), "mandatory");
+        systemSetupBuilder.add(new AnimationResolverSystem(), "mandatory");
+        systemSetupBuilder.add(new ShaderResolverSystem(), "mandatory");
+
+        // Setup Systems
+        systemSetupBuilder.add(new MapSystem(), "render");
+        // Render Systems;
+        systemSetupBuilder.add(new RenderPositionInitSystem(), "render");
+        systemSetupBuilder.add(new RenderPositionSystem(), "render");
+        systemSetupBuilder.add(new VisibilitySystem(viabilityRange), "render");;
+        systemSetupBuilder.add(new SlimeAnimationControllerSystem(), "render");
+        systemSetupBuilder.add(new AnimationSystem(), "render");
+        systemSetupBuilder.add(new MeshSystem(), "render");
+        systemSetupBuilder.add(new TerrainRenderSystem(), "render");
+        systemSetupBuilder.add(new RenderSystem(), "render");
+        systemSetupBuilder.add(new TargetCameraSystem(), "render");
+
+        // Input Systems
+        systemSetupBuilder.add(new PlayerControllerSystem(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()),"turn");
+        //new TurnSchedulerSystem(),
+        // Movement Systems
+        systemSetupBuilder.add(new DurationManagerSystem(),"render");
+        systemSetupBuilder.add(new PathFindingSystem(),"turn");
+        systemSetupBuilder.add(new FollowSystem(),"turn");
+        systemSetupBuilder.add(new MovementSystem(),"turn");
+        // Attack Systems
+        systemSetupBuilder.add(new AttackCoolDownSystem(),"render");
+        systemSetupBuilder.add(new TookDamageSystem(),"render");
+        systemSetupBuilder.add(new AttackSystem(),"turn");
+        //Health System
+        systemSetupBuilder.add(new HealthSystem(),"turn");
+        systemSetupBuilder.add(new LootSystem(),"turn");
+        systemSetupBuilder.add(new DeathSystem(),"turn");
+        //UI
+        systemSetupBuilder.add(new HealthBarUISystem(healthBarUI),"render");
+        systemSetupBuilder.add(new AttackCooldownBarRender(attackCoolDownBar),"render");
+        //Debug Systems
+        systemSetupBuilder.add(new PlayerStateSystem(),"turn");
+        //new DrawCurrentTurnTakerSystem(shapeRenderer)
+
+
+        config = new WorldConfigurationBuilder()
+                .with(systemSetupBuilder.getSystemArray())
+                .build()
+                .register(batch)
+                .register(shapeRenderer)
+                .register(camera)
+                .register(assetManager);
+        incadiumInvocationStrategy = new IncadiumInvocationStrategy();
+        config.setInvocationStrategy(incadiumInvocationStrategy);
+        world = new World(config);
+
+        incadiumInvocationStrategy.setMandatorySystems(systemSetupBuilder.getGroup("mandatory"));
+        incadiumInvocationStrategy.setRenderSystems(systemSetupBuilder.getGroup("render"));
+        incadiumInvocationStrategy.setTurnSystems(systemSetupBuilder.getGroup("turn"));
     }
 }
