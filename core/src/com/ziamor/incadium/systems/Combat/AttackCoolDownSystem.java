@@ -12,7 +12,7 @@ public class AttackCoolDownSystem extends IteratingSystem {
 
     public AttackCoolDownSystem() {
         super(Aspect.all(AttackCoolDownComponent.class));
-    }
+    } //TODO add turn component as a requirement?
 
     @Override
     protected void process(int entityId) {

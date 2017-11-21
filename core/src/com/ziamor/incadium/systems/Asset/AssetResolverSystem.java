@@ -7,12 +7,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 
 
-public abstract class AssetResolver extends IteratingSystem {
+public abstract class AssetResolverSystem extends IteratingSystem {
     @Wire
     AssetManager assetManager;
 
     protected String logTag = "Asset Resolver";
-    public AssetResolver(Aspect.Builder aspect) {
+    public AssetResolverSystem(Aspect.Builder aspect) {
         super(aspect);
     }
 

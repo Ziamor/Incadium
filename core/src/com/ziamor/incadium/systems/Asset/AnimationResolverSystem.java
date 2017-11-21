@@ -2,19 +2,16 @@ package com.ziamor.incadium.systems.Asset;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
-import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ObjectMap;
-import com.ziamor.incadium.components.Asset.AnimationMetaData;
 import com.ziamor.incadium.components.Asset.AnimationResolverComponent;
 import com.ziamor.incadium.components.Render.AnimationComponent;
 
 
-public class AnimationResolverSystem extends AssetResolver {
+public class AnimationResolverSystem extends AssetResolverSystem {
     private ComponentMapper<AnimationResolverComponent> animationResolverComponentMapper;
     private ComponentMapper<AnimationComponent> animationComponentMapper;
 

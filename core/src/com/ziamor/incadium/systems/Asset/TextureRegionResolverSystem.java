@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.ziamor.incadium.components.Asset.TextureRegionResolverComponent;
 import com.ziamor.incadium.components.Render.TextureRegionComponent;
 
-public class TextureRegionResolverSystem extends AssetResolver {
+public class TextureRegionResolverSystem extends AssetResolverSystem {
     private ComponentMapper<TextureRegionResolverComponent> textureRegionResolverComponentMapper;
     private ComponentMapper<TextureRegionComponent> textureRegionComponentMapper;
 

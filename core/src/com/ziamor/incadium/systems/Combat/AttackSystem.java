@@ -47,12 +47,15 @@ public class AttackSystem extends IteratingSystem {
         if (targetHealth != null) {
             TransformComponent targetTransformComponent = transformComponentMapper.get(attackTargetComponent.target);
             targetHealth.currentHealth -= attackDamageComponent.damage;
-            attackTargetComponentMapper.remove(entityId);
             if (transformComponent != null && targetTransformComponent != null)
                 attackLerpComponentMapper.create(entityId).set(transformComponent.x, transformComponent.y, targetTransformComponent.x, targetTransformComponent.y, life);
             if (playerControllerComponentMapper.get(entityId) != null) {
                 E.E(entityId).attackCoolDownComponent(1f);
             }
+            if (playerControllerComponentMapper.get(attackTargetComponent.target) != null) {
+                E.E(attackTargetComponent.target).tookDamageComponent(1f);
+            }
+            attackTargetComponentMapper.remove(entityId);
         } else
             E.E(entityId).removeAttackTargetComponent();
 

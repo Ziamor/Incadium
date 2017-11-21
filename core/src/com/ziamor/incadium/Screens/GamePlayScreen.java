@@ -25,7 +25,6 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector;
@@ -37,8 +36,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.ziamor.incadium.DecorFactory;
-import com.ziamor.incadium.ItemFactory;
 import com.ziamor.incadium.IncadiumInvocationStrategy;
 import com.ziamor.incadium.components.Combat.DeadComponent;
 import com.ziamor.incadium.components.ItemComponent;
@@ -50,13 +47,16 @@ import com.ziamor.incadium.Incadium;
 import com.ziamor.incadium.components.TurnComponent;
 import com.ziamor.incadium.components.TurnTakerComponent;
 import com.ziamor.incadium.systems.Asset.AnimationResolverSystem;
+import com.ziamor.incadium.systems.Asset.ShaderResolverSystem;
 import com.ziamor.incadium.systems.Asset.TextureRegionResolverSystem;
 import com.ziamor.incadium.systems.Asset.TextureResolverSystem;
 import com.ziamor.incadium.systems.Combat.AttackCoolDownSystem;
 import com.ziamor.incadium.systems.Combat.AttackSystem;
+import com.ziamor.incadium.systems.Combat.TookDamageSystem;
 import com.ziamor.incadium.systems.Debug.DrawCurrentTurnTakerSystem;
 import com.ziamor.incadium.systems.Movement.PathFindingSystem;
 import com.ziamor.incadium.systems.Render.AnimationSystem;
+import com.ziamor.incadium.systems.Render.MeshSystem;
 import com.ziamor.incadium.systems.Render.SlimeAnimationControllerSystem;
 import com.ziamor.incadium.systems.Render.VisibilitySystem;
 import com.ziamor.incadium.systems.Render.TargetCameraSystem;
@@ -72,12 +72,11 @@ import com.ziamor.incadium.systems.Movement.PlayerControllerSystem;
 import com.ziamor.incadium.systems.Debug.PlayerStateSystem;
 import com.ziamor.incadium.systems.Render.RenderSystem;
 import com.ziamor.incadium.systems.Render.TerrainRenderSystem;
-import com.ziamor.incadium.systems.Util.LerpSystem;
+import com.ziamor.incadium.systems.Util.DurationManagerSystem;
 import com.ziamor.incadium.systems.Util.TurnSchedulerSystem;
 import com.ziamor.incadium.components.NonComponents.Gradient;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -139,12 +138,14 @@ public class GamePlayScreen implements Screen {
                 new TextureResolverSystem(), //TODO maybe find a way to generalize asset loading?
                 new TextureRegionResolverSystem(),
                 new AnimationResolverSystem(),
+                new ShaderResolverSystem(),
                 // Setup Systems
                 new MapSystem(),
                 // Render Systems
                 new VisibilitySystem(viabilityRange),
                 new SlimeAnimationControllerSystem(),
                 new AnimationSystem(),
+                new MeshSystem(),
                 new TerrainRenderSystem(),
                 new RenderSystem(),
                 new TargetCameraSystem(),
@@ -152,12 +153,13 @@ public class GamePlayScreen implements Screen {
                 new PlayerControllerSystem(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()),
                 //new TurnSchedulerSystem(),
                 // Movement Systems
-                new LerpSystem(),
+                new DurationManagerSystem(),
                 new PathFindingSystem(),
                 new FollowSystem(),
                 new MovementSystem(),
                 // Attack Systems
                 new AttackCoolDownSystem(),
+                new TookDamageSystem(),
                 new AttackSystem(),
                 //Health System
                 new HealthSystem(),
@@ -182,11 +184,11 @@ public class GamePlayScreen implements Screen {
         backend.prettyPrint(true);
         worldSerializationManager.setSerializer(backend);
 
-        incadiumInvocationStrategy.setMandatorySystems(SuperMapper.class, TagManager.class, EntityLinkManager.class, ComponentManager.class, EntityManager.class, AspectSubscriptionManager.class, WorldSerializationManager.class, TextureResolverSystem.class, AnimationResolverSystem.class, TextureRegionResolverSystem.class);
+        incadiumInvocationStrategy.setMandatorySystems(SuperMapper.class, TagManager.class, EntityLinkManager.class, ComponentManager.class, EntityManager.class, AspectSubscriptionManager.class, WorldSerializationManager.class, TextureResolverSystem.class, AnimationResolverSystem.class, TextureRegionResolverSystem.class, ShaderResolverSystem.class, MeshSystem.class);
 
         incadiumInvocationStrategy.setRenderSystems(MapSystem.class, RenderSystem.class,
                 TargetCameraSystem.class, TerrainRenderSystem.class, AnimationSystem.class, SlimeAnimationControllerSystem.class,
-                VisibilitySystem.class, LerpSystem.class, HealthBarUISystem.class, AttackCooldownBarRender.class, AttackCoolDownSystem.class);//TODO move lerp anc cooldown system
+                VisibilitySystem.class, DurationManagerSystem.class, HealthBarUISystem.class, AttackCooldownBarRender.class, AttackCoolDownSystem.class, TookDamageSystem.class);//TODO move lerp anc cooldown system
 
         incadiumInvocationStrategy.setTurnSystems(PlayerControllerSystem.class, TurnSchedulerSystem.class, MovementSystem.class,
                 FollowSystem.class, PathFindingSystem.class, DrawCurrentTurnTakerSystem.class, AttackSystem.class, HealthSystem.class, DeathSystem.class, LootSystem.class);
@@ -239,6 +241,7 @@ public class GamePlayScreen implements Screen {
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         lbFPS.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
         camera.update();
 

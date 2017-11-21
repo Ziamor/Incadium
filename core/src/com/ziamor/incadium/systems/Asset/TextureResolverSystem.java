@@ -2,15 +2,13 @@ package com.ziamor.incadium.systems.Asset;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
-import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.ziamor.incadium.components.Asset.TextureResolverComponent;
 import com.ziamor.incadium.components.Render.TextureComponent;
 
 
-public class TextureResolverSystem extends AssetResolver {
+public class TextureResolverSystem extends AssetResolverSystem {
     private ComponentMapper<TextureResolverComponent> textureResolverComponentMapper;
     private ComponentMapper<TextureComponent> textureComponentMapper;
 

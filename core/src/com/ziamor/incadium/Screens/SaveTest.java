@@ -41,7 +41,7 @@ import com.ziamor.incadium.systems.Render.RenderSystem;
 import com.ziamor.incadium.systems.Render.SlimeAnimationControllerSystem;
 import com.ziamor.incadium.systems.Render.TerrainRenderSystem;
 import com.ziamor.incadium.systems.Render.TargetCameraSystem;
-import com.ziamor.incadium.systems.Util.LerpSystem;
+import com.ziamor.incadium.systems.Util.DurationManagerSystem;
 import com.ziamor.incadium.systems.Util.MapSystem;
 
 import java.io.FileInputStream;
@@ -96,7 +96,7 @@ public class SaveTest implements Screen {
                 new RenderSystem(),
                 new TargetCameraSystem(),
                 new PlayerControllerSystem(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()),
-                new LerpSystem(),
+                new DurationManagerSystem(),
                 new PathFindingSystem(),
                 new FollowSystem(),
                 new MovementSystem()
