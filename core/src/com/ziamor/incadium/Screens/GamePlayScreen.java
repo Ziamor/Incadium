@@ -44,6 +44,8 @@ import com.ziamor.incadium.components.Combat.DeadComponent;
 import com.ziamor.incadium.components.ItemComponent;
 import com.ziamor.incadium.components.MapComponent;
 import com.ziamor.incadium.components.MonsterComponent;
+import com.ziamor.incadium.components.Movement.AttackLerpComponent;
+import com.ziamor.incadium.components.Movement.MovementLerpComponent;
 import com.ziamor.incadium.components.Movement.PlayerControllerComponent;
 import com.ziamor.incadium.components.NonComponents.HealthBarUI;
 import com.ziamor.incadium.Incadium;
@@ -115,6 +117,11 @@ public class GamePlayScreen implements Screen {
 
     boolean saveGameOnExit = false;
 
+    private ComponentMapper<MovementLerpComponent> movementLerpComponentMapper;
+    private ComponentMapper<AttackLerpComponent> attackLerpComponentMapper;
+
+    private boolean playerTurn = true;
+
     public GamePlayScreen(final Incadium incadium) {
         batch = incadium.batch;
         shapeRenderer = incadium.shapeRenderer;
@@ -156,6 +163,9 @@ public class GamePlayScreen implements Screen {
                 IOException e) {
             e.printStackTrace();
         }
+
+        movementLerpComponentMapper = world.getMapper(MovementLerpComponent.class);
+        attackLerpComponentMapper = world.getMapper(AttackLerpComponent.class);
     }
 
     public void constructUI() {
@@ -207,7 +217,7 @@ public class GamePlayScreen implements Screen {
         TurnComponent playerTurnComponent = null;
 
         // Execute the players turn
-        if (playerEnt != null) {
+        if (playerEnt != null && playerTurn) {
             playerTurnComponent = turnComponentMapper.get(playerEnt);
             if (playerTurnComponent == null)
                 turnComponentMapper.create(playerEnt);
@@ -220,21 +230,33 @@ public class GamePlayScreen implements Screen {
             if (playerTurnComponent != null && playerTurnComponent.finishedTurn) {
                 turnComponentMapper.remove(playerEnt);
                 playerTurnComponent = null;
+                playerTurn = false;
             }
 
         }
 
-        // Execute NPC turn when it's not the players turn
-        if (playerTurnComponent == null) {
-            IntBag turnTakersIDs = world.getAspectSubscriptionManager().get(Aspect.one(TurnTakerComponent.class).exclude(PlayerControllerComponent.class)).getEntities();
-            for (int i = 0; i < turnTakersIDs.size(); i++) {
-                int currentEnt = turnTakersIDs.get(i);
-                turnComponentMapper.create(currentEnt);
+        playerEnt = world.getSystem(TagManager.class).getEntity("player");
+        if (playerEnt != null) {
+            incadiumInvocationStrategy.phase = IncadiumInvocationStrategy.Phase.Render;
+            MovementLerpComponent playerMovementLerp = movementLerpComponentMapper.get(playerEnt);
+            AttackLerpComponent playerAttackLerpComponent = attackLerpComponentMapper.get(playerEnt);
+            if (!playerTurn && (playerMovementLerp != null || playerAttackLerpComponent != null))
                 world.process();
-                turnComponentMapper.remove(currentEnt);
+            else {
+                incadiumInvocationStrategy.phase = IncadiumInvocationStrategy.Phase.Turn;
+                // Execute NPC turn when it's not the players turn
+                if (playerTurnComponent == null && !playerTurn) {
+                    IntBag turnTakersIDs = world.getAspectSubscriptionManager().get(Aspect.one(TurnTakerComponent.class).exclude(PlayerControllerComponent.class)).getEntities();
+                    for (int i = 0; i < turnTakersIDs.size(); i++) {
+                        int currentEnt = turnTakersIDs.get(i);
+                        turnComponentMapper.create(currentEnt);
+                        world.process();
+                        turnComponentMapper.remove(currentEnt);
+                    }
+                    playerTurn = true;
+                }
             }
         }
-
         stage.act(delta);
         stage.draw();
 
@@ -285,7 +307,7 @@ public class GamePlayScreen implements Screen {
         // Incadium disposes of assetmanager and spritebatch
     }
 
-    public void buildWorld(){
+    public void buildWorld() {
         worldSerializationManager = new WorldSerializationManager();
         SystemSetupBuilder systemSetupBuilder = new SystemSetupBuilder();
 
@@ -305,7 +327,8 @@ public class GamePlayScreen implements Screen {
         // Render Systems;
         systemSetupBuilder.add(new RenderPositionInitSystem(), "render");
         systemSetupBuilder.add(new RenderPositionSystem(), "render");
-        systemSetupBuilder.add(new VisibilitySystem(viabilityRange), "render");;
+        systemSetupBuilder.add(new VisibilitySystem(viabilityRange), "render");
+        ;
         systemSetupBuilder.add(new SlimeAnimationControllerSystem(), "render");
         systemSetupBuilder.add(new AnimationSystem(), "render");
         systemSetupBuilder.add(new MeshSystem(), "render");
@@ -314,26 +337,26 @@ public class GamePlayScreen implements Screen {
         systemSetupBuilder.add(new TargetCameraSystem(), "render");
 
         // Input Systems
-        systemSetupBuilder.add(new PlayerControllerSystem(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()),"turn");
+        systemSetupBuilder.add(new PlayerControllerSystem(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), "turn");
         //new TurnSchedulerSystem(),
         // Movement Systems
-        systemSetupBuilder.add(new DurationManagerSystem(),"render");
-        systemSetupBuilder.add(new PathFindingSystem(),"turn");
-        systemSetupBuilder.add(new FollowSystem(),"turn");
-        systemSetupBuilder.add(new MovementSystem(),"turn");
+        systemSetupBuilder.add(new DurationManagerSystem(), "render");
+        systemSetupBuilder.add(new PathFindingSystem(), "turn");
+        systemSetupBuilder.add(new FollowSystem(), "turn");
+        systemSetupBuilder.add(new MovementSystem(), "turn");
         // Attack Systems
-        systemSetupBuilder.add(new AttackCoolDownSystem(),"render");
-        systemSetupBuilder.add(new TookDamageSystem(),"render");
-        systemSetupBuilder.add(new AttackSystem(),"turn");
+        systemSetupBuilder.add(new AttackCoolDownSystem(), "render");
+        systemSetupBuilder.add(new TookDamageSystem(), "render");
+        systemSetupBuilder.add(new AttackSystem(), "turn");
         //Health System
-        systemSetupBuilder.add(new HealthSystem(),"turn");
-        systemSetupBuilder.add(new LootSystem(),"turn");
-        systemSetupBuilder.add(new DeathSystem(),"turn");
+        systemSetupBuilder.add(new HealthSystem(), "turn");
+        systemSetupBuilder.add(new LootSystem(), "turn");
+        systemSetupBuilder.add(new DeathSystem(), "turn");
         //UI
-        systemSetupBuilder.add(new HealthBarUISystem(healthBarUI),"render");
-        systemSetupBuilder.add(new AttackCooldownBarRender(attackCoolDownBar),"render");
+        systemSetupBuilder.add(new HealthBarUISystem(healthBarUI), "render");
+        systemSetupBuilder.add(new AttackCooldownBarRender(attackCoolDownBar), "render");
         //Debug Systems
-        systemSetupBuilder.add(new PlayerStateSystem(),"turn");
+        systemSetupBuilder.add(new PlayerStateSystem(), "turn");
         //new DrawCurrentTurnTakerSystem(shapeRenderer)
 
 
