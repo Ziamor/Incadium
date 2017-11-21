@@ -28,7 +28,7 @@ public class MovementSystem extends IteratingSystem {
     private ComponentMapper<AttackCoolDownComponent> attackCoolDownComponentMapper;
     private ComponentMapper<NotVisableComponent> notVisableComponentMapper;
 
-    private float lerp_life = 0.2f;
+    private float lerp_life = 0.15f;
 
     public MovementSystem() {
         super(Aspect.all(MovementComponent.class, TransformComponent.class, TurnComponent.class).exclude(MovementLerpComponent.class, AttackLerpComponent.class));

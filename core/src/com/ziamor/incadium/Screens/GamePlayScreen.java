@@ -216,11 +216,10 @@ public class GamePlayScreen implements Screen {
         TurnComponent playerTurnComponent = null;
 
         if (playerEnt != null) {
-            MovementLerpComponent playerMovementLerp = movementLerpComponentMapper.get(playerEnt);
-            AttackLerpComponent playerAttackLerpComponent = attackLerpComponentMapper.get(playerEnt);
-            if (playerMovementLerp == null && playerAttackLerpComponent == null) {
-                // Execute the players turn
-                if (playerTurn) {
+            IntBag npcLerp = world.getAspectSubscriptionManager().get(Aspect.all(MonsterComponent.class, AttackLerpComponent.class)).getEntities();
+            // Execute the players turn
+            if (playerTurn) {
+                if (npcLerp.isEmpty()) {
                     playerTurnComponent = turnComponentMapper.get(playerEnt);
                     if (playerTurnComponent == null)
                         turnComponentMapper.create(playerEnt);
@@ -234,7 +233,11 @@ public class GamePlayScreen implements Screen {
                         turnComponentMapper.remove(playerEnt);
                         playerTurn = false;
                     }
-                } else {
+                }
+            } else {
+                MovementLerpComponent playerMovementLerp = movementLerpComponentMapper.get(playerEnt);
+                AttackLerpComponent playerAttackLerpComponent = attackLerpComponentMapper.get(playerEnt);
+                if (playerMovementLerp == null && playerAttackLerpComponent == null) {
                     // Execute NPC turn when it's not the players turn
                     if (playerTurnComponent == null && !playerTurn) {
                         IntBag turnTakersIDs = world.getAspectSubscriptionManager().get(Aspect.one(TurnTakerComponent.class).exclude(PlayerControllerComponent.class)).getEntities();

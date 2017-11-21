@@ -27,7 +27,7 @@ public class AttackSystem extends IteratingSystem {
     private ComponentMapper<AttackLerpComponent> attackLerpComponentMapper;
     private ComponentMapper<TransformComponent> transformComponentMapper;
 
-    private float life = 0.5f;
+    private float life = 0.2f;
 
     public AttackSystem() {
         super(Aspect.all(AttackTargetComponent.class, AttackDamageComponent.class).exclude(DeadComponent.class, AttackCoolDownComponent.class, AttackLerpComponent.class));
@@ -50,7 +50,7 @@ public class AttackSystem extends IteratingSystem {
             if (transformComponent != null && targetTransformComponent != null)
                 attackLerpComponentMapper.create(entityId).set(transformComponent.x, transformComponent.y, targetTransformComponent.x, targetTransformComponent.y, life);
             if (playerControllerComponentMapper.get(entityId) != null) {
-                E.E(entityId).attackCoolDownComponent(1f);
+                E.E(entityId).attackCoolDownComponent(life); //TODO is this even necessary anymore?
             }
             if (playerControllerComponentMapper.get(attackTargetComponent.target) != null) {
                 E.E(attackTargetComponent.target).tookDamageComponent(0.2f);
