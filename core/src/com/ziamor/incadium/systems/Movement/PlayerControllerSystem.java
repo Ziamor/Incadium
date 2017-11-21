@@ -6,6 +6,7 @@ import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.ziamor.incadium.components.Combat.AttackTargetComponent;
@@ -22,15 +23,14 @@ public class PlayerControllerSystem extends IteratingSystem implements GestureDe
     ComponentMapper<MovementComponent> movementComponentComponentMapper;
     private ComponentMapper<MovementLerpComponent> movementLerpComponentMapper;
     TouchArea touchArea;
-    Rectangle upArea, downArea, leftArea, rightArea;
+    private float width, height;
 
+    //TODO update resize
     public PlayerControllerSystem(int width, int height) {
         super(Aspect.all(PlayerControllerComponent.class, MovementComponent.class).exclude(MovementLerpComponent.class, AttackLerpComponent.class, AttackTargetComponent.class));
-        upArea = new Rectangle(width * 0.3f, 0, width * 0.3f, height * 0.5f);
-        downArea = new Rectangle(width * 0.3f, height * 0.5f, width * 0.3f, height * 0.5f);
-        rightArea = new Rectangle(width * 0.6f, 0, width * 0.3f, height);
-        leftArea = new Rectangle(0, 0, width * 0.3f, height);
         touchArea = TouchArea.NONE;
+        this.width = width;
+        this.height = height;
     }
 
     @Override
@@ -51,14 +51,19 @@ public class PlayerControllerSystem extends IteratingSystem implements GestureDe
 
     @Override
     public boolean touchDown(float x, float y, int pointer, int button) {
-        if (upArea.contains(x, y))
-            touchArea = TouchArea.UP;
-        else if (downArea.contains(x, y))
-            touchArea = TouchArea.DOWN;
-        else if (leftArea.contains(x, y))
-            touchArea = TouchArea.LEFT;
-        else if (rightArea.contains(x, y))
-            touchArea = TouchArea.RIGHT;
+        Vector2 touchPos = new Vector2(x - width / 2, height / 2 - y);
+        touchPos.nor();
+        if (Math.abs(touchPos.x) >= Math.abs(touchPos.y)) {
+            if (touchPos.x >= 0)
+                touchArea = TouchArea.RIGHT;
+            else
+                touchArea = TouchArea.LEFT;
+        } else {
+            if (touchPos.y >= 0)
+                touchArea = TouchArea.UP;
+            else
+                touchArea = TouchArea.DOWN;
+        }
         return false;
     }
 

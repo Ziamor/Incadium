@@ -255,7 +255,7 @@ public class GamePlayScreen implements Screen {
         stage.act(delta);
         stage.draw();
 
-        Gdx.app.log("", "frame: " + frame++);
+        //Gdx.app.log("", "frame: " + frame++);
     }
 
     @Override
