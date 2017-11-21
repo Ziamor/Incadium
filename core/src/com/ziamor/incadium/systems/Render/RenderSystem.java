@@ -62,7 +62,7 @@ public class RenderSystem extends SortedIteratingSystem {
             shader.setUniformMatrix("u_projTrans", batch.getProjectionMatrix());
             shader.setUniformi("u_texture", 0);
             shader.setUniformf("time", shaderComponent.time);
-            shader.setUniformf("blink_rate", 0.25f);
+            shader.setUniformf("blink_rate", 0.2f);
 
             meshComponent.mesh.render(shader, GL20.GL_TRIANGLES);
             shader.end();
