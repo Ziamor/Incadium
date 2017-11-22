@@ -28,9 +28,13 @@ public class RenderSystem extends SortedIteratingSystem {
     @Wire
     private SpriteBatch batch;
     TagManager tagManager;
+    private Mesh mesh;
 
     public RenderSystem() {
         super(Aspect.all(RenderPositionComponent.class).one(TextureComponent.class, TextureRegionComponent.class).exclude(NotVisableComponent.class));
+        mesh = new com.badlogic.gdx.graphics.Mesh(true, 6, 0,
+                new VertexAttribute(VertexAttributes.Usage.Position, 3, ShaderProgram.POSITION_ATTRIBUTE),
+                new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE + "0"));
     }
 
     @Override
@@ -113,29 +117,26 @@ public class RenderSystem extends SortedIteratingSystem {
     }
 
     private Mesh getTextureMesh(RenderPositionComponent renderPositionComponent, TextureComponent textureComponent) {
-        Mesh mesh = new com.badlogic.gdx.graphics.Mesh(true, 6, 0,
-                new VertexAttribute(VertexAttributes.Usage.Position, 3, ShaderProgram.POSITION_ATTRIBUTE),
-                new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE + "0"));
-
-
         float x = renderPositionComponent.x;
         float y = renderPositionComponent.y;
-        float width = 1;
+        float width = 1; // TODO width and height should be passed as a param
         float height = 1;
+        float fx2 = x + width;
+        float fy2 = y + height;
 
         float[] verts = new float[30];
         int i = 0;
 
         //Top Left Vertex Triangle 1
         verts[i++] = x;   //X
-        verts[i++] = y + height; //Y
+        verts[i++] = fy2; //Y
         verts[i++] = 0;    //Z
         verts[i++] = 0f;   //U
         verts[i++] = 0f;   //V
 
         //Top Right Vertex Triangle 1
-        verts[i++] = x + width;
-        verts[i++] = y + height;
+        verts[i++] = fx2;
+        verts[i++] = fy2;
         verts[i++] = 0;
         verts[i++] = 1f;
         verts[i++] = 0f;
@@ -148,14 +149,14 @@ public class RenderSystem extends SortedIteratingSystem {
         verts[i++] = 1f;
 
         //Top Right Vertex Triangle 2
-        verts[i++] = x + width;
-        verts[i++] = y + height;
+        verts[i++] = fx2;
+        verts[i++] = fy2;
         verts[i++] = 0;
         verts[i++] = 1f;
         verts[i++] = 0f;
 
         //Bottom Right Vertex Triangle 2
-        verts[i++] = x + width;
+        verts[i++] = fx2;
         verts[i++] = y;
         verts[i++] = 0;
         verts[i++] = 1f;
@@ -173,11 +174,6 @@ public class RenderSystem extends SortedIteratingSystem {
     }
 
     private Mesh getTextureRegionMesh(RenderPositionComponent renderPositionComponent, TextureRegionComponent textureRegionComponent) {
-        Mesh mesh = new com.badlogic.gdx.graphics.Mesh(true, 6, 0,
-                new VertexAttribute(VertexAttributes.Usage.Position, 3, ShaderProgram.POSITION_ATTRIBUTE),
-                new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE + "0"));
-
-
         float x = renderPositionComponent.x;
         float y = renderPositionComponent.y;
         float width = 1; // TODO width and height should be passed as a param
