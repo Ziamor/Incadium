@@ -20,9 +20,12 @@ public class ShaderResolverSystem extends AssetResolverSystem {
         final ShaderResolverComponent shaderResolverComponent = shaderResolverComponentMapper.get(entityId);
 
         final ShaderComponent shaderComponent = shaderComponentMapper.create(entityId);
-        String vertexShader = Gdx.files.internal("vertex.glsl").readString();
-        String fragmentShader = Gdx.files.internal("fragment.glsl").readString();
+        String vertexShader = Gdx.files.internal(shaderResolverComponent.vertexShader).readString();
+        String fragmentShader = Gdx.files.internal(shaderResolverComponent.fragmentShader).readString();
         ShaderProgram shader = new ShaderProgram(vertexShader, fragmentShader);
         shaderComponent.shaderProgram = shader;
+
+        if (shader.getLog().length() != 0)
+            Gdx.app.debug("Shader Resolver System", shader.getLog());
     }
 }

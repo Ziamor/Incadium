@@ -1,4 +1,4 @@
-package com.ziamor.incadium.components.Render;
+package com.ziamor.incadium.systems.Render;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
@@ -6,6 +6,7 @@ import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.math.Vector2;
 import com.ziamor.incadium.components.Movement.AttackLerpComponent;
 import com.ziamor.incadium.components.Movement.MovementLerpComponent;
+import com.ziamor.incadium.components.Render.RenderPositionComponent;
 import com.ziamor.incadium.components.TransformComponent;
 
 

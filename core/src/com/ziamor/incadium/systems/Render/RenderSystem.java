@@ -11,7 +11,9 @@ import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.ziamor.incadium.components.Render.DistanceMapComponent;
 import com.ziamor.incadium.components.Render.NotVisableComponent;
+import com.ziamor.incadium.components.Render.OutlineShaderComponent;
 import com.ziamor.incadium.components.Render.RenderPositionComponent;
 import com.ziamor.incadium.components.Render.ShaderComponent;
 import com.ziamor.incadium.components.Render.TextureRegionComponent;
@@ -25,6 +27,8 @@ public class RenderSystem extends SortedIteratingSystem {
     private ComponentMapper<TextureRegionComponent> textureRegionComponentComponentMapper;
     private ComponentMapper<ShaderComponent> shaderComponentMapper;
     private ComponentMapper<RenderPositionComponent> renderPositionComponentMapper;
+    private ComponentMapper<OutlineShaderComponent> outlineShaderComponentMapper;
+    private ComponentMapper<DistanceMapComponent> distanceMapComponentMapper;
     @Wire
     private SpriteBatch batch;
     TagManager tagManager;
@@ -44,31 +48,48 @@ public class RenderSystem extends SortedIteratingSystem {
         final ShaderComponent shaderComponent = shaderComponentMapper.get(entityId);
         final RenderPositionComponent renderPositionComponent = renderPositionComponentMapper.get(entityId);
 
-
         if (shaderComponent != null) {
+            final OutlineShaderComponent outlineShaderComponent = outlineShaderComponentMapper.get(entityId);
             shaderComponent.time += world.getDelta();
             ShaderProgram shader = shaderComponent.shaderProgram;
-
             batch.end(); // TODO find a better way to render shader in between batchs
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(Gdx.gl.GL_SRC_ALPHA, Gdx.gl.GL_ONE_MINUS_SRC_ALPHA);
             Mesh mesh;
-            if (textureComponent != null) {
-                textureComponent.texture.bind();
+            if (outlineShaderComponent != null) {
                 mesh = getTextureMesh(renderPositionComponent, textureComponent);
-            } else {
-                textureRegionComponent.region.getTexture().bind();
-                mesh = getTextureRegionMesh(renderPositionComponent, textureRegionComponent);
-            }
-            shader.begin();
-            //shader.pedantic = false;
-            shader.setUniformMatrix("u_projTrans", batch.getProjectionMatrix());
-            shader.setUniformi("u_texture", 0);
-            shader.setUniformf("time", shaderComponent.time);
-            shader.setUniformf("blink_rate", 0.3f);
+                final DistanceMapComponent distanceMapComponent = distanceMapComponentMapper.get(entityId);
+                shader.begin();
 
-            mesh.render(shader, GL20.GL_TRIANGLES);
-            shader.end();
+                shader.setUniformMatrix("u_projTrans", batch.getProjectionMatrix());
+
+                distanceMapComponent.distanceMap.bind(1);
+                shader.setUniformi("u_texture1", 1);
+
+                textureComponent.texture.bind(0);
+                shader.setUniformi("u_texture", 0);
+
+                mesh.render(shader, GL20.GL_TRIANGLES);
+                shader.end();
+
+            } else {
+                if (textureComponent != null) {
+                    textureComponent.texture.bind();
+                    mesh = getTextureMesh(renderPositionComponent, textureComponent);
+                } else {
+                    textureRegionComponent.region.getTexture().bind();
+                    mesh = getTextureRegionMesh(renderPositionComponent, textureRegionComponent);
+                }
+                shader.begin();
+                //shader.pedantic = false;
+                shader.setUniformMatrix("u_projTrans", batch.getProjectionMatrix());
+                shader.setUniformi("u_texture", 0);
+                shader.setUniformf("time", shaderComponent.time);
+                shader.setUniformf("blink_rate", 0.3f);
+
+                mesh.render(shader, GL20.GL_TRIANGLES);
+                shader.end();
+            }
             batch.begin();
         } else {
             if (textureComponent != null) {

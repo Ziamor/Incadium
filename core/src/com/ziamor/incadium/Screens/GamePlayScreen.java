@@ -2,6 +2,7 @@ package com.ziamor.incadium.Screens;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
+import com.artemis.E;
 import com.artemis.Entity;
 import com.artemis.SuperMapper;
 import com.artemis.World;
@@ -21,15 +22,19 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.ziamor.incadium.IncadiumInvocationStrategy;
@@ -42,7 +47,7 @@ import com.ziamor.incadium.components.Movement.MovementLerpComponent;
 import com.ziamor.incadium.components.Movement.PlayerControllerComponent;
 import com.ziamor.incadium.components.NonComponents.HealthBarUI;
 import com.ziamor.incadium.Incadium;
-import com.ziamor.incadium.components.Render.RenderPositionSystem;
+import com.ziamor.incadium.systems.Render.RenderPositionSystem;
 import com.ziamor.incadium.components.TurnComponent;
 import com.ziamor.incadium.components.TurnTakerComponent;
 import com.ziamor.incadium.systems.Asset.AnimationResolverSystem;
@@ -81,7 +86,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class GamePlayScreen implements Screen {
-    final float map_width = 16, map_height = 9;
+    final float map_width = 16 / 2, map_height = 9 / 2;
     final int viabilityRange = 8;
     SpriteBatch batch;
     ShapeRenderer shapeRenderer;
@@ -112,6 +117,7 @@ public class GamePlayScreen implements Screen {
     private ComponentMapper<AttackLerpComponent> attackLerpComponentMapper;
 
     private boolean playerTurn = true;
+    Texture distanceMap;
 
     public GamePlayScreen(final Incadium incadium) {
         batch = incadium.batch;
@@ -157,6 +163,51 @@ public class GamePlayScreen implements Screen {
 
         movementLerpComponentMapper = world.getMapper(MovementLerpComponent.class);
         attackLerpComponentMapper = world.getMapper(AttackLerpComponent.class);
+
+        Texture playerTex = assetManager.get("player.png", Texture.class);
+        playerTex.getTextureData().prepare();
+        Pixmap playerPixmap = playerTex.getTextureData().consumePixmap();
+        Pixmap pixmap = new Pixmap(playerTex.getWidth(), playerTex.getHeight(), Pixmap.Format.RGBA8888);
+        Array<Vector2> boundry = new Array<Vector2>();
+        Array<Vector2> objective = new Array<Vector2>();
+        for (int i = 0; i < playerPixmap.getWidth(); i++)
+            for (int j = 0; j < playerPixmap.getHeight(); j++) {
+                int cint = playerPixmap.getPixel(i, j);
+                Color c = new Color(cint);
+                if (c.a == 0)
+                    boundry.add(new Vector2(i, j));
+                else
+                    objective.add(new Vector2(i, j));
+            }
+
+        int maxDistance = Integer.MIN_VALUE;
+        int[][] distance = new int[pixmap.getWidth()][pixmap.getHeight()];
+        for (Vector2 vec : objective) {
+            distance[(int) vec.x][(int) vec.y] = Integer.MAX_VALUE;
+            for (Vector2 bvec : boundry) {
+                //int newDist = (int) (Math.abs(vec.x - bvec.x) + Math.abs(vec.y - bvec.y)); // Manhattan distance
+                int newDist = (int) Math.max(Math.abs(vec.x - bvec.x), Math.abs(vec.y - bvec.y)); //Chessboard Distance
+                if (newDist < distance[(int) vec.x][(int) vec.y])
+                    distance[(int) vec.x][(int) vec.y] = newDist;
+            }
+
+            if (distance[(int) vec.x][(int) vec.y] > maxDistance)
+                maxDistance = distance[(int) vec.x][(int) vec.y];
+        }
+
+        for (int i = 0; i < distance.length; i++)
+            for (int j = 0; j < distance[i].length; j++) {
+                if (distance[i][j] != 0) {
+                    float grey = (float) (distance[i][j]) / (float) maxDistance;
+                    pixmap.drawPixel(i, j, Color.rgba8888(grey, grey, grey, 1));
+                }
+            }
+        distanceMap = new Texture(pixmap);
+        E.E().transformComponent(0, 0, 10)
+                .textureComponent(playerTex)
+                .distanceMapComponent(distanceMap)
+                .shaderResolverComponent("shaders\\outline\\vertex.glsl", "shaders\\outline\\fragment.glsl")
+                .outlineShaderComponent();
     }
 
     public void constructUI() {
