@@ -52,9 +52,8 @@ public class AttackSystem extends IteratingSystem {
             if (playerControllerComponentMapper.get(entityId) != null) {
                 E.E(entityId).attackCoolDownComponent(life); //TODO is this even necessary anymore?
             }
-            if (playerControllerComponentMapper.get(attackTargetComponent.target) != null) {
-                E.E(attackTargetComponent.target).tookDamageComponent(0.6f);
-            }
+            E.E(attackTargetComponent.target).tookDamageComponent(0.6f);
+
             attackTargetComponentMapper.remove(entityId);
         } else
             E.E(entityId).removeAttackTargetComponent();
