@@ -50,51 +50,13 @@ public class RenderSystem extends SortedIteratingSystem {
         final RenderPositionComponent renderPositionComponent = renderPositionComponentMapper.get(entityId);
 
         if (shaderComponent != null) {
-            final OutlineShaderComponent outlineShaderComponent = outlineShaderComponentMapper.get(entityId);
-            shaderComponent.time += world.getDelta();
-            ShaderProgram shader = shaderComponent.shaderProgram;
-            batch.end(); // TODO find a better way to render shader in between batchs
+            batch.flush(); // Force to render any un-rendered meshes
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(Gdx.gl.GL_SRC_ALPHA, Gdx.gl.GL_ONE_MINUS_SRC_ALPHA);
-            Mesh mesh;
-            if (outlineShaderComponent != null) {
-                mesh = getTextureMesh(renderPositionComponent, textureComponent);
-                if (shader.isCompiled()) {
-                    shader.begin();
-
-                    shader.setUniformMatrix("u_projTrans", batch.getProjectionMatrix());
-
-                    textureComponent.texture.bind();
-                    shader.setUniformi("u_texture", 0);
-
-                    float pixelWidth = 1f / (float) textureComponent.texture.getWidth();
-                    float pixelHeight = 1f / (float) textureComponent.texture.getHeight();
-                    shader.setUniform2fv("u_pixelSize", new float[]{pixelWidth, pixelHeight}, 0, 2);
-
-                    shader.setUniformf("u_OutlineColor", Color.ORANGE);
-
-                    mesh.render(shader, GL20.GL_TRIANGLES);
-                    shader.end();
-                }
-            } else {
-                if (textureComponent != null) {
-                    textureComponent.texture.bind();
-                    mesh = getTextureMesh(renderPositionComponent, textureComponent);
-                } else {
-                    textureRegionComponent.region.getTexture().bind();
-                    mesh = getTextureRegionMesh(renderPositionComponent, textureRegionComponent);
-                }
-                shader.begin();
-                //shader.pedantic = false;
-                shader.setUniformMatrix("u_projTrans", batch.getProjectionMatrix());
-                shader.setUniformi("u_texture", 0);
-                shader.setUniformf("time", shaderComponent.time);
-                shader.setUniformf("blink_rate", 0.3f);
-
-                mesh.render(shader, GL20.GL_TRIANGLES);
-                shader.end();
-            }
-            batch.begin();
+            if (outlineShaderComponentMapper.get(entityId) != null)
+                runOutLineShader(shaderComponent, renderPositionComponent, textureComponent);
+            else
+                runBlinkShader(shaderComponent, renderPositionComponent, textureComponent, textureRegionComponent);
         } else {
             if (textureComponent != null) {
                 if (textureComponent.texture == null) {
@@ -257,6 +219,49 @@ public class RenderSystem extends SortedIteratingSystem {
 
         mesh.setVertices(verts);
         return mesh;
+    }
+
+    protected void runOutLineShader(ShaderComponent shaderComponent, RenderPositionComponent renderPositionComponent, TextureComponent textureComponent) {
+        ShaderProgram shader = shaderComponent.shaderProgram;
+        if (shader.isCompiled()) {
+            shader.begin();
+
+            shader.setUniformMatrix("u_projTrans", batch.getProjectionMatrix());
+
+            textureComponent.texture.bind();
+            shader.setUniformi("u_texture", 0);
+
+            float pixelWidth = 1f / (float) textureComponent.texture.getWidth();
+            float pixelHeight = 1f / (float) textureComponent.texture.getHeight();
+            shader.setUniform2fv("u_pixelSize", new float[]{pixelWidth, pixelHeight}, 0, 2);
+
+            shader.setUniformf("u_OutlineColor", Color.ORANGE);
+
+            getTextureMesh(renderPositionComponent, textureComponent);
+            mesh.render(shader, GL20.GL_TRIANGLES);
+            shader.end();
+        }
+    }
+
+    protected void runBlinkShader(ShaderComponent shaderComponent, RenderPositionComponent renderPositionComponent, TextureComponent textureComponent, TextureRegionComponent textureRegionComponent) {
+        ShaderProgram shader = shaderComponent.shaderProgram;
+        shaderComponent.time += world.getDelta();
+        if (textureComponent != null) {
+            textureComponent.texture.bind();
+            mesh = getTextureMesh(renderPositionComponent, textureComponent);
+        } else {
+            textureRegionComponent.region.getTexture().bind();
+            mesh = getTextureRegionMesh(renderPositionComponent, textureRegionComponent);
+        }
+        shader.begin();
+        //shader.pedantic = false;
+        shader.setUniformMatrix("u_projTrans", batch.getProjectionMatrix());
+        shader.setUniformi("u_texture", 0);
+        shader.setUniformf("time", shaderComponent.time);
+        shader.setUniformf("blink_rate", 0.3f);
+
+        mesh.render(shader, GL20.GL_TRIANGLES);
+        shader.end();
     }
 }
 

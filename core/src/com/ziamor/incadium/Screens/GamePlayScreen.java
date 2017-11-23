@@ -86,7 +86,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class GamePlayScreen implements Screen {
-    final float map_width = 16 / 2, map_height = 9 / 2;
+    final float map_width = 16, map_height = 9 ;
     final int viabilityRange = 8;
     SpriteBatch batch;
     ShapeRenderer shapeRenderer;
