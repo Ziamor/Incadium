@@ -5,6 +5,7 @@ import com.artemis.ComponentMapper;
 import com.artemis.annotations.Wire;
 import com.artemis.managers.TagManager;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttribute;
@@ -58,20 +59,23 @@ public class RenderSystem extends SortedIteratingSystem {
             Mesh mesh;
             if (outlineShaderComponent != null) {
                 mesh = getTextureMesh(renderPositionComponent, textureComponent);
-                final DistanceMapComponent distanceMapComponent = distanceMapComponentMapper.get(entityId);
-                shader.begin();
+                if (shader.isCompiled()) {
+                    shader.begin();
 
-                shader.setUniformMatrix("u_projTrans", batch.getProjectionMatrix());
+                    shader.setUniformMatrix("u_projTrans", batch.getProjectionMatrix());
 
-                distanceMapComponent.distanceMap.bind(1);
-                shader.setUniformi("u_texture1", 1);
+                    textureComponent.texture.bind();
+                    shader.setUniformi("u_texture", 0);
 
-                textureComponent.texture.bind(0);
-                shader.setUniformi("u_texture", 0);
+                    float pixelWidth = 1f / (float) textureComponent.texture.getWidth();
+                    float pixelHeight = 1f / (float) textureComponent.texture.getHeight();
+                    shader.setUniform2fv("u_pixelSize", new float[]{pixelWidth, pixelHeight}, 0, 2);
 
-                mesh.render(shader, GL20.GL_TRIANGLES);
-                shader.end();
+                    shader.setUniformf("u_OutlineColor", Color.ORANGE);
 
+                    mesh.render(shader, GL20.GL_TRIANGLES);
+                    shader.end();
+                }
             } else {
                 if (textureComponent != null) {
                     textureComponent.texture.bind();

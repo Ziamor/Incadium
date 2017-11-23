@@ -6,20 +6,27 @@ varying vec4 v_color;
 varying vec2 v_texCoords;
 
 uniform sampler2D u_texture; 
-uniform sampler2D u_texture1; 
+uniform vec2 u_pixelSize;
+uniform vec4 u_OutlineColor;
 
 void main(void) {
-	vec4 texColor0 = texture2D(u_texture, v_texCoords);
-	vec4 texColor1 = texture2D(u_texture1, v_texCoords);
-	
-	vec4 outlineColor = vec4(0.0,0.0,0.75, 1.0);
-	if(texColor0.a == 0){
-	gl_FragColor = vec4(0.0);
+	vec4 texColor = texture2D(u_texture, v_texCoords);
+	if(texColor.a == 0.0){
+		gl_FragColor = texColor;
 	} else {
-		if(texColor1.r <= 0.2){
-			gl_FragColor = outlineColor;
-		} else{
-			gl_FragColor = texColor0;
+		vec4 outLine = u_OutlineColor;
+		
+		float alpha = 4.0*texture2D(u_texture, v_texCoords).a;
+		alpha -= texture2D( u_texture, v_texCoords + vec2( u_pixelSize.x, 0.0 ) ).a;
+		alpha -= texture2D( u_texture, v_texCoords + vec2( -u_pixelSize.x, 0.0 ) ).a;
+		alpha -= texture2D( u_texture, v_texCoords + vec2( 0.0, u_pixelSize.y ) ).a;
+		alpha -= texture2D( u_texture, v_texCoords + vec2( 0.0, -u_pixelSize.y ) ).a;
+	
+		outLine.a = alpha;	
+		if(outLine.a > 0.0){
+			gl_FragColor = outLine;
+		} else {
+			gl_FragColor = texColor;
 		}
 	}
 }

@@ -203,7 +203,7 @@ public class GamePlayScreen implements Screen {
                 }
             }
         distanceMap = new Texture(pixmap);
-        E.E().transformComponent(0, 0, 10)
+        E.E().transformComponent(2, 2, 10)
                 .textureComponent(playerTex)
                 .distanceMapComponent(distanceMap)
                 .shaderResolverComponent("shaders\\outline\\vertex.glsl", "shaders\\outline\\fragment.glsl")
