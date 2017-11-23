@@ -185,8 +185,8 @@ public class GamePlayScreen implements Screen {
         for (Vector2 vec : objective) {
             distance[(int) vec.x][(int) vec.y] = Integer.MAX_VALUE;
             for (Vector2 bvec : boundry) {
-                //int newDist = (int) (Math.abs(vec.x - bvec.x) + Math.abs(vec.y - bvec.y)); // Manhattan distance
-                int newDist = (int) Math.max(Math.abs(vec.x - bvec.x), Math.abs(vec.y - bvec.y)); //Chessboard Distance
+                int newDist = (int) (Math.abs(vec.x - bvec.x) + Math.abs(vec.y - bvec.y)); // Manhattan distance
+                //int newDist = (int) Math.max(Math.abs(vec.x - bvec.x), Math.abs(vec.y - bvec.y)); //Chessboard Distance
                 if (newDist < distance[(int) vec.x][(int) vec.y])
                     distance[(int) vec.x][(int) vec.y] = newDist;
             }
