@@ -50,13 +50,14 @@ public class RenderSystem extends SortedIteratingSystem {
         final RenderPositionComponent renderPositionComponent = renderPositionComponentMapper.get(entityId);
 
         if (shaderComponent != null) {
-            batch.flush(); // Force to render any un-rendered meshes
+            batch.end(); //TODO find a better way to render shaders inside batch
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(Gdx.gl.GL_SRC_ALPHA, Gdx.gl.GL_ONE_MINUS_SRC_ALPHA);
             if (outlineShaderComponentMapper.get(entityId) != null)
                 runOutLineShader(shaderComponent, renderPositionComponent, textureComponent);
             else
                 runBlinkShader(shaderComponent, renderPositionComponent, textureComponent, textureRegionComponent);
+            batch.begin();
         } else {
             if (textureComponent != null) {
                 if (textureComponent.texture == null) {

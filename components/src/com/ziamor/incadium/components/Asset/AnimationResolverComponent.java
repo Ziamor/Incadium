@@ -9,9 +9,10 @@ public class AnimationResolverComponent extends Component {
     public int numFrameHeight;
     public AnimationMetaData[] animationMetaData;
 
-    public void set(String path, int numFrameWidth, int numFrameHeight) {
+    public void set(String path, int numFrameWidth, int numFrameHeight, AnimationMetaData[] animationMetaData) {
         this.path = path;
         this.numFrameWidth = numFrameWidth;
         this.numFrameHeight = numFrameHeight;
+        this.animationMetaData = animationMetaData;
     }
 }

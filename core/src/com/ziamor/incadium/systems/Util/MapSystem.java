@@ -3,6 +3,7 @@ package com.ziamor.incadium.systems.Util;
 import com.artemis.Aspect;
 import com.artemis.BaseEntitySystem;
 import com.artemis.ComponentMapper;
+import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.artemis.utils.IntBag;
 import com.badlogic.gdx.assets.AssetManager;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.ziamor.incadium.DecorFactory;
+import com.ziamor.incadium.components.Asset.AnimationMetaData;
 import com.ziamor.incadium.components.BlockingComponent;
 import com.ziamor.incadium.components.MapComponent;
 import com.ziamor.incadium.components.Render.GroundTileComponent;
@@ -76,7 +78,7 @@ public class MapSystem extends BaseEntitySystem {
             }
 
 
-        /*Vector2 pos = getFreeSpace();
+        Vector2 pos = getFreeSpace();
         int ePlayer = world.createEntity().getId();
         E.E(ePlayer).tag("player")
                 .textureComponent(assetManager.get("player.png", Texture.class))
@@ -91,12 +93,15 @@ public class MapSystem extends BaseEntitySystem {
                 .factionComponent(0)
                 .targetCameraFocusComponent();
 
-        int ePlayer = world.getSystem(TagManager.class).getEntityId("player");
         if (ePlayer != -1) {
             for (int i = 0; i < 50; i++) {
                 pos = getFreeSpace();
+                AnimationMetaData[] animationMetaData = new AnimationMetaData[]{new AnimationMetaData(), new AnimationMetaData()};
+                animationMetaData[0].set("walk", new int[]{0, 1, 2, 3}, 0.1f);
+                animationMetaData[1].set("attack", new int[]{4, 5, 6, 7}, 0.1f);
+
                 E.E().transformComponent(pos.x, pos.y, 4)
-                        .animationResolverComponent("slime.png", 4, 2, 0.1f)
+                        .animationResolverComponent("slime.png", 4, 2, animationMetaData)
                         .healthComponentHealthStat(50, 50f)
                         .movementComponent()
                         .turnTakerComponent()
@@ -107,7 +112,7 @@ public class MapSystem extends BaseEntitySystem {
                         .factionComponent(1)
                         .slimeAnimation();
             }
-    }*/
+        }
 
     }
 
