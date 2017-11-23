@@ -6,11 +6,8 @@ import com.artemis.E;
 import com.artemis.annotations.EntityId;
 import com.artemis.managers.TagManager;
 import com.artemis.systems.IteratingSystem;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.MathUtils;
 import com.ziamor.incadium.components.Render.GroundTileComponent;
 import com.ziamor.incadium.components.Render.TerrainTileComponent;
-import com.ziamor.incadium.components.Render.TextureComponent;
 import com.ziamor.incadium.components.Render.TextureRegionComponent;
 import com.ziamor.incadium.components.TransformComponent;
 
@@ -25,7 +22,7 @@ public class VisibilitySystem extends IteratingSystem {
     private ComponentMapper<TransformComponent> transformComponentMapper;
 
     public VisibilitySystem(float renderRadius) {
-        super(Aspect.all(TransformComponent.class).one(TextureComponent.class, TextureRegionComponent.class, TerrainTileComponent.class, GroundTileComponent.class));
+        super(Aspect.all(TransformComponent.class, TextureRegionComponent.class, TerrainTileComponent.class, GroundTileComponent.class));
         this.renderRadius = renderRadius;
     }
 

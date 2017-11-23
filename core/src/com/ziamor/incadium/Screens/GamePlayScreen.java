@@ -22,19 +22,16 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.ziamor.incadium.IncadiumInvocationStrategy;
@@ -54,7 +51,6 @@ import com.ziamor.incadium.components.TurnTakerComponent;
 import com.ziamor.incadium.systems.Asset.AnimationResolverSystem;
 import com.ziamor.incadium.systems.Asset.ShaderResolverSystem;
 import com.ziamor.incadium.systems.Asset.TextureRegionResolverSystem;
-import com.ziamor.incadium.systems.Asset.TextureResolverSystem;
 import com.ziamor.incadium.systems.Combat.AttackCoolDownSystem;
 import com.ziamor.incadium.systems.Combat.AttackSystem;
 import com.ziamor.incadium.systems.Combat.TookDamageSystem;
@@ -79,11 +75,9 @@ import com.ziamor.incadium.systems.Render.TerrainRenderSystem;
 import com.ziamor.incadium.systems.Util.DurationManagerSystem;
 import com.ziamor.incadium.components.NonComponents.Gradient;
 
-import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 
 public class GamePlayScreen implements Screen {
@@ -317,7 +311,6 @@ public class GamePlayScreen implements Screen {
         systemSetupBuilder.add(new EntityLinkManager(), "mandatory");
         systemSetupBuilder.add(worldSerializationManager, "mandatory");
 
-        systemSetupBuilder.add(new TextureResolverSystem(), "mandatory"); //TODO maybe find a way to generalize asset loading?
         systemSetupBuilder.add(new TextureRegionResolverSystem(), "mandatory");
         systemSetupBuilder.add(new AnimationResolverSystem(), "mandatory");
         systemSetupBuilder.add(new ShaderResolverSystem(), "mandatory");

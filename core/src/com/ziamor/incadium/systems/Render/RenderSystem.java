@@ -8,6 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -18,13 +19,11 @@ import com.ziamor.incadium.components.Render.OutlineShaderComponent;
 import com.ziamor.incadium.components.Render.RenderPositionComponent;
 import com.ziamor.incadium.components.Render.ShaderComponent;
 import com.ziamor.incadium.components.Render.TextureRegionComponent;
-import com.ziamor.incadium.components.Render.TextureComponent;
 import com.ziamor.incadium.systems.Util.SortedIteratingSystem;
 
 import java.util.Comparator;
 
 public class RenderSystem extends SortedIteratingSystem {
-    private ComponentMapper<TextureComponent> textureComponentComponentMapper;
     private ComponentMapper<TextureRegionComponent> textureRegionComponentComponentMapper;
     private ComponentMapper<ShaderComponent> shaderComponentMapper;
     private ComponentMapper<RenderPositionComponent> renderPositionComponentMapper;
@@ -36,7 +35,7 @@ public class RenderSystem extends SortedIteratingSystem {
     private Mesh mesh;
 
     public RenderSystem() {
-        super(Aspect.all(RenderPositionComponent.class).one(TextureComponent.class, TextureRegionComponent.class).exclude(NotVisableComponent.class));
+        super(Aspect.all(RenderPositionComponent.class, TextureRegionComponent.class).exclude(NotVisableComponent.class));
         mesh = new com.badlogic.gdx.graphics.Mesh(true, 6, 0,
                 new VertexAttribute(VertexAttributes.Usage.Position, 3, ShaderProgram.POSITION_ATTRIBUTE),
                 new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE + "0"));
@@ -44,7 +43,6 @@ public class RenderSystem extends SortedIteratingSystem {
 
     @Override
     protected void process(int entityId) {
-        final TextureComponent textureComponent = textureComponentComponentMapper.get(entityId);
         final TextureRegionComponent textureRegionComponent = textureRegionComponentComponentMapper.get(entityId);
         final ShaderComponent shaderComponent = shaderComponentMapper.get(entityId);
         final RenderPositionComponent renderPositionComponent = renderPositionComponentMapper.get(entityId);
@@ -54,25 +52,16 @@ public class RenderSystem extends SortedIteratingSystem {
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(Gdx.gl.GL_SRC_ALPHA, Gdx.gl.GL_ONE_MINUS_SRC_ALPHA);
             if (outlineShaderComponentMapper.get(entityId) != null)
-                runOutLineShader(shaderComponent, renderPositionComponent, textureComponent);
+                runOutLineShader(shaderComponent, renderPositionComponent, textureRegionComponent);
             else
-                runBlinkShader(shaderComponent, renderPositionComponent, textureComponent, textureRegionComponent);
+                runBlinkShader(shaderComponent, renderPositionComponent, textureRegionComponent);
             batch.begin();
         } else {
-            if (textureComponent != null) {
-                if (textureComponent.texture == null) {
-                    Gdx.app.debug("Render System", "Missing texture");
-                    return;
-                }
-                batch.draw(textureComponent.texture, renderPositionComponent.x, renderPositionComponent.y, 1, 1);
+            if (textureRegionComponent.region == null) {
+                Gdx.app.debug("Render System", "Missing texture region");
+                return;
             }
-            if (textureRegionComponent != null) {
-                if (textureRegionComponent.region == null) {
-                    Gdx.app.debug("Render System", "Missing texture region");
-                    return;
-                }
-                batch.draw(textureRegionComponent.region, renderPositionComponent.x, renderPositionComponent.y, 1, 1);
-            }
+            batch.draw(textureRegionComponent.region, renderPositionComponent.x, renderPositionComponent.y, 1, 1);
         }
     }
 
@@ -102,63 +91,6 @@ public class RenderSystem extends SortedIteratingSystem {
     protected void end() {
         super.end();
         batch.end();
-    }
-
-    private Mesh getTextureMesh(RenderPositionComponent renderPositionComponent, TextureComponent textureComponent) {
-        float x = renderPositionComponent.x;
-        float y = renderPositionComponent.y;
-        float width = 1; // TODO width and height should be passed as a param
-        float height = 1;
-        float fx2 = x + width;
-        float fy2 = y + height;
-
-        float[] verts = new float[30];
-        int i = 0;
-
-        //Top Left Vertex Triangle 1
-        verts[i++] = x;   //X
-        verts[i++] = fy2; //Y
-        verts[i++] = 0;    //Z
-        verts[i++] = 0f;   //U
-        verts[i++] = 0f;   //V
-
-        //Top Right Vertex Triangle 1
-        verts[i++] = fx2;
-        verts[i++] = fy2;
-        verts[i++] = 0;
-        verts[i++] = 1f;
-        verts[i++] = 0f;
-
-        //Bottom Left Vertex Triangle 1
-        verts[i++] = x;
-        verts[i++] = y;
-        verts[i++] = 0;
-        verts[i++] = 0f;
-        verts[i++] = 1f;
-
-        //Top Right Vertex Triangle 2
-        verts[i++] = fx2;
-        verts[i++] = fy2;
-        verts[i++] = 0;
-        verts[i++] = 1f;
-        verts[i++] = 0f;
-
-        //Bottom Right Vertex Triangle 2
-        verts[i++] = fx2;
-        verts[i++] = y;
-        verts[i++] = 0;
-        verts[i++] = 1f;
-        verts[i++] = 1f;
-
-        //Bottom Left Vertex Triangle 2
-        verts[i++] = x;
-        verts[i++] = y;
-        verts[i++] = 0;
-        verts[i++] = 0f;
-        verts[i] = 1f;
-
-        mesh.setVertices(verts);
-        return mesh;
     }
 
     private Mesh getTextureRegionMesh(RenderPositionComponent renderPositionComponent, TextureRegionComponent textureRegionComponent) {
@@ -222,38 +154,36 @@ public class RenderSystem extends SortedIteratingSystem {
         return mesh;
     }
 
-    protected void runOutLineShader(ShaderComponent shaderComponent, RenderPositionComponent renderPositionComponent, TextureComponent textureComponent) {
+    protected void runOutLineShader(ShaderComponent shaderComponent, RenderPositionComponent renderPositionComponent, TextureRegionComponent textureRegionComponent) {
         ShaderProgram shader = shaderComponent.shaderProgram;
         if (shader.isCompiled()) {
             shader.begin();
 
             shader.setUniformMatrix("u_projTrans", batch.getProjectionMatrix());
 
-            textureComponent.texture.bind();
+            Texture texture = textureRegionComponent.region.getTexture();
+            texture.bind();
             shader.setUniformi("u_texture", 0);
 
-            float pixelWidth = 1f / (float) textureComponent.texture.getWidth();
-            float pixelHeight = 1f / (float) textureComponent.texture.getHeight();
+            float pixelWidth = 1f / (float) texture.getWidth();
+            float pixelHeight = 1f / (float) texture.getHeight();
             shader.setUniform2fv("u_pixelSize", new float[]{pixelWidth, pixelHeight}, 0, 2);
 
             shader.setUniformf("u_OutlineColor", Color.ORANGE);
 
-            getTextureMesh(renderPositionComponent, textureComponent);
+            getTextureRegionMesh(renderPositionComponent, textureRegionComponent);
             mesh.render(shader, GL20.GL_TRIANGLES);
             shader.end();
         }
     }
 
-    protected void runBlinkShader(ShaderComponent shaderComponent, RenderPositionComponent renderPositionComponent, TextureComponent textureComponent, TextureRegionComponent textureRegionComponent) {
+    protected void runBlinkShader(ShaderComponent shaderComponent, RenderPositionComponent renderPositionComponent, TextureRegionComponent textureRegionComponent) {
         ShaderProgram shader = shaderComponent.shaderProgram;
         shaderComponent.time += world.getDelta();
-        if (textureComponent != null) {
-            textureComponent.texture.bind();
-            mesh = getTextureMesh(renderPositionComponent, textureComponent);
-        } else {
-            textureRegionComponent.region.getTexture().bind();
-            mesh = getTextureRegionMesh(renderPositionComponent, textureRegionComponent);
-        }
+
+        textureRegionComponent.region.getTexture().bind();
+        mesh = getTextureRegionMesh(renderPositionComponent, textureRegionComponent);
+
         shader.begin();
         //shader.pedantic = false;
         shader.setUniformMatrix("u_projTrans", batch.getProjectionMatrix());

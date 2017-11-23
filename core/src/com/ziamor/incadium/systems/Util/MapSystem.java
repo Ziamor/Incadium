@@ -81,7 +81,7 @@ public class MapSystem extends BaseEntitySystem {
         Vector2 pos = getFreeSpace();
         int ePlayer = world.createEntity().getId();
         E.E(ePlayer).tag("player")
-                .textureComponent(assetManager.get("player.png", Texture.class))
+                .textureRegionResolverComponent("player.png", 0, 0, 32, 32)
                 .transformComponent(pos.x, pos.y, 4)
                 .movementComponent()
                 .attackDamageComponent(25)
@@ -91,6 +91,8 @@ public class MapSystem extends BaseEntitySystem {
                 .healthBarUIComponent(ePlayer)
                 .turnComponent()
                 .factionComponent(0)
+                .outlineShaderComponent()
+                .shaderResolverComponent("shaders\\outline\\vertex.glsl", "shaders\\outline\\fragment.glsl")
                 .targetCameraFocusComponent();
 
         if (ePlayer != -1) {

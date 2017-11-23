@@ -23,15 +23,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.ziamor.incadium.Incadium;
-import com.ziamor.incadium.components.Asset.TextureResolverComponent;
 import com.ziamor.incadium.components.MonsterComponent;
 import com.ziamor.incadium.components.Movement.PlayerControllerComponent;
-import com.ziamor.incadium.components.Render.TextureComponent;
 import com.ziamor.incadium.components.TargetCameraFocusComponent;
 import com.ziamor.incadium.components.TransformComponent;
 import com.ziamor.incadium.components.TurnComponent;
 import com.ziamor.incadium.systems.Asset.AnimationResolverSystem;
-import com.ziamor.incadium.systems.Asset.TextureResolverSystem;
 import com.ziamor.incadium.systems.Movement.FollowSystem;
 import com.ziamor.incadium.systems.Movement.MovementSystem;
 import com.ziamor.incadium.systems.Movement.PathFindingSystem;
@@ -65,8 +62,6 @@ public class SaveTest implements Screen {
     World world;
 
     private ComponentMapper<TransformComponent> transformComponentMapper;
-    private ComponentMapper<TextureComponent> textureComponentMapper;
-    private ComponentMapper<TextureResolverComponent> textureResolverComponentMapper;
     private ComponentMapper<TargetCameraFocusComponent> targetCameraFocusComponentMapper;
 
     WorldSerializationManager worldSerializationManager;
@@ -88,7 +83,6 @@ public class SaveTest implements Screen {
                 new EntityLinkManager(),
                 worldSerializationManager,
                 new MapSystem(),
-                new TextureResolverSystem(),
                 new AnimationResolverSystem(),
                 new SlimeAnimationControllerSystem(),
                 new AnimationSystem(),
@@ -108,15 +102,13 @@ public class SaveTest implements Screen {
         worldSerializationManager.setSerializer(backend);
 
         transformComponentMapper = world.getMapper(TransformComponent.class);
-        textureComponentMapper = world.getMapper(TextureComponent.class);
-        textureResolverComponentMapper = world.getMapper(TextureResolverComponent.class);
         targetCameraFocusComponentMapper = world.getMapper(TargetCameraFocusComponent.class);
 
         boolean initEnt = false;
         if (initEnt) {
             ePlayer = world.create();
             E.E(ePlayer).tag("player")
-                    .textureResolverComponent("player.png")
+                    .textureRegionResolverComponent("player.png", 0, 0, 32, 32)
                     .transformComponent(1, 1, 4)
                     .movementComponent()
                     .attackDamageComponent(25)
