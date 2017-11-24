@@ -22,7 +22,7 @@ public class VisibilitySystem extends IteratingSystem {
     private ComponentMapper<TransformComponent> transformComponentMapper;
 
     public VisibilitySystem(float renderRadius) {
-        super(Aspect.all(TransformComponent.class, TextureRegionComponent.class, TerrainTileComponent.class, GroundTileComponent.class));
+        super(Aspect.all(TransformComponent.class).one(TextureRegionComponent.class, TerrainTileComponent.class, GroundTileComponent.class));
         this.renderRadius = renderRadius;
     }
 

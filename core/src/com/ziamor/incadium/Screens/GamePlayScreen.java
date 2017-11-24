@@ -324,7 +324,7 @@ public class GamePlayScreen implements Screen {
         systemSetupBuilder.add(new RenderPositionInitSystem(), "render");
         systemSetupBuilder.add(new RenderPositionSystem(), "render");
         systemSetupBuilder.add(new VisibilitySystem(viabilityRange), "render");
-        ;
+
         systemSetupBuilder.add(new SlimeAnimationControllerSystem(), "render");
         systemSetupBuilder.add(new AnimationSystem(), "render");
         systemSetupBuilder.add(new TerrainRenderSystem(), "render");
