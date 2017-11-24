@@ -13,11 +13,11 @@ import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.ziamor.incadium.components.Render.DistanceMapComponent;
 import com.ziamor.incadium.components.Render.NotVisableComponent;
-import com.ziamor.incadium.components.Render.OutlineShaderComponent;
+import com.ziamor.incadium.components.Render.shaders.BlinkShaderComponent;
+import com.ziamor.incadium.components.Render.shaders.OutlineShaderComponent;
 import com.ziamor.incadium.components.Render.RenderPositionComponent;
-import com.ziamor.incadium.components.Render.ShaderComponent;
+import com.ziamor.incadium.components.Render.shaders.ShaderComponent;
 import com.ziamor.incadium.components.Render.TextureRegionComponent;
 import com.ziamor.incadium.systems.Util.SortedIteratingSystem;
 
@@ -28,7 +28,7 @@ public class RenderSystem extends SortedIteratingSystem {
     private ComponentMapper<ShaderComponent> shaderComponentMapper;
     private ComponentMapper<RenderPositionComponent> renderPositionComponentMapper;
     private ComponentMapper<OutlineShaderComponent> outlineShaderComponentMapper;
-    private ComponentMapper<DistanceMapComponent> distanceMapComponentMapper;
+    private ComponentMapper<BlinkShaderComponent> blinkShaderComponentMapper;
     @Wire
     private SpriteBatch batch;
     TagManager tagManager;
@@ -47,14 +47,17 @@ public class RenderSystem extends SortedIteratingSystem {
         final ShaderComponent shaderComponent = shaderComponentMapper.get(entityId);
         final RenderPositionComponent renderPositionComponent = renderPositionComponentMapper.get(entityId);
 
-        if (shaderComponent != null) {
+        if (shaderComponent != null) {// TODO remove empty shader(shader comp exist but no shaders attached to ent)
+            final OutlineShaderComponent outlineShaderComponent = outlineShaderComponentMapper.get(entityId);
+            final BlinkShaderComponent blinkShaderComponent = blinkShaderComponentMapper.get(entityId);
             batch.end(); //TODO find a better way to render shaders inside batch
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(Gdx.gl.GL_SRC_ALPHA, Gdx.gl.GL_ONE_MINUS_SRC_ALPHA);
-            if (outlineShaderComponentMapper.get(entityId) != null)
-                runOutLineShader(shaderComponent, renderPositionComponent, textureRegionComponent);
-            else
-                runBlinkShader(shaderComponent, renderPositionComponent, textureRegionComponent);
+
+            if (blinkShaderComponent != null)
+                runBlinkShader(blinkShaderComponent, renderPositionComponent, textureRegionComponent);
+            if (outlineShaderComponent != null)
+                runOutLineShader(outlineShaderComponent, renderPositionComponent, textureRegionComponent);
             batch.begin();
         } else {
             if (textureRegionComponent.region == null) {
@@ -154,8 +157,8 @@ public class RenderSystem extends SortedIteratingSystem {
         return mesh;
     }
 
-    protected void runOutLineShader(ShaderComponent shaderComponent, RenderPositionComponent renderPositionComponent, TextureRegionComponent textureRegionComponent) {
-        ShaderProgram shader = shaderComponent.shaderProgram;
+    protected void runOutLineShader(OutlineShaderComponent outlineShaderComponent, RenderPositionComponent renderPositionComponent, TextureRegionComponent textureRegionComponent) {
+        ShaderProgram shader = outlineShaderComponent.shaderProgram;
         if (shader.isCompiled()) {
             shader.begin();
 
@@ -177,9 +180,9 @@ public class RenderSystem extends SortedIteratingSystem {
         }
     }
 
-    protected void runBlinkShader(ShaderComponent shaderComponent, RenderPositionComponent renderPositionComponent, TextureRegionComponent textureRegionComponent) {
-        ShaderProgram shader = shaderComponent.shaderProgram;
-        shaderComponent.time += world.getDelta();
+    protected void runBlinkShader(BlinkShaderComponent blinkShaderComponent, RenderPositionComponent renderPositionComponent, TextureRegionComponent textureRegionComponent) {
+        ShaderProgram shader = blinkShaderComponent.shaderProgram;
+        blinkShaderComponent.time += world.getDelta();
 
         textureRegionComponent.region.getTexture().bind();
         mesh = getTextureRegionMesh(renderPositionComponent, textureRegionComponent);
@@ -188,7 +191,7 @@ public class RenderSystem extends SortedIteratingSystem {
         //shader.pedantic = false;
         shader.setUniformMatrix("u_projTrans", batch.getProjectionMatrix());
         shader.setUniformi("u_texture", 0);
-        shader.setUniformf("time", shaderComponent.time);
+        shader.setUniformf("time", blinkShaderComponent.time);
         shader.setUniformf("blink_rate", 0.3f);
 
         mesh.render(shader, GL20.GL_TRIANGLES);

@@ -4,11 +4,9 @@ import com.artemis.Component;
 
 
 public class ShaderResolverComponent extends Component {
-    public String vertexShader = "vertex.glsl";
-    public String fragmentShader = "fragment.glsl";
+    public Class<? extends Component> shaderComponentClass;
 
-    public void set(String vertexShader, String fragmentShader) {
-        this.vertexShader = vertexShader;
-        this.fragmentShader = fragmentShader;
+    public void set(Class<? extends Component> shaderComponentClass) {
+        this.shaderComponentClass = shaderComponentClass;
     }
 }

@@ -16,6 +16,7 @@ import com.ziamor.incadium.components.BlockingComponent;
 import com.ziamor.incadium.components.MapComponent;
 import com.ziamor.incadium.components.Render.GroundTileComponent;
 import com.ziamor.incadium.components.Render.TerrainTileComponent;
+import com.ziamor.incadium.components.Render.shaders.OutlineShaderComponent;
 import com.ziamor.incadium.components.TransformComponent;
 import com.ziamor.incadium.utils.BSP;
 import com.ziamor.incadium.utils.BSPLeafIterator;
@@ -91,8 +92,7 @@ public class MapSystem extends BaseEntitySystem {
                 .healthBarUIComponent(ePlayer)
                 .turnComponent()
                 .factionComponent(0)
-                .outlineShaderComponent()
-                .shaderResolverComponent("shaders\\outline\\vertex.glsl", "shaders\\outline\\fragment.glsl")
+                .shaderResolverComponent(OutlineShaderComponent.class)
                 .targetCameraFocusComponent();
 
         if (ePlayer != -1) {
