@@ -92,7 +92,6 @@ public class MapSystem extends BaseEntitySystem {
                 .healthBarUIComponent(ePlayer)
                 .turnComponent()
                 .factionComponent(0)
-                .shaderResolverComponent(OutlineShaderComponent.class)
                 .targetCameraFocusComponent();
 
         if (ePlayer != -1) {
@@ -112,6 +111,7 @@ public class MapSystem extends BaseEntitySystem {
                         .lootableComponent()
                         .attackDamageComponent(15f)
                         .factionComponent(1)
+                        .selectableComponent()
                         .slimeAnimation();
             }
         }

@@ -89,7 +89,7 @@ public class SaveTest implements Screen {
                 new TerrainRenderSystem(),
                 new RenderSystem(),
                 new TargetCameraSystem(),
-                new PlayerControllerSystem(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()),
+                new PlayerControllerSystem(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), viewport),
                 new DurationManagerSystem(),
                 new PathFindingSystem(),
                 new FollowSystem(),

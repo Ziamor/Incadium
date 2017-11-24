@@ -330,7 +330,7 @@ public class GamePlayScreen implements Screen {
         systemSetupBuilder.add(new TargetCameraSystem(), "render");
 
         // Input Systems
-        systemSetupBuilder.add(new PlayerControllerSystem(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), "turn");
+        systemSetupBuilder.add(new PlayerControllerSystem(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), viewport), "turn");
         //new TurnSchedulerSystem(),
         // Movement Systems
         systemSetupBuilder.add(new DurationManagerSystem(), "render");
@@ -352,13 +352,13 @@ public class GamePlayScreen implements Screen {
         systemSetupBuilder.add(new PlayerStateSystem(), "turn");
         //new DrawCurrentTurnTakerSystem(shapeRenderer)
 
-
         config = new WorldConfigurationBuilder()
                 .with(systemSetupBuilder.getSystemArray())
                 .build()
                 .register(batch)
                 .register(shapeRenderer)
                 .register(camera)
+                .register(viewport)
                 .register(assetManager);
         incadiumInvocationStrategy = new IncadiumInvocationStrategy();
         config.setInvocationStrategy(incadiumInvocationStrategy);
