@@ -30,19 +30,14 @@ public class PlayerControllerSystem extends IteratingSystem implements GestureDe
 
     private ComponentMapper<MovementComponent> movementComponentComponentMapper;
     private ComponentMapper<MovementLerpComponent> movementLerpComponentMapper;
-    private ComponentMapper<RenderPositionComponent> renderPositionComponentMapper;//TODO remove if we move the select system
-    private ComponentMapper<SelectedComponent> selectedComponentMapper;
-    private ComponentMapper<ShaderResolverComponent> shaderResolverComponentMapper;
-    private ComponentMapper<OutlineShaderComponent> outlineShaderComponentMapper;
+
     TouchArea touchArea;
     private float width, height;
 
-    Viewport viewport;//TODO remove if we move the select system
 
     //TODO update resize
-    public PlayerControllerSystem(int width, int height, Viewport viewport) {
+    public PlayerControllerSystem(int width, int height) {
         super(Aspect.all(PlayerControllerComponent.class, MovementComponent.class).exclude(MovementLerpComponent.class, AttackLerpComponent.class, AttackTargetComponent.class));
-        this.viewport = viewport;
         touchArea = TouchArea.NONE;
         this.width = width;
         this.height = height;
@@ -66,34 +61,12 @@ public class PlayerControllerSystem extends IteratingSystem implements GestureDe
 
     @Override
     public boolean touchDown(float x, float y, int pointer, int button) {
-        //TODO does this really belong in the player controller? Think about making a select system
-        // Unselect any entities currently selected
-        IntBag selectedIDs = world.getAspectSubscriptionManager().get(Aspect.one(SelectedComponent.class)).getEntities();
-        for (int i = 0; i < selectedIDs.size(); i++) {
-            selectedComponentMapper.remove(selectedIDs.get(i));
-            outlineShaderComponentMapper.remove(selectedIDs.get(i));
-        }
-        //Convert the screen space coordinates
-        Vector2 screenPos = viewport.unproject(new Vector2(x, y));
-        //Find the first selectable entity on mouse pos
-        IntBag selectablesIDs = world.getAspectSubscriptionManager().get(Aspect.one(SelectableComponent.class)).getEntities();
-        for (int i = 0; i < selectablesIDs.size(); i++) {
-            final RenderPositionComponent renderPositionComponent = renderPositionComponentMapper.get(selectablesIDs.get(i));
-            if (renderPositionComponent != null) {
-                Rectangle entityRect = new Rectangle(renderPositionComponent.x, renderPositionComponent.y, 1, 1);
-                if (entityRect.contains(screenPos)) {
-                    selectedComponentMapper.create(selectablesIDs.get(i));
-                    shaderResolverComponentMapper.create(selectablesIDs.get(i)).set(OutlineShaderComponent.class);
-                    return true;
-                }
-
-            }
-        }
 
         /*switch (Gdx.app.getType()) {
             case Android:*/
         Vector2 touchPos = new Vector2(x - width / 2, height / 2 - y);
         touchPos.nor();
+        touchArea = TouchArea.NONE;
         if (Math.abs(touchPos.x) >= Math.abs(touchPos.y)) {
             if (touchPos.x >= 0)
                 touchArea = TouchArea.RIGHT;
@@ -105,7 +78,11 @@ public class PlayerControllerSystem extends IteratingSystem implements GestureDe
             else
                 touchArea = TouchArea.DOWN;
         }
-        return false;
+
+        if (touchArea == TouchArea.NONE)
+            return false;
+        else
+            return true;
     }
 
     @Override

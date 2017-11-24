@@ -66,6 +66,7 @@ import com.ziamor.incadium.systems.Combat.DeathSystem;
 import com.ziamor.incadium.systems.Movement.FollowSystem;
 import com.ziamor.incadium.systems.Stats.HealthSystem;
 import com.ziamor.incadium.systems.Combat.LootSystem;
+import com.ziamor.incadium.systems.UI.SelectSystem;
 import com.ziamor.incadium.systems.Util.MapSystem;
 import com.ziamor.incadium.systems.Movement.MovementSystem;
 import com.ziamor.incadium.systems.Movement.PlayerControllerSystem;
@@ -137,6 +138,7 @@ public class GamePlayScreen implements Screen {
         backend.prettyPrint(true);
         worldSerializationManager.setSerializer(backend);
 
+        inputMultiplexer.addProcessor(new GestureDetector(world.getSystem(SelectSystem.class)));
         inputMultiplexer.addProcessor(new GestureDetector(world.getSystem(PlayerControllerSystem.class)));
 
         /*try {
@@ -330,7 +332,7 @@ public class GamePlayScreen implements Screen {
         systemSetupBuilder.add(new TargetCameraSystem(), "render");
 
         // Input Systems
-        systemSetupBuilder.add(new PlayerControllerSystem(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), viewport), "turn");
+        systemSetupBuilder.add(new PlayerControllerSystem(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), "turn");
         //new TurnSchedulerSystem(),
         // Movement Systems
         systemSetupBuilder.add(new DurationManagerSystem(), "render");
@@ -346,6 +348,7 @@ public class GamePlayScreen implements Screen {
         systemSetupBuilder.add(new LootSystem(), "turn");
         systemSetupBuilder.add(new DeathSystem(), "turn");
         //UI
+        systemSetupBuilder.add(new SelectSystem(viewport), "render");
         systemSetupBuilder.add(new HealthBarUISystem(healthBarUI), "render");
         systemSetupBuilder.add(new AttackCooldownBarRender(attackCoolDownBar), "render");
         //Debug Systems

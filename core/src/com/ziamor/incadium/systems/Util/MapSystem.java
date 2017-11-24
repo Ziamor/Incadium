@@ -6,6 +6,7 @@ import com.artemis.ComponentMapper;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.artemis.utils.IntBag;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
@@ -24,6 +25,8 @@ import com.ziamor.incadium.utils.BSPPostorderIterator;
 
 import java.beans.Transient;
 import java.util.Random;
+
+import static com.badlogic.gdx.Application.ApplicationType.Android;
 
 //TODO helpful https://stackoverflow.com/questions/23222053/data-structure-for-tile-map-for-use-with-artemis
 public class MapSystem extends BaseEntitySystem {
@@ -94,15 +97,18 @@ public class MapSystem extends BaseEntitySystem {
                 .factionComponent(0)
                 .targetCameraFocusComponent();
 
+        int num_slimes = 50;
+        if (Gdx.app.getType() == Android)
+            num_slimes = 10;
         if (ePlayer != -1) {
-            for (int i = 0; i < 50; i++) {
+            for (int i = 0; i < num_slimes; i++) {
                 pos = getFreeSpace();
                 AnimationMetaData[] animationMetaData = new AnimationMetaData[]{new AnimationMetaData(), new AnimationMetaData()};
                 animationMetaData[0].set("walk", new int[]{0, 1, 2, 3}, 0.1f);
                 animationMetaData[1].set("attack", new int[]{4, 5, 6, 7}, 0.1f);
 
                 E.E().transformComponent(pos.x, pos.y, 4)
-                        .animationResolverComponent("slime.png", 4, 2, animationMetaData)
+                        .animationResolverComponent("Slime.png", 4, 2, animationMetaData)
                         .healthComponentHealthStat(50, 50f)
                         .movementComponent()
                         .turnTakerComponent()
