@@ -47,6 +47,12 @@ public class RenderSystem extends SortedIteratingSystem {
         final ShaderComponent shaderComponent = shaderComponentMapper.get(entityId);
         final RenderPositionComponent renderPositionComponent = renderPositionComponentMapper.get(entityId);
 
+        if (textureRegionComponent.region == null) {
+            Gdx.app.debug("Render System", "Missing texture region");
+            return;
+        }
+        batch.draw(textureRegionComponent.region, renderPositionComponent.x, renderPositionComponent.y, 1, 1);
+
         if (shaderComponent != null) {// TODO remove empty shader(shader comp exist but no shaders attached to ent)
             final OutlineShaderComponent outlineShaderComponent = outlineShaderComponentMapper.get(entityId);
             final BlinkShaderComponent blinkShaderComponent = blinkShaderComponentMapper.get(entityId);
@@ -59,12 +65,6 @@ public class RenderSystem extends SortedIteratingSystem {
             if (outlineShaderComponent != null)
                 runOutLineShader(outlineShaderComponent, renderPositionComponent, textureRegionComponent);
             batch.begin();
-        } else {
-            if (textureRegionComponent.region == null) {
-                Gdx.app.debug("Render System", "Missing texture region");
-                return;
-            }
-            batch.draw(textureRegionComponent.region, renderPositionComponent.x, renderPositionComponent.y, 1, 1);
         }
     }
 

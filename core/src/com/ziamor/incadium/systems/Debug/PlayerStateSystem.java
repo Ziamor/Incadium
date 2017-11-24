@@ -30,11 +30,5 @@ public class PlayerStateSystem extends BaseEntitySystem {
         }
         final TurnComponent turnComponent = turnComponentMapper.get(player);
         final TransformComponent transformComponent = transformComponentMapper.get(player);
-        if (turnComponent != null) {
-            float time = TimeUtils.timeSinceNanos(lastTurn) / 1000000000f;
-            if (time > 0.2f)
-                Gdx.app.log("", "Time: " + time);
-            lastTurn = TimeUtils.nanoTime();
-        }
     }
 }

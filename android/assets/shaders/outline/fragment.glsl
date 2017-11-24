@@ -23,10 +23,6 @@ void main(void) {
 		alpha -= texture2D( u_texture, v_texCoords + vec2( 0.0, -u_pixelSize.y ) ).a;
 	
 		outLine.a = alpha;	
-		if(outLine.a > 0.0){
-			gl_FragColor = outLine;
-		} else {
-			gl_FragColor = texColor;
-		}
+		gl_FragColor = outLine;
 	}
 }
