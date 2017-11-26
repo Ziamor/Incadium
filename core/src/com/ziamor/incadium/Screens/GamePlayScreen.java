@@ -124,6 +124,11 @@ public class GamePlayScreen implements Screen {
     ShaderProgram ambientLightShader;
     String ambientLightShaderFileName = "ambient light";
 
+    Mesh frameBufferMesh;
+    Gradient dayNightGrad;
+    float dayTime = 0;
+    float dayLength = 60;
+
     public GamePlayScreen(final Incadium incadium) {
         batch = incadium.batch;
         shapeRenderer = incadium.shapeRenderer;
@@ -189,6 +194,15 @@ public class GamePlayScreen implements Screen {
 
         if (ambientLightShader.getLog().length() != 0)
             Gdx.app.debug("Shader Resolver System", ambientLightShader.getLog());
+
+        frameBufferMesh = new com.badlogic.gdx.graphics.Mesh(true, 6, 0,
+                new VertexAttribute(VertexAttributes.Usage.Position, 3, ShaderProgram.POSITION_ATTRIBUTE),
+                new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE + "0"));
+
+        dayNightGrad = new Gradient(new Color(1f, 1f, 0.86f, 1f), new Color(1f, 1f, 0.86f, 1f));
+        dayNightGrad.addPoint(new Color(1.0f, 0.24f, 0.24f, 1.0f), 0.3f);
+        dayNightGrad.addPoint(new Color(0.08f, 0.24f, 0.70f, 1.0f), 0.5f);
+        dayNightGrad.addPoint(new Color(1.0f, 0.24f, 0.24f, 1.0f), 0.7f);
     }
 
     public void constructUI() {
@@ -281,23 +295,17 @@ public class GamePlayScreen implements Screen {
         fbo.end();
         viewport.apply();
 
-        //batch.begin();
         ambientLightShader.begin();
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        // batch.setShader(ambientLightShader);
-        //atch.setProjectionMatrix(viewport.getCamera().projection);
-        //batch.draw(fbo.getColorBufferTexture(), map_width / -2, map_height / 2, map_width, -map_height);
-        //batch.setShader(null);
-        //batch.end();
         ambientLightShader.setUniformMatrix("u_projTrans", viewport.getCamera().projection);
 
         fbo.getColorBufferTexture().bind();
         ambientLightShader.setUniformi("u_texture", 0);
 
-        Mesh mesh = new com.badlogic.gdx.graphics.Mesh(true, 6, 0,
-                new VertexAttribute(VertexAttributes.Usage.Position, 3, ShaderProgram.POSITION_ATTRIBUTE),
-                new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE + "0"));
+        dayTime += delta;
+        dayTime = dayTime % dayLength;
+        ambientLightShader.setUniformf("u_color", dayNightGrad.getColor(dayTime / dayLength));
 
         float x = map_width / -2;
         float y = map_height / 2;
@@ -351,8 +359,8 @@ public class GamePlayScreen implements Screen {
         verts[i++] = 0f;
         verts[i] = 1f;
 
-        mesh.setVertices(verts);
-        mesh.render(ambientLightShader, GL20.GL_TRIANGLES);
+        frameBufferMesh.setVertices(verts);
+        frameBufferMesh.render(ambientLightShader, GL20.GL_TRIANGLES);
         ambientLightShader.end();
 
         stage.act(delta);
