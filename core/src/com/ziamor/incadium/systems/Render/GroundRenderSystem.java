@@ -7,28 +7,27 @@ import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.PerformanceCounter;
+import com.ziamor.incadium.components.Render.GroundTileComponent;
 import com.ziamor.incadium.components.Render.NotVisableComponent;
-import com.ziamor.incadium.components.Render.TerrainTileComponent;
 import com.ziamor.incadium.components.TransformComponent;
 
 import java.lang.reflect.Array;
 
-public class TerrainRenderSystem extends IteratingSystem {
+public class GroundRenderSystem extends IteratingSystem {
     ComponentMapper<TransformComponent> transformComponentComponentMapper;
-    ComponentMapper<TerrainTileComponent> terrainTileComponentComponentMapper;
+    ComponentMapper<GroundTileComponent> groundTileComponentComponentMapper;
     @Wire
     private SpriteBatch batch;
-
-    public TerrainRenderSystem() {
-        super(Aspect.all(TransformComponent.class, TerrainTileComponent.class).exclude(NotVisableComponent.class));
+    public GroundRenderSystem() {
+        super(Aspect.all(TransformComponent.class, GroundTileComponent.class).exclude(NotVisableComponent.class));
     }
 
     @Override
     protected void process(int e) {
-        TerrainTileComponent terrainTileComponent = terrainTileComponentComponentMapper.get(e);
         TransformComponent transformComponent = transformComponentComponentMapper.get(e);
+        GroundTileComponent groundTileComponent = groundTileComponentComponentMapper.get(e);
 
-        batch.draw(terrainTileComponent.region, transformComponent.x, transformComponent.y, 1, 1);
+        batch.draw(groundTileComponent.groundTexture, transformComponent.x, transformComponent.y, 1, 1);
     }
 
     @Override
