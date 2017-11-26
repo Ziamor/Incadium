@@ -21,25 +21,22 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.PixmapIO;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.TextureData;
+import com.badlogic.gdx.graphics.VertexAttribute;
+import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
-import com.badlogic.gdx.utils.PerformanceCounter;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.ziamor.incadium.IncadiumInvocationStrategy;
@@ -124,6 +121,9 @@ public class GamePlayScreen implements Screen {
     private boolean playerTurn = true;
     FrameBuffer fbo;
 
+    ShaderProgram ambientLightShader;
+    String ambientLightShaderFileName = "ambient light";
+
     public GamePlayScreen(final Incadium incadium) {
         batch = incadium.batch;
         shapeRenderer = incadium.shapeRenderer;
@@ -181,6 +181,14 @@ public class GamePlayScreen implements Screen {
 
         movementLerpComponentMapper = world.getMapper(MovementLerpComponent.class);
         attackLerpComponentMapper = world.getMapper(AttackLerpComponent.class);
+
+        String vertexShader = Gdx.files.internal("shaders\\" + ambientLightShaderFileName + "\\vertex.glsl").readString();
+        String fragmentShader = Gdx.files.internal("shaders\\" + ambientLightShaderFileName + "\\fragment.glsl").readString();
+
+        ambientLightShader = new ShaderProgram(vertexShader, fragmentShader);
+
+        if (ambientLightShader.getLog().length() != 0)
+            Gdx.app.debug("Shader Resolver System", ambientLightShader.getLog());
     }
 
     public void constructUI() {
@@ -273,12 +281,79 @@ public class GamePlayScreen implements Screen {
         fbo.end();
         viewport.apply();
 
-        batch.begin();
+        //batch.begin();
+        ambientLightShader.begin();
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batch.setProjectionMatrix(viewport.getCamera().projection);
-        batch.draw(fbo.getColorBufferTexture(), map_width/-2, map_height/2, map_width, -map_height);
-        batch.end();
+        // batch.setShader(ambientLightShader);
+        //atch.setProjectionMatrix(viewport.getCamera().projection);
+        //batch.draw(fbo.getColorBufferTexture(), map_width / -2, map_height / 2, map_width, -map_height);
+        //batch.setShader(null);
+        //batch.end();
+        ambientLightShader.setUniformMatrix("u_projTrans", viewport.getCamera().projection);
+
+        fbo.getColorBufferTexture().bind();
+        ambientLightShader.setUniformi("u_texture", 0);
+
+        Mesh mesh = new com.badlogic.gdx.graphics.Mesh(true, 6, 0,
+                new VertexAttribute(VertexAttributes.Usage.Position, 3, ShaderProgram.POSITION_ATTRIBUTE),
+                new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE + "0"));
+
+        float x = map_width / -2;
+        float y = map_height / 2;
+        float width = map_width;
+        float height = -map_height;
+        float fx2 = x + width;
+        float fy2 = y + height;
+
+        float[] verts = new float[30];
+        int i = 0;
+
+        //Top Left Vertex Triangle 1
+        verts[i++] = x;   //X
+        verts[i++] = fy2; //Y
+        verts[i++] = 0;    //Z
+        verts[i++] = 0f;   //U
+        verts[i++] = 0f;   //V
+
+        //Top Right Vertex Triangle 1
+        verts[i++] = fx2;
+        verts[i++] = fy2;
+        verts[i++] = 0;
+        verts[i++] = 1f;
+        verts[i++] = 0f;
+
+        //Bottom Left Vertex Triangle 1
+        verts[i++] = x;
+        verts[i++] = y;
+        verts[i++] = 0;
+        verts[i++] = 0f;
+        verts[i++] = 1f;
+
+        //Top Right Vertex Triangle 2
+        verts[i++] = fx2;
+        verts[i++] = fy2;
+        verts[i++] = 0;
+        verts[i++] = 1f;
+        verts[i++] = 0f;
+
+        //Bottom Right Vertex Triangle 2
+        verts[i++] = fx2;
+        verts[i++] = y;
+        verts[i++] = 0;
+        verts[i++] = 1f;
+        verts[i++] = 1f;
+
+        //Bottom Left Vertex Triangle 2
+        verts[i++] = x;
+        verts[i++] = y;
+        verts[i++] = 0;
+        verts[i++] = 0f;
+        verts[i] = 1f;
+
+        mesh.setVertices(verts);
+        mesh.render(ambientLightShader, GL20.GL_TRIANGLES);
+        ambientLightShader.end();
 
         stage.act(delta);
         stage.draw();
