@@ -22,16 +22,24 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
+import com.badlogic.gdx.utils.PerformanceCounter;
+import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.ziamor.incadium.IncadiumInvocationStrategy;
@@ -45,6 +53,7 @@ import com.ziamor.incadium.components.Movement.PlayerControllerComponent;
 import com.ziamor.incadium.components.NonComponents.HealthBarUI;
 import com.ziamor.incadium.Incadium;
 import com.ziamor.incadium.systems.Asset.MapResolverSystem;
+import com.ziamor.incadium.systems.Render.GroundRenderSystem;
 import com.ziamor.incadium.systems.Render.RenderPositionSystem;
 import com.ziamor.incadium.components.TurnComponent;
 import com.ziamor.incadium.components.TurnTakerComponent;
@@ -113,7 +122,7 @@ public class GamePlayScreen implements Screen {
     private ComponentMapper<AttackLerpComponent> attackLerpComponentMapper;
 
     private boolean playerTurn = true;
-    Texture distanceMap;
+    FrameBuffer fbo;
 
     public GamePlayScreen(final Incadium incadium) {
         batch = incadium.batch;
@@ -126,6 +135,11 @@ public class GamePlayScreen implements Screen {
         camera = new OrthographicCamera();
         viewport = new FitViewport(map_width, map_height, camera);
         camera.translate(map_width / 2, map_height / 2);
+        camera.update();
+
+        this.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        fbo = new FrameBuffer(Pixmap.Format.RGBA8888, viewport.getScreenWidth(), viewport.getScreenHeight(), false);
 
         // Sanity check to force anything unloaded to finish
         assetManager.finishLoading();
@@ -196,10 +210,12 @@ public class GamePlayScreen implements Screen {
     public void render(float delta) {
         assetManager.update();
 
+        lbFPS.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
+
+        fbo.begin();
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        lbFPS.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
         camera.update();
 
         batch.setProjectionMatrix(camera.combined);
@@ -253,10 +269,22 @@ public class GamePlayScreen implements Screen {
                 }
             }
         }
+
+        fbo.end();
+        viewport.apply();
+
+        batch.begin();
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        batch.setProjectionMatrix(viewport.getCamera().projection);
+        batch.draw(fbo.getColorBufferTexture(), map_width/-2, map_height/2, map_width, -map_height);
+        batch.end();
+
         stage.act(delta);
         stage.draw();
 
         //Gdx.app.log("", "frame: " + frame++);
+
     }
 
     @Override
@@ -267,6 +295,7 @@ public class GamePlayScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         this.viewport.update(width, height);
+        fbo = new FrameBuffer(Pixmap.Format.RGBA8888, viewport.getScreenWidth(), viewport.getScreenHeight(), false);
     }
 
     @Override
@@ -327,6 +356,7 @@ public class GamePlayScreen implements Screen {
 
         systemSetupBuilder.add(new SlimeAnimationControllerSystem(), "render");
         systemSetupBuilder.add(new AnimationSystem(), "render");
+        systemSetupBuilder.add(new GroundRenderSystem(), "render");
         systemSetupBuilder.add(new TerrainRenderSystem(), "render");
         systemSetupBuilder.add(new RenderSystem(), "render");
         systemSetupBuilder.add(new TargetCameraSystem(), "render");
@@ -361,7 +391,6 @@ public class GamePlayScreen implements Screen {
                 .register(batch)
                 .register(shapeRenderer)
                 .register(camera)
-                .register(viewport)
                 .register(assetManager);
         incadiumInvocationStrategy = new IncadiumInvocationStrategy();
         config.setInvocationStrategy(incadiumInvocationStrategy);
