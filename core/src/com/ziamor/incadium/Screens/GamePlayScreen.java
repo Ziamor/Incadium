@@ -143,6 +143,7 @@ public class GamePlayScreen implements Screen {
     float dayLength = 120;
     float light_flicker_time = 0, getLight_flicker_length = 2;
 
+    boolean drawGrid = false;
     public GamePlayScreen(final Incadium incadium) {
         batch = incadium.batch;
         shapeRenderer = incadium.shapeRenderer;
@@ -276,7 +277,7 @@ public class GamePlayScreen implements Screen {
         fbLightMaskMap.begin();
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+//- lightSize / 2 + lightOffset
         batch.begin();
         camera.update();
         batch.setProjectionMatrix(camera.combined);
@@ -397,6 +398,17 @@ public class GamePlayScreen implements Screen {
         frameBufferMesh.render(ambientLightShader, GL20.GL_TRIANGLES);
         ambientLightShader.end();
 
+        if (drawGrid) {
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+            shapeRenderer.setColor(Color.RED);
+            for (i = 0; i < Gdx.graphics.getHeight(); i++) {
+                shapeRenderer.line(0, i, Gdx.graphics.getWidth(), i);
+            }
+            for (i = 0; i < Gdx.graphics.getWidth(); i++) {
+                shapeRenderer.line(i, 0, i, Gdx.graphics.getHeight());
+            }
+            shapeRenderer.end();
+        }
         stage.act(delta);
         stage.draw();
 
