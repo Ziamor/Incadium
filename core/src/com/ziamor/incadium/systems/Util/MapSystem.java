@@ -96,10 +96,10 @@ public class MapSystem extends BaseEntitySystem {
                 .healthBarUIComponent(ePlayer)
                 .turnComponent()
                 .factionComponent(0)
-                .lightSourceComponent(new Color(1f, 230f / 255f, 155f / 255f, 1.0f), 4f)
+                .lightSourceComponent(new Color(1f, 230f / 255f, 155f / 255f, 1.0f), 16f)
                 .targetCameraFocusComponent();
 
-        int num_slimes = 50;
+        int num_slimes = 5;
         if (Gdx.app.getType() == Android)
             num_slimes = 10;
         if (ePlayer != -1) {
@@ -120,7 +120,7 @@ public class MapSystem extends BaseEntitySystem {
                         .attackDamageComponent(15f)
                         .factionComponent(1)
                         .selectableComponent()
-                        .lightSourceComponent(new Color(45f/255f, 255f / 255f, 30f / 255f, 1.0f), 4f)
+                        .lightSourceComponent(new Color(45f/255f, 255f / 255f, 30f / 255f, 1.0f), 3f)
                         .slimeAnimation();
             }
         }

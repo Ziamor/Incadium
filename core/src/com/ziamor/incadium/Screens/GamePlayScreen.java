@@ -55,6 +55,7 @@ import com.ziamor.incadium.Incadium;
 import com.ziamor.incadium.components.Render.LightSourceComponent;
 import com.ziamor.incadium.components.Render.NotVisableComponent;
 import com.ziamor.incadium.components.Render.RenderPositionComponent;
+import com.ziamor.incadium.components.TransformComponent;
 import com.ziamor.incadium.systems.Asset.MapResolverSystem;
 import com.ziamor.incadium.systems.Render.GroundRenderSystem;
 import com.ziamor.incadium.systems.Render.RenderPositionSystem;
@@ -125,6 +126,7 @@ public class GamePlayScreen implements Screen {
     private ComponentMapper<AttackLerpComponent> attackLerpComponentMapper;
     private ComponentMapper<RenderPositionComponent> renderPositionComponentMapper;
     private ComponentMapper<LightSourceComponent> lightSourceComponentMapper;
+    private ComponentMapper<TransformComponent> transformComponentMapper;
 
     private boolean playerTurn = true;
     FrameBuffer fbWorld, fbLightMaskMap, fbLightColorMap;
@@ -139,6 +141,7 @@ public class GamePlayScreen implements Screen {
     Color lightSourceColor;
     float dayTime = 0;
     float dayLength = 120;
+    float light_flicker_time = 0, getLight_flicker_length = 2;
 
     public GamePlayScreen(final Incadium incadium) {
         batch = incadium.batch;
@@ -197,6 +200,7 @@ public class GamePlayScreen implements Screen {
         attackLerpComponentMapper = world.getMapper(AttackLerpComponent.class);
         renderPositionComponentMapper = world.getMapper(RenderPositionComponent.class);
         lightSourceComponentMapper = world.getMapper(LightSourceComponent.class);
+        transformComponentMapper = world.getMapper(TransformComponent.class);
 
         String vertexShader = Gdx.files.internal("shaders\\" + ambientLightShaderFileName + "\\vertex.glsl").readString();
         String fragmentShader = Gdx.files.internal("shaders\\" + ambientLightShaderFileName + "\\fragment.glsl").readString();
@@ -262,23 +266,31 @@ public class GamePlayScreen implements Screen {
 
         executeTurn(delta);
         fbWorld.end();
-        viewport.apply();
+        //viewport.apply();
+
+        light_flicker_time = (light_flicker_time + delta) % getLight_flicker_length;
+        float lightOffset = 0.5f;
+        float lightFlickerSize = (float) Math.sin(light_flicker_time / getLight_flicker_length);
+        lightFlickerSize = 1;
 
         fbLightMaskMap.begin();
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
+        camera.update();
         batch.setProjectionMatrix(camera.combined);
         IntBag lightID = world.getAspectSubscriptionManager().get(Aspect.all(LightSourceComponent.class, RenderPositionComponent.class).exclude(NotVisableComponent.class)).getEntities();
         for (int i = 0; i < lightID.size(); i++) {
             RenderPositionComponent renderPositionComponent = renderPositionComponentMapper.get(lightID.get(i));
-            if (renderPositionComponent != null)
-                batch.draw(lightMaskStencil, renderPositionComponent.x - 1.5f, renderPositionComponent.y - 1.5f, 4, 4);
+            final LightSourceComponent lightSourceComponent = lightSourceComponentMapper.get(lightID.get(i));
+            if (renderPositionComponent != null && lightSourceComponent != null) {
+                float lightSize = lightSourceComponent.size;
+                batch.draw(lightMaskStencil, renderPositionComponent.x - lightSize / 2 + lightOffset, renderPositionComponent.y - lightSize / 2 + lightOffset, lightSize * lightFlickerSize, lightSize * lightFlickerSize);
+            }
         }
         batch.end();
         fbLightMaskMap.end();
-        viewport.apply();
 
             /*batch.begin();
             Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -293,17 +305,20 @@ public class GamePlayScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
+        camera.update();
         batch.setProjectionMatrix(camera.combined);
         for (int i = 0; i < lightID.size(); i++) {
             final RenderPositionComponent renderPositionComponent = renderPositionComponentMapper.get(lightID.get(i));
             final LightSourceComponent lightSourceComponent = lightSourceComponentMapper.get(lightID.get(i));
             if (renderPositionComponent != null && lightSourceComponent != null) {//TODO this should not be null do to the aspect builder but it is, figure out why
                 batch.setColor(lightSourceComponent.lightColor);
-                batch.draw(lightColorStencil, renderPositionComponent.x - 1.5f, renderPositionComponent.y - 1.5f, 4, 4);
+                float lightSize = lightSourceComponent.size;
+                batch.draw(lightColorStencil, renderPositionComponent.x - lightSize / 2 + lightOffset, renderPositionComponent.y - lightSize / 2 + lightOffset, lightSize * lightFlickerSize, lightSize * lightFlickerSize);
             }
         }
         batch.end();
         fbLightColorMap.end();
+
         viewport.apply();
 
         ambientLightShader.begin();
