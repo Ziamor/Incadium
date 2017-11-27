@@ -268,12 +268,13 @@ public class GamePlayScreen implements Screen {
         shapeRenderer.setProjectionMatrix(camera.combined);
 
         executeTurn(delta);
+        //PixmapIO.writePNG(new FileHandle("defuse.png"), ScreenUtils.getFrameBufferPixmap(0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
         fbWorld.end();
 
         light_flicker_time += delta;
         float lightOffset = 0.5f;
         float lightFlickerNoise = MathUtils.random(-1, 1);
-        
+
         fbLightMaskMap.begin();
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -295,6 +296,7 @@ public class GamePlayScreen implements Screen {
             }
         }
         batch.end();
+        //PixmapIO.writePNG(new FileHandle("light mask.png"), ScreenUtils.getFrameBufferPixmap(0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
         fbLightMaskMap.end();
 
         fbLightColorMap.begin();
@@ -318,6 +320,7 @@ public class GamePlayScreen implements Screen {
             }
         }
         batch.end();
+        //PixmapIO.writePNG(new FileHandle("light color.png"), ScreenUtils.getFrameBufferPixmap(0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
         fbLightColorMap.end();
 
         viewport.apply();
