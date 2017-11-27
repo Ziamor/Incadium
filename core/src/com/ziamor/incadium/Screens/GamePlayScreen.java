@@ -33,6 +33,7 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
@@ -141,9 +142,10 @@ public class GamePlayScreen implements Screen {
     Color lightSourceColor;
     float dayTime = 0;
     float dayLength = 120;
-    float light_flicker_time = 0, getLight_flicker_length = 2;
+    float light_flicker_time = 0, getLight_flicker_length = 1;
 
     boolean drawGrid = false;
+
     public GamePlayScreen(final Incadium incadium) {
         batch = incadium.batch;
         shapeRenderer = incadium.shapeRenderer;
@@ -267,17 +269,15 @@ public class GamePlayScreen implements Screen {
 
         executeTurn(delta);
         fbWorld.end();
-        //viewport.apply();
 
-        light_flicker_time = (light_flicker_time + delta) % getLight_flicker_length;
+        light_flicker_time += delta;
         float lightOffset = 0.5f;
-        float lightFlickerSize = (float) Math.sin(light_flicker_time / getLight_flicker_length);
-        lightFlickerSize = 1;
-
+        float lightFlickerNoise = MathUtils.random(-1, 1);
+        
         fbLightMaskMap.begin();
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-//- lightSize / 2 + lightOffset
+
         batch.begin();
         camera.update();
         batch.setProjectionMatrix(camera.combined);
@@ -287,19 +287,15 @@ public class GamePlayScreen implements Screen {
             final LightSourceComponent lightSourceComponent = lightSourceComponentMapper.get(lightID.get(i));
             if (renderPositionComponent != null && lightSourceComponent != null) {
                 float lightSize = lightSourceComponent.size;
-                batch.draw(lightMaskStencil, renderPositionComponent.x - lightSize / 2 + lightOffset, renderPositionComponent.y - lightSize / 2 + lightOffset, lightSize * lightFlickerSize, lightSize * lightFlickerSize);
+                if (lightSourceComponent.enableFlicker) {
+                    float lightFlicker = lightSourceComponent.flickerSize * (float) Math.sin(light_flicker_time / getLight_flicker_length) + 0.05f * lightFlickerNoise;
+                    lightSize = lightSourceComponent.size - lightSourceComponent.flickerSize + lightFlicker;
+                }
+                batch.draw(lightMaskStencil, renderPositionComponent.x - lightSize / 2 + lightOffset, renderPositionComponent.y - lightSize / 2 + lightOffset, lightSize, lightSize);
             }
         }
         batch.end();
         fbLightMaskMap.end();
-
-            /*batch.begin();
-            Gdx.gl.glClearColor(0, 0, 0, 1);
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-            batch.setProjectionMatrix(viewport.getCamera().projection);
-            batch.draw(fbLightMaskMap.getColorBufferTexture(), map_width / -2, map_height / 2, map_width, -map_height);
-            batch.end();*/
-
 
         fbLightColorMap.begin();
         Gdx.gl.glClearColor(0, 0, 0, 0);
@@ -314,7 +310,11 @@ public class GamePlayScreen implements Screen {
             if (renderPositionComponent != null && lightSourceComponent != null) {//TODO this should not be null do to the aspect builder but it is, figure out why
                 batch.setColor(lightSourceComponent.lightColor);
                 float lightSize = lightSourceComponent.size;
-                batch.draw(lightColorStencil, renderPositionComponent.x - lightSize / 2 + lightOffset, renderPositionComponent.y - lightSize / 2 + lightOffset, lightSize * lightFlickerSize, lightSize * lightFlickerSize);
+                if (lightSourceComponent.enableFlicker) {
+                    float lightFlicker = lightSourceComponent.flickerSize * (float) Math.sin(light_flicker_time / getLight_flicker_length) + 0.05f * lightFlickerNoise;
+                    lightSize = lightSourceComponent.size - lightSourceComponent.flickerSize + lightFlicker;
+                }
+                batch.draw(lightColorStencil, renderPositionComponent.x - lightSize / 2 + lightOffset, renderPositionComponent.y - lightSize / 2 + lightOffset, lightSize, lightSize);
             }
         }
         batch.end();

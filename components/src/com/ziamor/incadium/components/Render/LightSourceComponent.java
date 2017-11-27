@@ -9,15 +9,24 @@ public class LightSourceComponent extends Component {
     public static float DEFAULT_SIZE = 1.0f;
 
     public Color lightColor;
-    public float size;
+    public boolean enableFlicker;
+    public float size, flickerSize;
 
     public LightSourceComponent() {
         lightColor = DEFAULT_LIGHT;
         size = DEFAULT_SIZE;
+        enableFlicker = false;
     }
 
     public void set(Color lightColor, float size) {
         this.lightColor = lightColor;
         this.size = size;
+    }
+
+    public void set(Color lightColor, float size, float flickerSize) {
+        this.lightColor = lightColor;
+        this.size = size;
+        this.flickerSize = flickerSize;
+        this.enableFlicker = true;
     }
 }

@@ -96,7 +96,7 @@ public class MapSystem extends BaseEntitySystem {
                 .healthBarUIComponent(ePlayer)
                 .turnComponent()
                 .factionComponent(0)
-                .lightSourceComponent(new Color(1f, 230f / 255f, 155f / 255f, 1.0f), 4f)
+                .lightSourceComponent(new Color(1f, 230f / 255f, 155f / 255f, 1.0f), 4f,0.2f)
                 .targetCameraFocusComponent();
 
         int num_slimes = 10;
