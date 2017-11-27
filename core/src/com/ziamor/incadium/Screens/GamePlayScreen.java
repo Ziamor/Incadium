@@ -24,6 +24,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.PixmapIO;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -37,6 +39,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
+import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.ziamor.incadium.IncadiumInvocationStrategy;
@@ -49,6 +52,7 @@ import com.ziamor.incadium.components.Movement.MovementLerpComponent;
 import com.ziamor.incadium.components.Movement.PlayerControllerComponent;
 import com.ziamor.incadium.components.NonComponents.HealthBarUI;
 import com.ziamor.incadium.Incadium;
+import com.ziamor.incadium.components.Render.RenderPositionComponent;
 import com.ziamor.incadium.systems.Asset.MapResolverSystem;
 import com.ziamor.incadium.systems.Render.GroundRenderSystem;
 import com.ziamor.incadium.systems.Render.RenderPositionSystem;
@@ -117,17 +121,21 @@ public class GamePlayScreen implements Screen {
 
     private ComponentMapper<MovementLerpComponent> movementLerpComponentMapper;
     private ComponentMapper<AttackLerpComponent> attackLerpComponentMapper;
+    private ComponentMapper<RenderPositionComponent> renderPositionComponentMapper;
 
     private boolean playerTurn = true;
-    FrameBuffer fbo;
+    FrameBuffer fbWorld, fbLightMap;
 
     ShaderProgram ambientLightShader;
     String ambientLightShaderFileName = "ambient light";
 
+    Texture lightStencil;
     Mesh frameBufferMesh;
     Gradient dayNightGrad;
+    Color ambientLightColor;
+    Color lightSourceColor;
     float dayTime = 0;
-    float dayLength = 60;
+    float dayLength = 120;
 
     public GamePlayScreen(final Incadium incadium) {
         batch = incadium.batch;
@@ -144,8 +152,8 @@ public class GamePlayScreen implements Screen {
 
         this.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        fbo = new FrameBuffer(Pixmap.Format.RGBA8888, viewport.getScreenWidth(), viewport.getScreenHeight(), false);
-
+        fbWorld = new FrameBuffer(Pixmap.Format.RGBA8888, viewport.getScreenWidth(), viewport.getScreenHeight(), false);
+        fbLightMap = new FrameBuffer(Pixmap.Format.RGBA8888, viewport.getScreenWidth(), viewport.getScreenHeight(), false);
         // Sanity check to force anything unloaded to finish
         assetManager.finishLoading();
 
@@ -186,6 +194,7 @@ public class GamePlayScreen implements Screen {
 
         movementLerpComponentMapper = world.getMapper(MovementLerpComponent.class);
         attackLerpComponentMapper = world.getMapper(AttackLerpComponent.class);
+        renderPositionComponentMapper = world.getMapper(RenderPositionComponent.class);
 
         String vertexShader = Gdx.files.internal("shaders\\" + ambientLightShaderFileName + "\\vertex.glsl").readString();
         String fragmentShader = Gdx.files.internal("shaders\\" + ambientLightShaderFileName + "\\fragment.glsl").readString();
@@ -203,6 +212,10 @@ public class GamePlayScreen implements Screen {
         dayNightGrad.addPoint(new Color(1.0f, 0.24f, 0.24f, 1.0f), 0.3f);
         dayNightGrad.addPoint(new Color(0.08f, 0.24f, 0.70f, 1.0f), 0.5f);
         dayNightGrad.addPoint(new Color(1.0f, 0.24f, 0.24f, 1.0f), 0.7f);
+
+        ambientLightColor = new Color(0.2f, 0.16f, 0.3f, 1.0f);
+        lightSourceColor = new Color(1f, 230f / 255f, 155f / 255f, 1.0f);
+        lightStencil = assetManager.get("light_stencil.png", Texture.class);
     }
 
     public void constructUI() {
@@ -234,7 +247,7 @@ public class GamePlayScreen implements Screen {
 
         lbFPS.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
 
-        fbo.begin();
+        fbWorld.begin();
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -291,21 +304,48 @@ public class GamePlayScreen implements Screen {
                 }
             }
         }
-
-        fbo.end();
+        fbWorld.end();
         viewport.apply();
+
+        RenderPositionComponent playerRenderPositionComponent = renderPositionComponentMapper.get(playerEnt);
+
+        if (playerRenderPositionComponent != null) {
+
+            fbLightMap.begin();
+            Gdx.gl.glClearColor(1, 1, 1, 1);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+            batch.begin();
+            batch.setProjectionMatrix(camera.combined);
+            batch.draw(lightStencil, playerRenderPositionComponent.x - 1.5f, playerRenderPositionComponent.y - 1.5f, 4, 4);
+            batch.end();
+            fbLightMap.end();
+            viewport.apply();
+
+            /*batch.begin();
+            Gdx.gl.glClearColor(0, 0, 0, 1);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            batch.setProjectionMatrix(viewport.getCamera().projection);
+            batch.draw(fbLightMap.getColorBufferTexture(), map_width / -2, map_height / 2, map_width, -map_height);
+            batch.end();*/
+        }
 
         ambientLightShader.begin();
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        ambientLightShader.setUniformMatrix("u_projTrans", viewport.getCamera().projection);
+        ambientLightShader.setUniformMatrix("u_projTrans", camera.projection);
 
-        fbo.getColorBufferTexture().bind();
+        fbLightMap.getColorBufferTexture().bind(1);
+        ambientLightShader.setUniformi("u_lightmap", 1);
+
+        fbWorld.getColorBufferTexture().bind(0);
         ambientLightShader.setUniformi("u_texture", 0);
 
         dayTime += delta;
         dayTime = dayTime % dayLength;
-        ambientLightShader.setUniformf("u_color", dayNightGrad.getColor(dayTime / dayLength));
+        //ambientLightShader.setUniformf("u_color", dayNightGrad.getColor(dayTime / dayLength));
+        ambientLightShader.setUniformf("u_ambientColor", ambientLightColor);
+        ambientLightShader.setUniformf("u_lightSourceColor", lightSourceColor);
 
         float x = map_width / -2;
         float y = map_height / 2;
@@ -378,7 +418,8 @@ public class GamePlayScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         this.viewport.update(width, height);
-        fbo = new FrameBuffer(Pixmap.Format.RGBA8888, viewport.getScreenWidth(), viewport.getScreenHeight(), false);
+        fbWorld = new FrameBuffer(Pixmap.Format.RGBA8888, viewport.getScreenWidth(), viewport.getScreenHeight(), false);
+        fbLightMap = new FrameBuffer(Pixmap.Format.RGBA8888, viewport.getScreenWidth(), viewport.getScreenHeight(), false);
     }
 
     @Override
