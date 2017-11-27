@@ -24,7 +24,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes;
@@ -40,7 +39,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.ziamor.incadium.IncadiumInvocationStrategy;
@@ -135,7 +133,7 @@ public class GamePlayScreen implements Screen {
     ShaderProgram ambientLightShader;
     String ambientLightShaderFileName = "ambient light";
 
-    Texture lightMaskStencil, lightColorStencil;
+    Texture lightMaskStencil128, lightColorStencil128, lightMaskStencil256, lightColorStencil256, lightMaskStencil512, lightColorStencil512;
     Mesh frameBufferMesh;
     Gradient dayNightGrad;
     Color ambientLightColor;
@@ -224,8 +222,14 @@ public class GamePlayScreen implements Screen {
 
         ambientLightColor = new Color(0.2f, 0.16f, 0.3f, 1.0f);
         lightSourceColor = new Color(1f, 230f / 255f, 155f / 255f, 1.0f);
-        lightMaskStencil = assetManager.get("light_stencil.png", Texture.class);
-        lightColorStencil = assetManager.get("light_color_stencil.png", Texture.class);
+        lightMaskStencil128 = assetManager.get("light_stencil128.png", Texture.class);
+        lightColorStencil128 = assetManager.get("light_color_stencil128.png", Texture.class);
+
+        lightMaskStencil256 = assetManager.get("light_stencil256.png", Texture.class);
+        lightColorStencil256 = assetManager.get("light_color_stencil256.png", Texture.class);
+
+        lightMaskStencil512 = assetManager.get("light_stencil256.png", Texture.class);
+        lightColorStencil512 = assetManager.get("light_color_stencil256.png", Texture.class);
     }
 
     public void constructUI() {
@@ -289,9 +293,17 @@ public class GamePlayScreen implements Screen {
             if (renderPositionComponent != null && lightSourceComponent != null) {
                 float lightSize = lightSourceComponent.size;
                 if (lightSourceComponent.enableFlicker) {
-                    float lightFlicker = lightSourceComponent.flickerSize * (float) Math.sin(light_flicker_time / getLight_flicker_length) + 0.05f * lightFlickerNoise;
+                    float lightFlicker = lightSourceComponent.flickerSize * (float) Math.sin(light_flicker_time / getLight_flicker_length) + lightSourceComponent.flickerNoiseRange * lightFlickerNoise;
                     lightSize = lightSourceComponent.size - lightSourceComponent.flickerSize + lightFlicker;
                 }
+                Texture lightMaskStencil = null;
+                if (lightSize <= 4.0f)
+                    lightMaskStencil = lightMaskStencil128;
+                else if (lightSize <= 8.0f)
+                    lightMaskStencil = lightMaskStencil256;
+                else
+                    lightMaskStencil = lightMaskStencil512;
+
                 batch.draw(lightMaskStencil, renderPositionComponent.x - lightSize / 2 + lightOffset, renderPositionComponent.y - lightSize / 2 + lightOffset, lightSize, lightSize);
             }
         }
@@ -313,9 +325,17 @@ public class GamePlayScreen implements Screen {
                 batch.setColor(lightSourceComponent.lightColor);
                 float lightSize = lightSourceComponent.size;
                 if (lightSourceComponent.enableFlicker) {
-                    float lightFlicker = lightSourceComponent.flickerSize * (float) Math.sin(light_flicker_time / getLight_flicker_length) + 0.05f * lightFlickerNoise;
+                    float lightFlicker = lightSourceComponent.flickerSize * (float) Math.sin(light_flicker_time / getLight_flicker_length) + lightSourceComponent.flickerNoiseRange * lightFlickerNoise;
                     lightSize = lightSourceComponent.size - lightSourceComponent.flickerSize + lightFlicker;
                 }
+
+                Texture lightColorStencil = null;
+                if (lightSize <= 4.0f)
+                    lightColorStencil = lightColorStencil128;
+                else if (lightSize <= 4.0f)
+                    lightColorStencil = lightColorStencil256;
+                else
+                    lightColorStencil = lightColorStencil512;
                 batch.draw(lightColorStencil, renderPositionComponent.x - lightSize / 2 + lightOffset, renderPositionComponent.y - lightSize / 2 + lightOffset, lightSize, lightSize);
             }
         }

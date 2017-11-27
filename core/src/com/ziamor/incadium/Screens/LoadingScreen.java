@@ -50,8 +50,15 @@ public class LoadingScreen implements Screen {
         assetManager.load("Item.png", Texture.class);
         assetManager.load("WallsBM.png", Texture.class);
         assetManager.load("ground.png", Texture.class);
-        assetManager.load("light_stencil.png", Texture.class);
-        assetManager.load("light_color_stencil.png", Texture.class);
+
+        assetManager.load("light_stencil128.png", Texture.class);
+        assetManager.load("light_color_stencil128.png", Texture.class);
+
+        assetManager.load("light_stencil256.png", Texture.class);
+        assetManager.load("light_color_stencil256.png", Texture.class);
+
+        assetManager.load("light_stencil512.png", Texture.class);
+        assetManager.load("light_color_stencil512.png", Texture.class);
     }
 
     @Override

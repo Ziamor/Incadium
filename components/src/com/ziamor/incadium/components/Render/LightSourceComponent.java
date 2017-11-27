@@ -10,7 +10,7 @@ public class LightSourceComponent extends Component {
 
     public Color lightColor;
     public boolean enableFlicker;
-    public float size, flickerSize;
+    public float size, flickerSize, flickerNoiseRange;
 
     public LightSourceComponent() {
         lightColor = DEFAULT_LIGHT;
@@ -23,10 +23,11 @@ public class LightSourceComponent extends Component {
         this.size = size;
     }
 
-    public void set(Color lightColor, float size, float flickerSize) {
+    public void set(Color lightColor, float size, float flickerSize, float flickerNoiseRange) {
         this.lightColor = lightColor;
         this.size = size;
         this.flickerSize = flickerSize;
         this.enableFlicker = true;
+        this.flickerNoiseRange = flickerNoiseRange;
     }
 }
