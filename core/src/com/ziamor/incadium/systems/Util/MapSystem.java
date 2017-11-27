@@ -8,6 +8,7 @@ import com.artemis.annotations.Wire;
 import com.artemis.utils.IntBag;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -95,6 +96,7 @@ public class MapSystem extends BaseEntitySystem {
                 .healthBarUIComponent(ePlayer)
                 .turnComponent()
                 .factionComponent(0)
+                .lightSourceComponent(new Color(1f, 230f / 255f, 155f / 255f, 1.0f), 4f)
                 .targetCameraFocusComponent();
 
         int num_slimes = 50;
@@ -118,6 +120,7 @@ public class MapSystem extends BaseEntitySystem {
                         .attackDamageComponent(15f)
                         .factionComponent(1)
                         .selectableComponent()
+                        .lightSourceComponent(new Color(45f/255f, 255f / 255f, 30f / 255f, 1.0f), 4f)
                         .slimeAnimation();
             }
         }
@@ -154,7 +157,7 @@ public class MapSystem extends BaseEntitySystem {
 
             //Randomly generate torches
             if (bitmask == 31) {
-                if (random.nextFloat() <= 0.2f)
+                if (random.nextFloat() <= 0.5f)
                     DecorFactory.Torch(x, y);
                 else if (random.nextFloat() <= 0.1f)
                     DecorFactory.Chains(x, y);

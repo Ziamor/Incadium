@@ -1,6 +1,7 @@
 package com.ziamor.incadium;
 
 import com.artemis.E;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 
 public class DecorFactory {
@@ -10,7 +11,7 @@ public class DecorFactory {
     }
 
     public static int Torch(int x, int y) {
-        return E.E().transformComponent(x, y, 1).textureRegionResolverComponent("Decor.png", 0, 0, tileSize, tileSize).entity().getId();
+        return E.E().transformComponent(x, y, 1).textureRegionResolverComponent("Decor.png", 0, 0, tileSize, tileSize).lightSourceComponent(new Color(1f, 230f / 255f, 155f / 255f, 1.0f), 4f).entity().getId();
     }
 
     public static int Chains(int x, int y) {

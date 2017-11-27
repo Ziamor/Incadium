@@ -52,6 +52,8 @@ import com.ziamor.incadium.components.Movement.MovementLerpComponent;
 import com.ziamor.incadium.components.Movement.PlayerControllerComponent;
 import com.ziamor.incadium.components.NonComponents.HealthBarUI;
 import com.ziamor.incadium.Incadium;
+import com.ziamor.incadium.components.Render.LightSourceComponent;
+import com.ziamor.incadium.components.Render.NotVisableComponent;
 import com.ziamor.incadium.components.Render.RenderPositionComponent;
 import com.ziamor.incadium.systems.Asset.MapResolverSystem;
 import com.ziamor.incadium.systems.Render.GroundRenderSystem;
@@ -122,14 +124,15 @@ public class GamePlayScreen implements Screen {
     private ComponentMapper<MovementLerpComponent> movementLerpComponentMapper;
     private ComponentMapper<AttackLerpComponent> attackLerpComponentMapper;
     private ComponentMapper<RenderPositionComponent> renderPositionComponentMapper;
+    private ComponentMapper<LightSourceComponent> lightSourceComponentMapper;
 
     private boolean playerTurn = true;
-    FrameBuffer fbWorld, fbLightMap;
+    FrameBuffer fbWorld, fbLightMaskMap, fbLightColorMap;
 
     ShaderProgram ambientLightShader;
     String ambientLightShaderFileName = "ambient light";
 
-    Texture lightStencil;
+    Texture lightMaskStencil, lightColorStencil;
     Mesh frameBufferMesh;
     Gradient dayNightGrad;
     Color ambientLightColor;
@@ -152,8 +155,6 @@ public class GamePlayScreen implements Screen {
 
         this.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        fbWorld = new FrameBuffer(Pixmap.Format.RGBA8888, viewport.getScreenWidth(), viewport.getScreenHeight(), false);
-        fbLightMap = new FrameBuffer(Pixmap.Format.RGBA8888, viewport.getScreenWidth(), viewport.getScreenHeight(), false);
         // Sanity check to force anything unloaded to finish
         assetManager.finishLoading();
 
@@ -195,6 +196,7 @@ public class GamePlayScreen implements Screen {
         movementLerpComponentMapper = world.getMapper(MovementLerpComponent.class);
         attackLerpComponentMapper = world.getMapper(AttackLerpComponent.class);
         renderPositionComponentMapper = world.getMapper(RenderPositionComponent.class);
+        lightSourceComponentMapper = world.getMapper(LightSourceComponent.class);
 
         String vertexShader = Gdx.files.internal("shaders\\" + ambientLightShaderFileName + "\\vertex.glsl").readString();
         String fragmentShader = Gdx.files.internal("shaders\\" + ambientLightShaderFileName + "\\fragment.glsl").readString();
@@ -215,7 +217,8 @@ public class GamePlayScreen implements Screen {
 
         ambientLightColor = new Color(0.2f, 0.16f, 0.3f, 1.0f);
         lightSourceColor = new Color(1f, 230f / 255f, 155f / 255f, 1.0f);
-        lightStencil = assetManager.get("light_stencil.png", Texture.class);
+        lightMaskStencil = assetManager.get("light_stencil.png", Texture.class);
+        lightColorStencil = assetManager.get("light_color_stencil.png", Texture.class);
     }
 
     public void constructUI() {
@@ -253,89 +256,65 @@ public class GamePlayScreen implements Screen {
 
         camera.update();
 
+        batch.setColor(Color.WHITE);
         batch.setProjectionMatrix(camera.combined);
         shapeRenderer.setProjectionMatrix(camera.combined);
-        world.setDelta(delta);
 
-        incadiumInvocationStrategy.phase = IncadiumInvocationStrategy.Phase.Render;
-        world.process();
-
-        incadiumInvocationStrategy.phase = IncadiumInvocationStrategy.Phase.Turn;
-        ComponentMapper<TurnComponent> turnComponentMapper = world.getMapper(TurnComponent.class);
-
-        Entity playerEnt = world.getSystem(TagManager.class).getEntity("player");
-
-        TurnComponent playerTurnComponent = null;
-
-        if (playerEnt != null) {
-            IntBag npcLerp = world.getAspectSubscriptionManager().get(Aspect.all(MonsterComponent.class, AttackLerpComponent.class)).getEntities();
-            // Execute the players turn
-            if (playerTurn) {
-                if (npcLerp.isEmpty()) {
-                    playerTurnComponent = turnComponentMapper.get(playerEnt);
-                    if (playerTurnComponent == null)
-                        turnComponentMapper.create(playerEnt);
-
-                    // If player isn't finished with their turn
-                    if (playerTurnComponent != null && !playerTurnComponent.finishedTurn)
-                        world.process();
-
-                    // Players turn is done
-                    if (playerTurnComponent != null && playerTurnComponent.finishedTurn) {
-                        turnComponentMapper.remove(playerEnt);
-                        playerTurn = false;
-                    }
-                }
-            } else {
-                MovementLerpComponent playerMovementLerp = movementLerpComponentMapper.get(playerEnt);
-                AttackLerpComponent playerAttackLerpComponent = attackLerpComponentMapper.get(playerEnt);
-                if (playerMovementLerp == null && playerAttackLerpComponent == null) {
-                    // Execute NPC turn when it's not the players turn
-                    if (playerTurnComponent == null && !playerTurn) {
-                        IntBag turnTakersIDs = world.getAspectSubscriptionManager().get(Aspect.one(TurnTakerComponent.class).exclude(PlayerControllerComponent.class)).getEntities();
-                        for (int i = 0; i < turnTakersIDs.size(); i++) {
-                            int currentEnt = turnTakersIDs.get(i);
-                            turnComponentMapper.create(currentEnt);
-                            world.process();
-                            turnComponentMapper.remove(currentEnt);
-                        }
-                        playerTurn = true;
-                    }
-                }
-            }
-        }
+        executeTurn(delta);
         fbWorld.end();
         viewport.apply();
 
-        RenderPositionComponent playerRenderPositionComponent = renderPositionComponentMapper.get(playerEnt);
+        fbLightMaskMap.begin();
+        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        if (playerRenderPositionComponent != null) {
-
-            fbLightMap.begin();
-            Gdx.gl.glClearColor(1, 1, 1, 1);
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-            batch.begin();
-            batch.setProjectionMatrix(camera.combined);
-            batch.draw(lightStencil, playerRenderPositionComponent.x - 1.5f, playerRenderPositionComponent.y - 1.5f, 4, 4);
-            batch.end();
-            fbLightMap.end();
-            viewport.apply();
+        batch.begin();
+        batch.setProjectionMatrix(camera.combined);
+        IntBag lightID = world.getAspectSubscriptionManager().get(Aspect.all(LightSourceComponent.class, RenderPositionComponent.class).exclude(NotVisableComponent.class)).getEntities();
+        for (int i = 0; i < lightID.size(); i++) {
+            RenderPositionComponent renderPositionComponent = renderPositionComponentMapper.get(lightID.get(i));
+            if (renderPositionComponent != null)
+                batch.draw(lightMaskStencil, renderPositionComponent.x - 1.5f, renderPositionComponent.y - 1.5f, 4, 4);
+        }
+        batch.end();
+        fbLightMaskMap.end();
+        viewport.apply();
 
             /*batch.begin();
             Gdx.gl.glClearColor(0, 0, 0, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
             batch.setProjectionMatrix(viewport.getCamera().projection);
-            batch.draw(fbLightMap.getColorBufferTexture(), map_width / -2, map_height / 2, map_width, -map_height);
+            batch.draw(fbLightMaskMap.getColorBufferTexture(), map_width / -2, map_height / 2, map_width, -map_height);
             batch.end();*/
+
+
+        fbLightColorMap.begin();
+        Gdx.gl.glClearColor(0, 0, 0, 0);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        batch.begin();
+        batch.setProjectionMatrix(camera.combined);
+        for (int i = 0; i < lightID.size(); i++) {
+            final RenderPositionComponent renderPositionComponent = renderPositionComponentMapper.get(lightID.get(i));
+            final LightSourceComponent lightSourceComponent = lightSourceComponentMapper.get(lightID.get(i));
+            if (renderPositionComponent != null && lightSourceComponent != null) {//TODO this should not be null do to the aspect builder but it is, figure out why
+                batch.setColor(lightSourceComponent.lightColor);
+                batch.draw(lightColorStencil, renderPositionComponent.x - 1.5f, renderPositionComponent.y - 1.5f, 4, 4);
+            }
         }
+        batch.end();
+        fbLightColorMap.end();
+        viewport.apply();
 
         ambientLightShader.begin();
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         ambientLightShader.setUniformMatrix("u_projTrans", camera.projection);
 
-        fbLightMap.getColorBufferTexture().bind(1);
+        fbLightColorMap.getColorBufferTexture().bind(2);
+        ambientLightShader.setUniformi("u_lightColorMap", 2);
+
+        fbLightMaskMap.getColorBufferTexture().bind(1);
         ambientLightShader.setUniformi("u_lightmap", 1);
 
         fbWorld.getColorBufferTexture().bind(0);
@@ -345,7 +324,7 @@ public class GamePlayScreen implements Screen {
         dayTime = dayTime % dayLength;
         //ambientLightShader.setUniformf("u_color", dayNightGrad.getColor(dayTime / dayLength));
         ambientLightShader.setUniformf("u_ambientColor", ambientLightColor);
-        ambientLightShader.setUniformf("u_lightSourceColor", lightSourceColor);
+        //ambientLightShader.setUniformf("u_lightSourceColor", lightSourceColor);
 
         float x = map_width / -2;
         float y = map_height / 2;
@@ -410,6 +389,58 @@ public class GamePlayScreen implements Screen {
 
     }
 
+    protected void executeTurn(float delta) {
+        world.setDelta(delta);
+
+        incadiumInvocationStrategy.phase = IncadiumInvocationStrategy.Phase.Render;
+        world.process();
+
+        incadiumInvocationStrategy.phase = IncadiumInvocationStrategy.Phase.Turn;
+        ComponentMapper<TurnComponent> turnComponentMapper = world.getMapper(TurnComponent.class);
+
+        Entity playerEnt = world.getSystem(TagManager.class).getEntity("player");
+
+        TurnComponent playerTurnComponent = null;
+
+        if (playerEnt != null) {
+            IntBag npcLerp = world.getAspectSubscriptionManager().get(Aspect.all(MonsterComponent.class, AttackLerpComponent.class)).getEntities();
+            // Execute the players turn
+            if (playerTurn) {
+                if (npcLerp.isEmpty()) {
+                    playerTurnComponent = turnComponentMapper.get(playerEnt);
+                    if (playerTurnComponent == null)
+                        turnComponentMapper.create(playerEnt);
+
+                    // If player isn't finished with their turn
+                    if (playerTurnComponent != null && !playerTurnComponent.finishedTurn)
+                        world.process();
+
+                    // Players turn is done
+                    if (playerTurnComponent != null && playerTurnComponent.finishedTurn) {
+                        turnComponentMapper.remove(playerEnt);
+                        playerTurn = false;
+                    }
+                }
+            } else {
+                MovementLerpComponent playerMovementLerp = movementLerpComponentMapper.get(playerEnt);
+                AttackLerpComponent playerAttackLerpComponent = attackLerpComponentMapper.get(playerEnt);
+                if (playerMovementLerp == null && playerAttackLerpComponent == null) {
+                    // Execute NPC turn when it's not the players turn
+                    if (playerTurnComponent == null && !playerTurn) {
+                        IntBag turnTakersIDs = world.getAspectSubscriptionManager().get(Aspect.one(TurnTakerComponent.class).exclude(PlayerControllerComponent.class)).getEntities();
+                        for (int i = 0; i < turnTakersIDs.size(); i++) {
+                            int currentEnt = turnTakersIDs.get(i);
+                            turnComponentMapper.create(currentEnt);
+                            world.process();
+                            turnComponentMapper.remove(currentEnt);
+                        }
+                        playerTurn = true;
+                    }
+                }
+            }
+        }
+    }
+
     @Override
     public void show() {
 
@@ -419,7 +450,8 @@ public class GamePlayScreen implements Screen {
     public void resize(int width, int height) {
         this.viewport.update(width, height);
         fbWorld = new FrameBuffer(Pixmap.Format.RGBA8888, viewport.getScreenWidth(), viewport.getScreenHeight(), false);
-        fbLightMap = new FrameBuffer(Pixmap.Format.RGBA8888, viewport.getScreenWidth(), viewport.getScreenHeight(), false);
+        fbLightMaskMap = new FrameBuffer(Pixmap.Format.RGBA8888, viewport.getScreenWidth(), viewport.getScreenHeight(), false);
+        fbLightColorMap = new FrameBuffer(Pixmap.Format.RGBA8888, viewport.getScreenWidth(), viewport.getScreenHeight(), false);
     }
 
     @Override
