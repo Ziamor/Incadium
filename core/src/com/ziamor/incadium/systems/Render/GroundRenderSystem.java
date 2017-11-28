@@ -11,8 +11,6 @@ import com.ziamor.incadium.components.Render.GroundTileComponent;
 import com.ziamor.incadium.components.Render.NotVisableComponent;
 import com.ziamor.incadium.components.TransformComponent;
 
-import java.lang.reflect.Array;
-
 public class GroundRenderSystem extends IteratingSystem {
     ComponentMapper<TransformComponent> transformComponentComponentMapper;
     ComponentMapper<GroundTileComponent> groundTileComponentComponentMapper;

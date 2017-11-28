@@ -57,6 +57,9 @@ import com.ziamor.incadium.components.Render.RenderPositionComponent;
 import com.ziamor.incadium.components.TransformComponent;
 import com.ziamor.incadium.systems.Asset.MapResolverSystem;
 import com.ziamor.incadium.systems.Render.GroundRenderSystem;
+import com.ziamor.incadium.systems.Render.LightColorMapRenderSystem;
+import com.ziamor.incadium.systems.Render.LightMaskRenderSystem;
+import com.ziamor.incadium.systems.Render.LightRenderSystem;
 import com.ziamor.incadium.systems.Render.RenderPositionSystem;
 import com.ziamor.incadium.components.TurnComponent;
 import com.ziamor.incadium.components.TurnTakerComponent;
@@ -128,7 +131,7 @@ public class GamePlayScreen implements Screen {
     private ComponentMapper<TransformComponent> transformComponentMapper;
 
     private boolean playerTurn = true;
-    FrameBuffer fbWorld, fbLightMaskMap, fbLightColorMap;
+    public static FrameBuffer fbWorld;
 
     ShaderProgram ambientLightShader;
     String ambientLightShaderFileName = "ambient light";
@@ -211,10 +214,6 @@ public class GamePlayScreen implements Screen {
         if (ambientLightShader.getLog().length() != 0)
             Gdx.app.debug("Shader Resolver System", ambientLightShader.getLog());
 
-        frameBufferMesh = new com.badlogic.gdx.graphics.Mesh(true, 6, 0,
-                new VertexAttribute(VertexAttributes.Usage.Position, 3, ShaderProgram.POSITION_ATTRIBUTE),
-                new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE + "0"));
-
         dayNightGrad = new Gradient(new Color(1f, 1f, 0.86f, 1f), new Color(1f, 1f, 0.86f, 1f));
         dayNightGrad.addPoint(new Color(1.0f, 0.24f, 0.24f, 1.0f), 0.3f);
         dayNightGrad.addPoint(new Color(0.08f, 0.24f, 0.70f, 1.0f), 0.5f);
@@ -272,166 +271,20 @@ public class GamePlayScreen implements Screen {
         shapeRenderer.setProjectionMatrix(camera.combined);
 
         executeTurn(delta);
-        //PixmapIO.writePNG(new FileHandle("defuse.png"), ScreenUtils.getFrameBufferPixmap(0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
         fbWorld.end();
-
-        light_flicker_time += delta;
-        float lightOffset = 0.5f;
-        float lightFlickerNoise = MathUtils.random(-1, 1);
-
-        fbLightMaskMap.begin();
-        Gdx.gl.glClearColor(1, 1, 1, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        batch.begin();
-        camera.update();
-        batch.setProjectionMatrix(camera.combined);
-        IntBag lightID = world.getAspectSubscriptionManager().get(Aspect.all(LightSourceComponent.class, RenderPositionComponent.class).exclude(NotVisableComponent.class)).getEntities();
-        for (int i = 0; i < lightID.size(); i++) {
-            RenderPositionComponent renderPositionComponent = renderPositionComponentMapper.get(lightID.get(i));
-            final LightSourceComponent lightSourceComponent = lightSourceComponentMapper.get(lightID.get(i));
-            if (renderPositionComponent != null && lightSourceComponent != null) {
-                float lightSize = lightSourceComponent.size;
-                if (lightSourceComponent.enableFlicker) {
-                    float lightFlicker = lightSourceComponent.flickerSize * (float) Math.sin(light_flicker_time / getLight_flicker_length) + lightSourceComponent.flickerNoiseRange * lightFlickerNoise;
-                    lightSize = lightSourceComponent.size - lightSourceComponent.flickerSize + lightFlicker;
-                }
-                Texture lightMaskStencil = null;
-                if (lightSize <= 4.0f)
-                    lightMaskStencil = lightMaskStencil128;
-                else if (lightSize <= 8.0f)
-                    lightMaskStencil = lightMaskStencil256;
-                else
-                    lightMaskStencil = lightMaskStencil512;
-
-                batch.draw(lightMaskStencil, renderPositionComponent.x - lightSize / 2 + lightOffset, renderPositionComponent.y - lightSize / 2 + lightOffset, lightSize, lightSize);
-            }
-        }
-        batch.end();
-        //PixmapIO.writePNG(new FileHandle("light mask.png"), ScreenUtils.getFrameBufferPixmap(0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
-        fbLightMaskMap.end();
-
-        fbLightColorMap.begin();
-        Gdx.gl.glClearColor(0, 0, 0, 0);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        batch.begin();
-        camera.update();
-        batch.setProjectionMatrix(camera.combined);
-        for (int i = 0; i < lightID.size(); i++) {
-            final RenderPositionComponent renderPositionComponent = renderPositionComponentMapper.get(lightID.get(i));
-            final LightSourceComponent lightSourceComponent = lightSourceComponentMapper.get(lightID.get(i));
-            if (renderPositionComponent != null && lightSourceComponent != null) {//TODO this should not be null do to the aspect builder but it is, figure out why
-                batch.setColor(lightSourceComponent.lightColor);
-                float lightSize = lightSourceComponent.size;
-                if (lightSourceComponent.enableFlicker) {
-                    float lightFlicker = lightSourceComponent.flickerSize * (float) Math.sin(light_flicker_time / getLight_flicker_length) + lightSourceComponent.flickerNoiseRange * lightFlickerNoise;
-                    lightSize = lightSourceComponent.size - lightSourceComponent.flickerSize + lightFlicker;
-                }
-
-                Texture lightColorStencil = null;
-                if (lightSize <= 4.0f)
-                    lightColorStencil = lightColorStencil128;
-                else if (lightSize <= 4.0f)
-                    lightColorStencil = lightColorStencil256;
-                else
-                    lightColorStencil = lightColorStencil512;
-                batch.draw(lightColorStencil, renderPositionComponent.x - lightSize / 2 + lightOffset, renderPositionComponent.y - lightSize / 2 + lightOffset, lightSize, lightSize);
-            }
-        }
-        batch.end();
-        //PixmapIO.writePNG(new FileHandle("light color.png"), ScreenUtils.getFrameBufferPixmap(0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
-        fbLightColorMap.end();
-
-        viewport.apply();
-
-        ambientLightShader.begin();
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        ambientLightShader.setUniformMatrix("u_projTrans", camera.projection);
-
-        fbLightColorMap.getColorBufferTexture().bind(2);
-        ambientLightShader.setUniformi("u_lightColorMap", 2);
-
-        fbLightMaskMap.getColorBufferTexture().bind(1);
-        ambientLightShader.setUniformi("u_lightmap", 1);
-
-        fbWorld.getColorBufferTexture().bind(0);
-        ambientLightShader.setUniformi("u_texture", 0);
-
-        dayTime += delta;
-        dayTime = dayTime % dayLength;
-        //ambientLightShader.setUniformf("u_color", dayNightGrad.getColor(dayTime / dayLength));
-        ambientLightShader.setUniformf("u_ambientColor", ambientLightColor);
-        //ambientLightShader.setUniformf("u_lightSourceColor", lightSourceColor);
-
-        float x = map_width / -2;
-        float y = map_height / 2;
-        float width = map_width;
-        float height = -map_height;
-        float fx2 = x + width;
-        float fy2 = y + height;
-
-        float[] verts = new float[30];
-        int i = 0;
-
-        //Top Left Vertex Triangle 1
-        verts[i++] = x;   //X
-        verts[i++] = fy2; //Y
-        verts[i++] = 0;    //Z
-        verts[i++] = 0f;   //U
-        verts[i++] = 0f;   //V
-
-        //Top Right Vertex Triangle 1
-        verts[i++] = fx2;
-        verts[i++] = fy2;
-        verts[i++] = 0;
-        verts[i++] = 1f;
-        verts[i++] = 0f;
-
-        //Bottom Left Vertex Triangle 1
-        verts[i++] = x;
-        verts[i++] = y;
-        verts[i++] = 0;
-        verts[i++] = 0f;
-        verts[i++] = 1f;
-
-        //Top Right Vertex Triangle 2
-        verts[i++] = fx2;
-        verts[i++] = fy2;
-        verts[i++] = 0;
-        verts[i++] = 1f;
-        verts[i++] = 0f;
-
-        //Bottom Right Vertex Triangle 2
-        verts[i++] = fx2;
-        verts[i++] = y;
-        verts[i++] = 0;
-        verts[i++] = 1f;
-        verts[i++] = 1f;
-
-        //Bottom Left Vertex Triangle 2
-        verts[i++] = x;
-        verts[i++] = y;
-        verts[i++] = 0;
-        verts[i++] = 0f;
-        verts[i] = 1f;
-
-        frameBufferMesh.setVertices(verts);
-        frameBufferMesh.render(ambientLightShader, GL20.GL_TRIANGLES);
-        ambientLightShader.end();
 
         if (drawGrid) {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             shapeRenderer.setColor(Color.RED);
-            for (i = 0; i < Gdx.graphics.getHeight(); i++) {
+            for (int i = 0; i < Gdx.graphics.getHeight(); i++) {
                 shapeRenderer.line(0, i, Gdx.graphics.getWidth(), i);
             }
-            for (i = 0; i < Gdx.graphics.getWidth(); i++) {
+            for (int i = 0; i < Gdx.graphics.getWidth(); i++) {
                 shapeRenderer.line(i, 0, i, Gdx.graphics.getHeight());
             }
             shapeRenderer.end();
         }
+
         stage.act(delta);
         stage.draw();
 
@@ -500,8 +353,6 @@ public class GamePlayScreen implements Screen {
     public void resize(int width, int height) {
         this.viewport.update(width, height);
         fbWorld = new FrameBuffer(Pixmap.Format.RGBA8888, viewport.getScreenWidth(), viewport.getScreenHeight(), false);
-        fbLightMaskMap = new FrameBuffer(Pixmap.Format.RGBA8888, viewport.getScreenWidth(), viewport.getScreenHeight(), false);
-        fbLightColorMap = new FrameBuffer(Pixmap.Format.RGBA8888, viewport.getScreenWidth(), viewport.getScreenHeight(), false);
     }
 
     @Override
@@ -565,7 +416,10 @@ public class GamePlayScreen implements Screen {
         systemSetupBuilder.add(new GroundRenderSystem(), "render");
         systemSetupBuilder.add(new TerrainRenderSystem(), "render");
         systemSetupBuilder.add(new RenderSystem(), "render");
-        systemSetupBuilder.add(new TargetCameraSystem(), "render");
+        systemSetupBuilder.add(new LightMaskRenderSystem(viewport), "render");
+        systemSetupBuilder.add(new LightColorMapRenderSystem(viewport), "render");
+        systemSetupBuilder.add(new LightRenderSystem(), "render");
+        systemSetupBuilder.add(new TargetCameraSystem(), "render"); //TODO should this be earlier?
 
         // Input Systems
         systemSetupBuilder.add(new PlayerControllerSystem(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), "turn");
@@ -597,6 +451,7 @@ public class GamePlayScreen implements Screen {
                 .register(batch)
                 .register(shapeRenderer)
                 .register(camera)
+                .register(viewport)
                 .register(assetManager);
         incadiumInvocationStrategy = new IncadiumInvocationStrategy();
         config.setInvocationStrategy(incadiumInvocationStrategy);
