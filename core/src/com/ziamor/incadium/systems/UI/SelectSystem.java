@@ -3,11 +3,13 @@ package com.ziamor.incadium.systems.UI;
 import com.artemis.Aspect;
 import com.artemis.BaseEntitySystem;
 import com.artemis.ComponentMapper;
+import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
 import com.artemis.utils.IntBag;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.ziamor.incadium.components.Asset.ShaderResolverComponent;
 import com.ziamor.incadium.components.Render.RenderPositionComponent;
@@ -22,18 +24,18 @@ public class SelectSystem extends BaseEntitySystem implements GestureDetector.Ge
     private ComponentMapper<SelectedComponent> selectedComponentMapper;
     private ComponentMapper<OutlineShaderComponent> outlineShaderComponentMapper;
 
-    Viewport viewport;
+    @Wire
+    FitViewport viewport;
 
     public SelectSystem(Viewport viewport) {
-        super(Aspect.all(SelectableComponent.class));
-        this.viewport = viewport;
+        super(Aspect.all());
     }
 
     @Override
     protected void processSystem() {
+
     }
-
-
+    
     @Override
     public boolean touchDown(float x, float y, int pointer, int button) {
         // Un-select any entities currently selected
