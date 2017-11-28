@@ -8,6 +8,7 @@ import com.artemis.annotations.Wire;
 import com.artemis.managers.TagManager;
 import com.artemis.systems.IteratingSystem;
 import com.ziamor.incadium.components.ActiveEntityComponent;
+import com.ziamor.incadium.components.ActiveRangeComponent;
 import com.ziamor.incadium.components.Movement.FollowTargetComponent;
 import com.ziamor.incadium.components.TransformComponent;
 
@@ -18,7 +19,7 @@ public class ActiveEntitySystem extends IteratingSystem {
 
     private ComponentMapper<TransformComponent> transformComponentMapper;
     private ComponentMapper<ActiveEntityComponent> activeEntityComponentMapper;
-
+    private ComponentMapper<ActiveRangeComponent> activeRangeComponentMapper;
     @EntityId
     protected int playerID = -1;
 
@@ -27,7 +28,7 @@ public class ActiveEntitySystem extends IteratingSystem {
     protected int activeRadius = 6;
 
     public ActiveEntitySystem() {
-        super(Aspect.all(FollowTargetComponent.class));
+        super(Aspect.all(ActiveRangeComponent.class));
     }
 
     @Override
@@ -49,6 +50,7 @@ public class ActiveEntitySystem extends IteratingSystem {
     @Override
     protected void process(int entityId) {
         final TransformComponent transformComponent = transformComponentMapper.get(entityId);
+        final ActiveRangeComponent activeRangeComponent = activeRangeComponentMapper.get(entityId);
 
         // Can't do anything without the player entity reference
         if (playerID == -1 || playerTransformComponent == null)
@@ -59,7 +61,7 @@ public class ActiveEntitySystem extends IteratingSystem {
 
         double distance = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
 
-        if (distance > activeRadius) {
+        if (distance > activeRangeComponent.radius) {
             activeEntityComponentMapper.remove(entityId);
         } else
             activeEntityComponentMapper.create(entityId);

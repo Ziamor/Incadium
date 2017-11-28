@@ -116,6 +116,7 @@ public class MapSystem extends BaseEntitySystem {
                         .turnTakerComponent()
                         .monsterComponent()
                         .followTargetComponent(ePlayer)
+                        .activeRangeComponent(5)
                         .lootableComponent()
                         .attackDamageComponent(15f)
                         .factionComponent(1)
