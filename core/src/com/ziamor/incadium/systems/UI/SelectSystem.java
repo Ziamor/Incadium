@@ -20,7 +20,6 @@ public class SelectSystem extends BaseEntitySystem implements GestureDetector.Ge
 
     private ComponentMapper<RenderPositionComponent> renderPositionComponentMapper;//TODO remove if we move the select system
     private ComponentMapper<SelectedComponent> selectedComponentMapper;
-    private ComponentMapper<ShaderResolverComponent> shaderResolverComponentMapper;
     private ComponentMapper<OutlineShaderComponent> outlineShaderComponentMapper;
 
     Viewport viewport;
@@ -53,7 +52,7 @@ public class SelectSystem extends BaseEntitySystem implements GestureDetector.Ge
                 Rectangle entityRect = new Rectangle(renderPositionComponent.x, renderPositionComponent.y, 1, 1);
                 if (entityRect.contains(screenPos)) {
                     selectedComponentMapper.create(selectablesIDs.get(i));
-                    shaderResolverComponentMapper.create(selectablesIDs.get(i)).set(OutlineShaderComponent.class);
+                    outlineShaderComponentMapper.create(selectablesIDs.get(i));
                     return true;
                 }
 

@@ -5,5 +5,4 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
 
 public class OutlineShaderComponent extends Component {
-    public ShaderProgram shaderProgram;
 }

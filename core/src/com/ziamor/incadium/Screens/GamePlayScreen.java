@@ -52,6 +52,7 @@ import com.ziamor.incadium.components.TransformComponent;
 import com.ziamor.incadium.systems.Asset.MapResolverSystem;
 import com.ziamor.incadium.systems.Render.GroundRenderSystem;
 import com.ziamor.incadium.systems.Render.LightRenderSystem;
+import com.ziamor.incadium.systems.Render.OutLineRenderSystem;
 import com.ziamor.incadium.systems.Render.RenderPositionSystem;
 import com.ziamor.incadium.components.TurnComponent;
 import com.ziamor.incadium.components.TurnTakerComponent;
@@ -365,6 +366,7 @@ public class GamePlayScreen implements Screen {
         systemSetupBuilder.add(new TerrainRenderSystem(), "render");
         systemSetupBuilder.add(new RenderSystem(), "render");
         systemSetupBuilder.add(new LightRenderSystem(), "render");
+        systemSetupBuilder.add(new OutLineRenderSystem(), "render");
         systemSetupBuilder.add(new TargetCameraSystem(), "render"); //TODO should this be earlier?
 
         // Input Systems

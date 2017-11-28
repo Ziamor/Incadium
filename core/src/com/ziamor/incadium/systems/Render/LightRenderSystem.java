@@ -97,7 +97,7 @@ public class LightRenderSystem extends BaseEntitySystem {
 
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
-
+        //TODO figure out if I can cache subscription managers
         IntBag lightID = world.getAspectSubscriptionManager().get(Aspect.all(LightSourceComponent.class, RenderPositionComponent.class).exclude(NotVisableComponent.class)).getEntities();
         for (int i = 0; i < lightID.size(); i++) {
             final RenderPositionComponent renderPositionComponent = renderPositionComponentMapper.get(lightID.get(i));

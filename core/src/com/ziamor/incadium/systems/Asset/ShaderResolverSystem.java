@@ -13,7 +13,6 @@ import com.ziamor.incadium.components.Render.shaders.ShaderComponent;
 public class ShaderResolverSystem extends AssetResolverSystem {
     private ComponentMapper<ShaderComponent> shaderComponentMapper;
     private ComponentMapper<ShaderResolverComponent> shaderResolverComponentMapper;
-    private ComponentMapper<OutlineShaderComponent> outlineShaderComponentMapper;
     private ComponentMapper<BlinkShaderComponent> blinkShaderComponentMapper;
 
     public ShaderResolverSystem() {
@@ -26,10 +25,7 @@ public class ShaderResolverSystem extends AssetResolverSystem {
         final ShaderComponent shaderComponent = shaderComponentMapper.create(entityId);
         Class<? extends Component> shaderComponentClass = shaderResolverComponent.shaderComponentClass;
 
-        if (shaderComponentClass == OutlineShaderComponent.class) {
-            ShaderProgram shaderProgram = createShaderProgram("outline");
-            outlineShaderComponentMapper.create(entityId).shaderProgram = shaderProgram;
-        } else if (shaderComponentClass == BlinkShaderComponent.class) {
+        if (shaderComponentClass == BlinkShaderComponent.class) {
             ShaderProgram shaderProgram = createShaderProgram("blink");
             blinkShaderComponentMapper.create(entityId).shaderProgram = shaderProgram;
         }
