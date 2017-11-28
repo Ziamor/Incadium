@@ -21,18 +21,13 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.VertexAttribute;
-import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
@@ -52,13 +47,10 @@ import com.ziamor.incadium.components.Movement.PlayerControllerComponent;
 import com.ziamor.incadium.components.NonComponents.HealthBarUI;
 import com.ziamor.incadium.Incadium;
 import com.ziamor.incadium.components.Render.LightSourceComponent;
-import com.ziamor.incadium.components.Render.NotVisableComponent;
 import com.ziamor.incadium.components.Render.RenderPositionComponent;
 import com.ziamor.incadium.components.TransformComponent;
 import com.ziamor.incadium.systems.Asset.MapResolverSystem;
 import com.ziamor.incadium.systems.Render.GroundRenderSystem;
-import com.ziamor.incadium.systems.Render.LightColorMapRenderSystem;
-import com.ziamor.incadium.systems.Render.LightMaskRenderSystem;
 import com.ziamor.incadium.systems.Render.LightRenderSystem;
 import com.ziamor.incadium.systems.Render.RenderPositionSystem;
 import com.ziamor.incadium.components.TurnComponent;
@@ -97,7 +89,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 public class GamePlayScreen implements Screen {
-    final float map_width = 16, map_height = 9;
+    public  static  final float map_width = 16, map_height = 9; // This prob should'nt be static
     final int viabilityRange = 8;
     SpriteBatch batch;
     ShapeRenderer shapeRenderer;
@@ -136,8 +128,6 @@ public class GamePlayScreen implements Screen {
     ShaderProgram ambientLightShader;
     String ambientLightShaderFileName = "ambient light";
 
-    Texture lightMaskStencil128, lightColorStencil128, lightMaskStencil256, lightColorStencil256, lightMaskStencil512, lightColorStencil512;
-    Mesh frameBufferMesh;
     Gradient dayNightGrad;
     Color ambientLightColor;
     Color lightSourceColor;
@@ -221,14 +211,6 @@ public class GamePlayScreen implements Screen {
 
         ambientLightColor = new Color(0.2f, 0.16f, 0.3f, 1.0f);
         lightSourceColor = new Color(1f, 230f / 255f, 155f / 255f, 1.0f);
-        lightMaskStencil128 = assetManager.get("light_stencil128.png", Texture.class);
-        lightColorStencil128 = assetManager.get("light_color_stencil128.png", Texture.class);
-
-        lightMaskStencil256 = assetManager.get("light_stencil256.png", Texture.class);
-        lightColorStencil256 = assetManager.get("light_color_stencil256.png", Texture.class);
-
-        lightMaskStencil512 = assetManager.get("light_stencil256.png", Texture.class);
-        lightColorStencil512 = assetManager.get("light_color_stencil256.png", Texture.class);
     }
 
     public void constructUI() {
@@ -353,6 +335,11 @@ public class GamePlayScreen implements Screen {
     public void resize(int width, int height) {
         this.viewport.update(width, height);
         fbWorld = new FrameBuffer(Pixmap.Format.RGBA8888, viewport.getScreenWidth(), viewport.getScreenHeight(), false);
+        if (world != null) {
+            LightRenderSystem lightRenderSystem = world.getSystem(LightRenderSystem.class);
+            if (lightRenderSystem != null)
+                lightRenderSystem.resize(width, height);
+        }
     }
 
     @Override
@@ -416,8 +403,6 @@ public class GamePlayScreen implements Screen {
         systemSetupBuilder.add(new GroundRenderSystem(), "render");
         systemSetupBuilder.add(new TerrainRenderSystem(), "render");
         systemSetupBuilder.add(new RenderSystem(), "render");
-        systemSetupBuilder.add(new LightMaskRenderSystem(viewport), "render");
-        systemSetupBuilder.add(new LightColorMapRenderSystem(viewport), "render");
         systemSetupBuilder.add(new LightRenderSystem(), "render");
         systemSetupBuilder.add(new TargetCameraSystem(), "render"); //TODO should this be earlier?
 
