@@ -87,8 +87,9 @@ public class LightRenderSystem extends BaseEntitySystem {
         lightFlickerNoise = MathUtils.random(-1, 1);
         renderLightMask();
         renderLightColorMap();
-        renderLight();
         viewport.apply();
+        renderLight();
+        batch.setProjectionMatrix(camera.combined);
     }
 
     protected void renderLightColorMap() {
@@ -161,6 +162,7 @@ public class LightRenderSystem extends BaseEntitySystem {
         batch.end();
         //PixmapIO.writePNG(new FileHandle("light mask.png"), ScreenUtils.getFrameBufferPixmap(0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
         fbLightMaskMap.end();
+        //viewport.apply();
     }
 
     protected void renderLight() {

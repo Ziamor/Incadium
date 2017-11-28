@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.ziamor.incadium.components.Render.NotVisableComponent;
 import com.ziamor.incadium.components.Render.RenderPositionComponent;
 import com.ziamor.incadium.components.Render.TextureRegionComponent;
@@ -42,8 +43,8 @@ public class OutLineRenderSystem extends IteratingSystem {
         String vertexShader = Gdx.files.internal("shaders\\" + shaderFileName + "\\vertex.glsl").readString();
         String fragmentShader = Gdx.files.internal("shaders\\" + shaderFileName + "\\fragment.glsl").readString();
         outlineShader = new ShaderProgram(vertexShader, fragmentShader);
-        if(outlineShader.getLog().length() > 0)
-            Gdx.app.debug("Outline Render System",outlineShader.getLog());
+        if (outlineShader.getLog().length() > 0)
+            Gdx.app.debug("Outline Render System", outlineShader.getLog());
     }
 
     @Override

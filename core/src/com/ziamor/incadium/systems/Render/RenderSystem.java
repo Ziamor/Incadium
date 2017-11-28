@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.ziamor.incadium.Screens.GamePlayScreen;
 import com.ziamor.incadium.components.Render.NotVisableComponent;
 import com.ziamor.incadium.components.Render.shaders.BlinkShaderComponent;
@@ -32,6 +33,9 @@ public class RenderSystem extends SortedIteratingSystem {
 
     @Wire
     private SpriteBatch batch;
+    @Wire
+    FitViewport viewport;
+
     TagManager tagManager;
     private Mesh mesh;
 
@@ -93,6 +97,7 @@ public class RenderSystem extends SortedIteratingSystem {
         super.end();
         batch.end();
         GamePlayScreen.fbWorld.end();
+        viewport.apply();
     }
 
     private Mesh getTextureRegionMesh(RenderPositionComponent renderPositionComponent, TextureRegionComponent textureRegionComponent) {
