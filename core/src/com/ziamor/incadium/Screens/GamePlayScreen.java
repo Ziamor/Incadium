@@ -83,9 +83,11 @@ import com.ziamor.incadium.systems.Render.TerrainRenderSystem;
 import com.ziamor.incadium.systems.Util.DurationManagerSystem;
 import com.ziamor.incadium.components.NonComponents.Gradient;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 public class GamePlayScreen implements Screen {
@@ -107,7 +109,6 @@ public class GamePlayScreen implements Screen {
 
     HealthBarUI healthBarUI;
     ProgressBar attackCoolDownBar;
-    Touchpad touchpad;
     Label lbFPS;
 
     IncadiumInvocationStrategy incadiumInvocationStrategy;
@@ -118,22 +119,9 @@ public class GamePlayScreen implements Screen {
 
     private ComponentMapper<MovementLerpComponent> movementLerpComponentMapper;
     private ComponentMapper<AttackLerpComponent> attackLerpComponentMapper;
-    private ComponentMapper<RenderPositionComponent> renderPositionComponentMapper;
-    private ComponentMapper<LightSourceComponent> lightSourceComponentMapper;
-    private ComponentMapper<TransformComponent> transformComponentMapper;
 
     private boolean playerTurn = true;
-    public static FrameBuffer fbWorld;
-
-    ShaderProgram ambientLightShader;
-    String ambientLightShaderFileName = "ambient light";
-
-    Gradient dayNightGrad;
-    Color ambientLightColor;
-    Color lightSourceColor;
-    float dayTime = 0;
-    float dayLength = 120;
-    float light_flicker_time = 0, getLight_flicker_length = 1;
+    public static FrameBuffer fbWorld; // This should not be static, find a better way to pass it to the light system
 
     boolean drawGrid = false;
 
@@ -152,7 +140,7 @@ public class GamePlayScreen implements Screen {
 
         this.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        // Sanity check to force anything unloaded to finish
+        // Make sure everything is loaded
         assetManager.finishLoading();
 
         constructUI();
@@ -166,51 +154,10 @@ public class GamePlayScreen implements Screen {
         inputMultiplexer.addProcessor(new GestureDetector(world.getSystem(SelectSystem.class)));
         inputMultiplexer.addProcessor(new GestureDetector(world.getSystem(PlayerControllerSystem.class)));
 
-        /*try {
-            if (Gdx.files.isLocalStorageAvailable()) {
-                FileHandle file = Gdx.files.internal("level.json");
-                String data = file.readString(); //TODO load files correctly, android was having issues with directly loading the file into the input stream
-                InputStream is = new ByteArrayInputStream(data.getBytes());
-                SaveFileFormat load = worldSerializationManager.load(is, SaveFileFormat.class);
-                is.close();
-            } else
-                Gdx.app.debug("Main", "Internal file storage not available");
-        } catch (
-                FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (
-                IOException e) {
-            e.printStackTrace();
-        }
-
-        E.E().transformComponent(2, 2, 10)
-                .textureComponent(playerTex)
-                .distanceMapComponent(distanceMap)
-                .shaderResolverComponent("shaders\\outline\\vertex.glsl", "shaders\\outline\\fragment.glsl")
-                .outlineShaderComponent();*/
         E.E().mapResolverComponent(0x123);
 
         movementLerpComponentMapper = world.getMapper(MovementLerpComponent.class);
         attackLerpComponentMapper = world.getMapper(AttackLerpComponent.class);
-        renderPositionComponentMapper = world.getMapper(RenderPositionComponent.class);
-        lightSourceComponentMapper = world.getMapper(LightSourceComponent.class);
-        transformComponentMapper = world.getMapper(TransformComponent.class);
-
-        String vertexShader = Gdx.files.internal("shaders\\" + ambientLightShaderFileName + "\\vertex.glsl").readString();
-        String fragmentShader = Gdx.files.internal("shaders\\" + ambientLightShaderFileName + "\\fragment.glsl").readString();
-
-        ambientLightShader = new ShaderProgram(vertexShader, fragmentShader);
-
-        if (ambientLightShader.getLog().length() != 0)
-            Gdx.app.debug("Shader Resolver System", ambientLightShader.getLog());
-
-        dayNightGrad = new Gradient(new Color(1f, 1f, 0.86f, 1f), new Color(1f, 1f, 0.86f, 1f));
-        dayNightGrad.addPoint(new Color(1.0f, 0.24f, 0.24f, 1.0f), 0.3f);
-        dayNightGrad.addPoint(new Color(0.08f, 0.24f, 0.70f, 1.0f), 0.5f);
-        dayNightGrad.addPoint(new Color(1.0f, 0.24f, 0.24f, 1.0f), 0.7f);
-
-        ambientLightColor = new Color(0.2f, 0.16f, 0.3f, 1.0f);
-        lightSourceColor = new Color(1f, 230f / 255f, 155f / 255f, 1.0f);
     }
 
     public void constructUI() {
@@ -231,9 +178,6 @@ public class GamePlayScreen implements Screen {
         attackCoolDownBar = new ProgressBar(0, 0.25f, 0.01f, false, skin);
         table.add(new Label("Attack CD:", skin));
         table.add(attackCoolDownBar);
-        table.row().expandY();
-        touchpad = new Touchpad(100, skin);
-        //table.add(touchpad);
     }
 
     @Override
@@ -271,7 +215,6 @@ public class GamePlayScreen implements Screen {
         stage.draw();
 
         //Gdx.app.log("", "frame: " + frame++);
-
     }
 
     protected void executeTurn(float delta) {
@@ -326,6 +269,24 @@ public class GamePlayScreen implements Screen {
         }
     }
 
+    protected void loadFromSave(){
+         try {
+            if (Gdx.files.isLocalStorageAvailable()) {
+                FileHandle file = Gdx.files.internal("level.json");
+                String data = file.readString(); //TODO load files correctly, android was having issues with directly loading the file into the input stream
+                InputStream is = new ByteArrayInputStream(data.getBytes());
+                SaveFileFormat load = worldSerializationManager.load(is, SaveFileFormat.class);
+                is.close();
+            } else
+                Gdx.app.debug("Main", "Internal file storage not available");
+        } catch (
+                FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (
+                IOException e) {
+            e.printStackTrace();
+        }
+    }
     @Override
     public void show() {
 
@@ -373,7 +334,7 @@ public class GamePlayScreen implements Screen {
             }
         }
         stage.dispose();
-        // Incadium disposes of assetmanager and spritebatch
+        // Note to future self, Incadium disposes of asset manager and sprite batch for you
     }
 
     public void buildWorld() {
