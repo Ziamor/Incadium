@@ -49,6 +49,7 @@ import com.ziamor.incadium.Incadium;
 import com.ziamor.incadium.components.Render.LightSourceComponent;
 import com.ziamor.incadium.components.Render.RenderPositionComponent;
 import com.ziamor.incadium.components.TransformComponent;
+import com.ziamor.incadium.systems.ActiveEntitySystem;
 import com.ziamor.incadium.systems.Asset.MapResolverSystem;
 import com.ziamor.incadium.systems.Render.GroundRenderSystem;
 import com.ziamor.incadium.systems.Render.LightRenderSystem;
@@ -374,6 +375,7 @@ public class GamePlayScreen implements Screen {
         //new TurnSchedulerSystem(),
         // Movement Systems
         systemSetupBuilder.add(new DurationManagerSystem(), "render");
+        systemSetupBuilder.add(new ActiveEntitySystem(), "turn");
         systemSetupBuilder.add(new PathFindingSystem(), "turn");
         systemSetupBuilder.add(new FollowSystem(), "turn");
         systemSetupBuilder.add(new MovementSystem(), "turn");

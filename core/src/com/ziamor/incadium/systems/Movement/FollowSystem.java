@@ -7,6 +7,7 @@ import com.artemis.systems.IteratingSystem;
 import com.artemis.utils.IntBag;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.ziamor.incadium.components.ActiveEntityComponent;
 import com.ziamor.incadium.components.Combat.DeadComponent;
 import com.ziamor.incadium.components.Movement.FollowTargetComponent;
 import com.ziamor.incadium.components.MonsterComponent;
@@ -29,7 +30,7 @@ public class FollowSystem extends IteratingSystem {
     private MapSystem mapSystem;
 
     public FollowSystem() {
-        super(Aspect.all(FollowTargetComponent.class, TransformComponent.class, MonsterComponent.class, TurnComponent.class).exclude(MovementLerpComponent.class));
+        super(Aspect.all(FollowTargetComponent.class, TransformComponent.class, MonsterComponent.class, TurnComponent.class, ActiveEntityComponent.class).exclude(MovementLerpComponent.class));
     }
 
     @Override

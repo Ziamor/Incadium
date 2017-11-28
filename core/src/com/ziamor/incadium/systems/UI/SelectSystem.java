@@ -35,7 +35,7 @@ public class SelectSystem extends BaseEntitySystem implements GestureDetector.Ge
     protected void processSystem() {
 
     }
-    
+
     @Override
     public boolean touchDown(float x, float y, int pointer, int button) {
         // Un-select any entities currently selected
