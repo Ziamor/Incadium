@@ -88,9 +88,12 @@ public class LightRenderSystem extends BaseEntitySystem {
         renderLightMask();
         renderLightColorMap();
         renderLight();
+        viewport.apply();
     }
 
     protected void renderLightColorMap() {
+        light_flicker_time += world.getDelta();
+
         fbLightColorMap.begin();
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -123,7 +126,6 @@ public class LightRenderSystem extends BaseEntitySystem {
         batch.end();
         //PixmapIO.writePNG(new FileHandle("light color.png"), ScreenUtils.getFrameBufferPixmap(0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
         fbLightColorMap.end();
-        viewport.apply();
     }
 
     protected void renderLightMask() {
@@ -133,8 +135,6 @@ public class LightRenderSystem extends BaseEntitySystem {
 
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
-
-        light_flicker_time += world.getDelta();
 
         IntBag lightID = world.getAspectSubscriptionManager().get(Aspect.all(LightSourceComponent.class, RenderPositionComponent.class).exclude(NotVisableComponent.class)).getEntities();
         for (int i = 0; i < lightID.size(); i++) {

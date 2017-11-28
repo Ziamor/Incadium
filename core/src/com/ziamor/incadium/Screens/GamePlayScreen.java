@@ -188,18 +188,11 @@ public class GamePlayScreen implements Screen {
 
         lbFPS.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
 
-        fbWorld.begin();
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        camera.update();
-
         batch.setColor(Color.WHITE);
         batch.setProjectionMatrix(camera.combined);
         shapeRenderer.setProjectionMatrix(camera.combined);
 
         executeTurn(delta);
-        fbWorld.end();
 
         if (drawGrid) {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);

@@ -5,8 +5,11 @@ import com.artemis.ComponentMapper;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.PerformanceCounter;
+import com.ziamor.incadium.Screens.GamePlayScreen;
 import com.ziamor.incadium.components.Render.GroundTileComponent;
 import com.ziamor.incadium.components.Render.NotVisableComponent;
 import com.ziamor.incadium.components.TransformComponent;
@@ -16,6 +19,9 @@ public class GroundRenderSystem extends IteratingSystem {
     ComponentMapper<GroundTileComponent> groundTileComponentComponentMapper;
     @Wire
     private SpriteBatch batch;
+    @Wire
+    OrthographicCamera camera;
+
     public GroundRenderSystem() {
         super(Aspect.all(TransformComponent.class, GroundTileComponent.class).exclude(NotVisableComponent.class));
     }
@@ -31,6 +37,11 @@ public class GroundRenderSystem extends IteratingSystem {
     @Override
     protected void begin() {
         super.begin();
+        GamePlayScreen.fbWorld.begin();
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        camera.update();
         batch.begin();
     }
 
