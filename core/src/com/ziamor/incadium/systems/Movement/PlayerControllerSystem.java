@@ -1,8 +1,12 @@
 package com.ziamor.incadium.systems.Movement;
 
 import com.artemis.Aspect;
+import com.artemis.AspectSubscriptionManager;
 import com.artemis.ComponentMapper;
+import com.artemis.E;
+import com.artemis.annotations.EntityId;
 import com.artemis.annotations.Wire;
+import com.artemis.managers.TagManager;
 import com.artemis.systems.IteratingSystem;
 import com.artemis.utils.IntBag;
 import com.badlogic.gdx.Application;
@@ -19,6 +23,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.ziamor.incadium.components.Asset.ShaderResolverComponent;
 import com.ziamor.incadium.components.Combat.AttackTargetComponent;
+import com.ziamor.incadium.components.MonsterComponent;
 import com.ziamor.incadium.components.Movement.AttackLerpComponent;
 import com.ziamor.incadium.components.Movement.MovementComponent;
 import com.ziamor.incadium.components.Movement.MovementLerpComponent;
@@ -34,6 +39,8 @@ public class PlayerControllerSystem extends IteratingSystem implements GestureDe
 
     @Wire
     OrthographicCamera camera;
+    @Wire
+    FitViewport viewport;
 
     float zoomSpeed = 0.05f, minZoom = 0.5f, maxZoom = 2f;
 
@@ -43,10 +50,13 @@ public class PlayerControllerSystem extends IteratingSystem implements GestureDe
 
     private ComponentMapper<MovementComponent> movementComponentComponentMapper;
     private ComponentMapper<MovementLerpComponent> movementLerpComponentMapper;
-
     TouchArea touchArea;
     private float width, height;
 
+    @EntityId
+    int player = -1;
+
+    TagManager tagManager;
 
     //TODO update resize
     public PlayerControllerSystem(int width, int height) {
@@ -58,6 +68,7 @@ public class PlayerControllerSystem extends IteratingSystem implements GestureDe
 
     @Override
     protected void process(int entity) {
+        player = tagManager.getEntityId("player");
         //TODO move to the correct events
         MovementComponent movementComponent = movementComponentComponentMapper.get(entity);
         final MovementLerpComponent movementLerpComponent = movementLerpComponentMapper.get(entity);
@@ -143,6 +154,15 @@ public class PlayerControllerSystem extends IteratingSystem implements GestureDe
     // Input Processor events
     @Override
     public boolean keyDown(int keycode) {
+        if (player == -1)
+            return false;
+        if (keycode == Input.Keys.SPACE) {
+            IntBag selected = world.getAspectSubscriptionManager().get(Aspect.all(SelectedComponent.class, MonsterComponent.class)).getEntities();
+            if (selected.size() <= 0)
+                return false;
+            E.E(player).attackTargetComponentTarget(selected.get(0));
+            return true;
+        }
         return false;
     }
 
@@ -178,6 +198,7 @@ public class PlayerControllerSystem extends IteratingSystem implements GestureDe
 
     @Override
     public boolean scrolled(int amount) {
+        //TODO fix zoom on viewport
         camera.zoom = MathUtils.clamp(camera.zoom + amount * zoomSpeed, minZoom, maxZoom);
         return true;
     }
