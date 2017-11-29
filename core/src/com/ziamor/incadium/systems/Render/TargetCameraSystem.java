@@ -8,6 +8,7 @@ import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.ziamor.incadium.components.Movement.MovementLerpComponent;
+import com.ziamor.incadium.components.Render.RenderPositionComponent;
 import com.ziamor.incadium.components.TargetCameraFocusComponent;
 import com.ziamor.incadium.components.TransformComponent;
 
@@ -16,29 +17,21 @@ public class TargetCameraSystem extends BaseEntitySystem {
     @Wire
     private OrthographicCamera camera;
 
-    private ComponentMapper<TransformComponent> transformComponentMapper;
-    private ComponentMapper<MovementLerpComponent> movementLerpComponentMapper;
+    private ComponentMapper<RenderPositionComponent> renderPositionComponentMapper;
     @EntityId
     private int target = -1;
 
+    float offset = 0.5f; // TODO get this from somewhere
     public TargetCameraSystem() {
-        super(Aspect.all(TargetCameraFocusComponent.class, TransformComponent.class));
+        super(Aspect.all(TargetCameraFocusComponent.class, RenderPositionComponent.class));
     }
 
     @Override
     protected void processSystem() {
         if (target != -1 && camera != null) {
-            final TransformComponent transformComponent = transformComponentMapper.get(target);
-            final MovementLerpComponent movementLerpComponent = movementLerpComponentMapper.get(target);
-
-            if (movementLerpComponent != null) {
-                Vector2 pos = movementLerpComponent.getCurrentPos();
-                camera.position.x = pos.x;
-                camera.position.y = pos.y;
-            } else if (transformComponent != null) {
-                camera.position.x = transformComponent.x;
-                camera.position.y = transformComponent.y;
-            }
+            final RenderPositionComponent renderPositionComponent = renderPositionComponentMapper.get(target);
+            camera.position.x = renderPositionComponent.x + offset;
+            camera.position.y = renderPositionComponent.y + offset;
         }
     }
 
