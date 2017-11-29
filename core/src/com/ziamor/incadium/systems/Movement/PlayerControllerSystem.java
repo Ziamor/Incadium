@@ -28,14 +28,12 @@ import com.ziamor.incadium.components.Render.shaders.OutlineShaderComponent;
 import com.ziamor.incadium.components.UI.SelectableComponent;
 import com.ziamor.incadium.components.UI.SelectedComponent;
 
-import java.security.Key;
-
 public class PlayerControllerSystem extends IteratingSystem implements GestureDetector.GestureListener, InputProcessor {
 
     @Wire
     OrthographicCamera camera;
 
-    float zoomSpeed = 0.05f, minZoom = 0.5f, maxZoom = 2f;
+    float zoomSpeed = 0.1f;
 
     private enum TouchArea {
         NONE, UP, DOWN, LEFT, RIGHT
@@ -178,7 +176,7 @@ public class PlayerControllerSystem extends IteratingSystem implements GestureDe
 
     @Override
     public boolean scrolled(int amount) {
-        camera.zoom = MathUtils.clamp(camera.zoom + amount * zoomSpeed, minZoom, maxZoom);
+        camera.zoom += amount * zoomSpeed;
         return true;
     }
 }
