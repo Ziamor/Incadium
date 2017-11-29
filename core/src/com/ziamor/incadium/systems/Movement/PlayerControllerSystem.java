@@ -5,12 +5,17 @@ import com.artemis.ComponentMapper;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
 import com.artemis.utils.IntBag;
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.ziamor.incadium.components.Asset.ShaderResolverComponent;
 import com.ziamor.incadium.components.Combat.AttackTargetComponent;
@@ -23,7 +28,13 @@ import com.ziamor.incadium.components.Render.shaders.OutlineShaderComponent;
 import com.ziamor.incadium.components.UI.SelectableComponent;
 import com.ziamor.incadium.components.UI.SelectedComponent;
 
-public class PlayerControllerSystem extends IteratingSystem implements GestureDetector.GestureListener {
+public class PlayerControllerSystem extends IteratingSystem implements GestureDetector.GestureListener, InputProcessor {
+
+    @Wire
+    OrthographicCamera camera;
+
+    float zoomSpeed = 0.1f;
+
     private enum TouchArea {
         NONE, UP, DOWN, LEFT, RIGHT
     }
@@ -45,6 +56,7 @@ public class PlayerControllerSystem extends IteratingSystem implements GestureDe
 
     @Override
     protected void process(int entity) {
+        //TODO move to the correct events
         MovementComponent movementComponent = movementComponentComponentMapper.get(entity);
         final MovementLerpComponent movementLerpComponent = movementLerpComponentMapper.get(entity);
         if (Gdx.input.isKeyPressed(Input.Keys.W) || touchArea == TouchArea.UP)
@@ -59,30 +71,31 @@ public class PlayerControllerSystem extends IteratingSystem implements GestureDe
         touchArea = TouchArea.NONE;
     }
 
+    //Gesture events
     @Override
     public boolean touchDown(float x, float y, int pointer, int button) {
+        if (Gdx.app.getType() == Application.ApplicationType.Android) {
+            Vector2 touchPos = new Vector2(x - width / 2, height / 2 - y);
+            touchPos.nor();
+            touchArea = TouchArea.NONE;
+            if (Math.abs(touchPos.x) >= Math.abs(touchPos.y)) {
+                if (touchPos.x >= 0)
+                    touchArea = TouchArea.RIGHT;
+                else
+                    touchArea = TouchArea.LEFT;
+            } else {
+                if (touchPos.y >= 0)
+                    touchArea = TouchArea.UP;
+                else
+                    touchArea = TouchArea.DOWN;
+            }
 
-        /*switch (Gdx.app.getType()) {
-            case Android:*/
-        Vector2 touchPos = new Vector2(x - width / 2, height / 2 - y);
-        touchPos.nor();
-        touchArea = TouchArea.NONE;
-        if (Math.abs(touchPos.x) >= Math.abs(touchPos.y)) {
-            if (touchPos.x >= 0)
-                touchArea = TouchArea.RIGHT;
+            if (touchArea == TouchArea.NONE)
+                return false;
             else
-                touchArea = TouchArea.LEFT;
-        } else {
-            if (touchPos.y >= 0)
-                touchArea = TouchArea.UP;
-            else
-                touchArea = TouchArea.DOWN;
+                return true;
         }
-
-        if (touchArea == TouchArea.NONE)
-            return false;
-        else
-            return true;
+        return false;
     }
 
     @Override
@@ -123,5 +136,47 @@ public class PlayerControllerSystem extends IteratingSystem implements GestureDe
     @Override
     public void pinchStop() {
 
+    }
+
+    // Input Processor events
+    @Override
+    public boolean keyDown(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        camera.zoom += amount * zoomSpeed;
+        return true;
     }
 }
