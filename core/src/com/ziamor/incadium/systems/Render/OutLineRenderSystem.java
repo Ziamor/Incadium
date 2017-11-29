@@ -8,16 +8,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.ziamor.incadium.Screens.GamePlayScreen;
 import com.ziamor.incadium.components.Render.NotVisableComponent;
 import com.ziamor.incadium.components.Render.RenderPositionComponent;
 import com.ziamor.incadium.components.Render.TextureRegionComponent;
@@ -27,10 +23,6 @@ import com.ziamor.incadium.components.Render.shaders.OutlineShaderComponent;
 public class OutLineRenderSystem extends IteratingSystem {
     @Wire
     SpriteBatch batch;
-    @Wire
-    OrthographicCamera camera;
-    @Wire
-    FitViewport viewport;
 
     private ComponentMapper<TextureRegionComponent> textureRegionComponentComponentMapper;
     private ComponentMapper<RenderPositionComponent> renderPositionComponentMapper;
@@ -58,21 +50,11 @@ public class OutLineRenderSystem extends IteratingSystem {
     @Override
     protected void begin() {
         super.begin();
-        GamePlayScreen.fbWorld.begin(); // Reuse
-        batch.setColor(Color.WHITE);
-        Gdx.gl.glClearColor(0, 0, 0, 0);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
 
     @Override
     protected void end() {
         super.end();
-        GamePlayScreen.fbWorld.end();
-        batch.begin();
-        batch.setProjectionMatrix(camera.combined);
-        batch.draw(GamePlayScreen.fbWorld.getColorBufferTexture(), camera.position.x - GamePlayScreen.map_width / 2, camera.position.y + GamePlayScreen.map_height / 2, GamePlayScreen.map_width, -GamePlayScreen.map_height);
-        batch.end();
-        viewport.apply();
     }
 
     @Override
@@ -85,7 +67,7 @@ public class OutLineRenderSystem extends IteratingSystem {
             outlineShader.begin();
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(Gdx.gl.GL_SRC_ALPHA, Gdx.gl.GL_ONE_MINUS_SRC_ALPHA);
-            outlineShader.setUniformMatrix("u_projTrans", camera.combined);
+            outlineShader.setUniformMatrix("u_projTrans", batch.getProjectionMatrix());
 
             Texture texture = textureRegionComponent.region.getTexture();
             texture.bind();

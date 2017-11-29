@@ -97,6 +97,7 @@ public class RenderSystem extends SortedIteratingSystem {
         super.end();
         batch.end();
         GamePlayScreen.fbWorld.end();
+        viewport.apply();
     }
 
     private Mesh getTextureRegionMesh(RenderPositionComponent renderPositionComponent, TextureRegionComponent textureRegionComponent) {
