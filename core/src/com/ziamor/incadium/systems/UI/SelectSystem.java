@@ -4,14 +4,13 @@ import com.artemis.Aspect;
 import com.artemis.BaseEntitySystem;
 import com.artemis.ComponentMapper;
 import com.artemis.annotations.Wire;
-import com.artemis.systems.IteratingSystem;
 import com.artemis.utils.IntBag;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.ziamor.incadium.components.Asset.ShaderResolverComponent;
 import com.ziamor.incadium.components.Render.RenderPositionComponent;
 import com.ziamor.incadium.components.Render.shaders.OutlineShaderComponent;
 import com.ziamor.incadium.components.UI.SelectableComponent;
@@ -36,31 +35,11 @@ public class SelectSystem extends BaseEntitySystem implements GestureDetector.Ge
 
     }
 
+    // Gestures
     @Override
     public boolean touchDown(float x, float y, int pointer, int button) {
-        // Un-select any entities currently selected
-        IntBag selectedIDs = world.getAspectSubscriptionManager().get(Aspect.one(SelectedComponent.class)).getEntities();
-        for (int i = 0; i < selectedIDs.size(); i++) {
-            selectedComponentMapper.remove(selectedIDs.get(i));
-            outlineShaderComponentMapper.remove(selectedIDs.get(i));
-        }
-        //Convert the screen space coordinates
-        Vector2 screenPos = viewport.unproject(new Vector2(x, y));
-        //Find the first selectable entity on mouse pos
-        IntBag selectablesIDs = world.getAspectSubscriptionManager().get(Aspect.one(SelectableComponent.class)).getEntities();
-        for (int i = 0; i < selectablesIDs.size(); i++) {
-            final RenderPositionComponent renderPositionComponent = renderPositionComponentMapper.get(selectablesIDs.get(i));
-            if (renderPositionComponent != null) {
-                Rectangle entityRect = new Rectangle(renderPositionComponent.x, renderPositionComponent.y, 1, 1);
-                if (entityRect.contains(screenPos)) {
-                    selectedComponentMapper.create(selectablesIDs.get(i));
-                    outlineShaderComponentMapper.create(selectablesIDs.get(i));
-                    return true;
-                }
-
-            }
-        }
-
+        if (button == Input.Buttons.RIGHT)
+            return select(x, y);
         return false;
     }
 
@@ -71,7 +50,7 @@ public class SelectSystem extends BaseEntitySystem implements GestureDetector.Ge
 
     @Override
     public boolean longPress(float x, float y) {
-        return false;
+        return select(x, y);
     }
 
     @Override
@@ -102,5 +81,31 @@ public class SelectSystem extends BaseEntitySystem implements GestureDetector.Ge
     @Override
     public void pinchStop() {
 
+    }
+
+    protected boolean select(float x, float y) {
+        // Un-select any entities currently selected
+        IntBag selectedIDs = world.getAspectSubscriptionManager().get(Aspect.one(SelectedComponent.class)).getEntities();
+        for (int i = 0; i < selectedIDs.size(); i++) {
+            selectedComponentMapper.remove(selectedIDs.get(i));
+            outlineShaderComponentMapper.remove(selectedIDs.get(i));
+        }
+        //Convert the screen space coordinates
+        Vector2 screenPos = viewport.unproject(new Vector2(x, y));
+        //Find the first selectable entity on mouse pos
+        IntBag selectablesIDs = world.getAspectSubscriptionManager().get(Aspect.one(SelectableComponent.class)).getEntities();
+        for (int i = 0; i < selectablesIDs.size(); i++) {
+            final RenderPositionComponent renderPositionComponent = renderPositionComponentMapper.get(selectablesIDs.get(i));
+            if (renderPositionComponent != null) {
+                Rectangle entityRect = new Rectangle(renderPositionComponent.x, renderPositionComponent.y, 1, 1);
+                if (entityRect.contains(screenPos)) {
+                    selectedComponentMapper.create(selectablesIDs.get(i));
+                    outlineShaderComponentMapper.create(selectablesIDs.get(i));
+                    return true;
+                }
+
+            }
+        }
+        return false;
     }
 }
