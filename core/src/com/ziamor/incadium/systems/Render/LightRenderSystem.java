@@ -85,16 +85,14 @@ public class LightRenderSystem extends BaseEntitySystem {
             load = false;
         }
         lightFlickerNoise = MathUtils.random(-1, 1);
+        light_flicker_time += world.getDelta();
         renderLightMask();
         renderLightColorMap();
-        viewport.apply();
         renderLight();
         batch.setProjectionMatrix(camera.combined);
     }
 
     protected void renderLightColorMap() {
-        light_flicker_time += world.getDelta();
-
         fbLightColorMap.begin();
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -162,14 +160,13 @@ public class LightRenderSystem extends BaseEntitySystem {
         batch.end();
         //PixmapIO.writePNG(new FileHandle("light mask.png"), ScreenUtils.getFrameBufferPixmap(0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
         fbLightMaskMap.end();
-        //viewport.apply();
     }
 
     protected void renderLight() {
         ambientLightShader.begin();
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        ambientLightShader.setUniformMatrix("u_projTrans", camera.projection);
+        ambientLightShader.setUniformMatrix("u_projTrans", camera.combined);
 
         fbLightColorMap.getColorBufferTexture().bind(2);
         ambientLightShader.setUniformi("u_lightColorMap", 2);
@@ -182,8 +179,8 @@ public class LightRenderSystem extends BaseEntitySystem {
 
         ambientLightShader.setUniformf("u_ambientColor", ambientLightColor);
 
-        float x = GamePlayScreen.map_width / -2;
-        float y = GamePlayScreen.map_height / 2;
+        float x = camera.position.x - GamePlayScreen.map_width / 2;
+        float y = camera.position.y + GamePlayScreen.map_height / 2;
         float width = GamePlayScreen.map_width;
         float height = -GamePlayScreen.map_height;
         float fx2 = x + width;

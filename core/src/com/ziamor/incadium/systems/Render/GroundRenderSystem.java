@@ -43,6 +43,7 @@ public class GroundRenderSystem extends IteratingSystem {
 
         camera.update();
         batch.begin();
+        batch.setProjectionMatrix(camera.combined);
     }
 
     @Override
