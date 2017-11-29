@@ -16,6 +16,7 @@ import com.artemis.managers.WorldSerializationManager;
 import com.artemis.utils.IntBag;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
@@ -93,7 +94,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class GamePlayScreen implements Screen {
-    public  static  final float map_width = 16, map_height = 9; // This prob should'nt be static
+    public static final float map_width = 16, map_height = 9; // This prob should'nt be static
     final int viabilityRange = 8;
     SpriteBatch batch;
     ShapeRenderer shapeRenderer;
@@ -153,8 +154,9 @@ public class GamePlayScreen implements Screen {
         backend.prettyPrint(true);
         worldSerializationManager.setSerializer(backend);
 
-        inputMultiplexer.addProcessor(new GestureDetector(world.getSystem(SelectSystem.class)));
+        inputMultiplexer.addProcessor(new GestureDetector(20, 0.4f, 0.5f, 0.15f, world.getSystem(SelectSystem.class)));
         inputMultiplexer.addProcessor(new GestureDetector(world.getSystem(PlayerControllerSystem.class)));
+        inputMultiplexer.addProcessor(world.getSystem(PlayerControllerSystem.class));
 
         E.E().mapResolverComponent(0x123);
 
@@ -264,8 +266,8 @@ public class GamePlayScreen implements Screen {
         }
     }
 
-    protected void loadFromSave(){
-         try {
+    protected void loadFromSave() {
+        try {
             if (Gdx.files.isLocalStorageAvailable()) {
                 FileHandle file = Gdx.files.internal("level.json");
                 String data = file.readString(); //TODO load files correctly, android was having issues with directly loading the file into the input stream
@@ -282,6 +284,7 @@ public class GamePlayScreen implements Screen {
             e.printStackTrace();
         }
     }
+
     @Override
     public void show() {
 
