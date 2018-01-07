@@ -13,3 +13,6 @@ Incadium is a roguelike game I am working on for both desktop and Android. I'm p
 -Pathfinding AI using Dijkstra Map, all enemy entites share a common map so that pathfinding only has to be calculated once per frame instead of once for each enemy
 
 -Bitmasked walls in 8 directions
+
+![Image of Dijkstra Map](https://i.imgur.com/z55UZOP.png)
+Here's a visual of the Dijkstra Map, enemies will use gradient descent to find the player(Blue -> Yellow). 
