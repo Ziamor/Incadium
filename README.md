@@ -1,5 +1,5 @@
 # Incadium
-Incadium is a roguelike game I am working on for both desktop and Android. I'm primarily  using this as a learning experience  with using an Entry Component System Architecture.
+Incadium is a roguelike game I am working on for both desktop and Android. I'm primarily using this as a learning experience for an Entity Component System Architecture.
 
 ![Image of game](https://i.imgur.com/lzc4k7l.png)
 
